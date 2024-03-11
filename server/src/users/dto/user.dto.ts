@@ -93,4 +93,8 @@ export class UserDto {
   @IsInt()
   @Min(18, { message: 'The user must be at least 18 years old' })
   age: number;
+
+  @ApiProperty({ description: 'IDs of the users skills' })
+  @IsString({ each: true })
+  skills: string[];
 }

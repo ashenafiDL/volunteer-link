@@ -102,7 +102,11 @@ export class UsersService {
           applications: true,
           badges: true,
           certificates: true,
-          skills: true,
+          skills: {
+            include: {
+              category: true,
+            },
+          },
           contributions: true,
           donations: true,
           messages: true,
@@ -129,6 +133,25 @@ export class UsersService {
         where: {
           email: email,
         },
+        include: {
+          role: true,
+          location: true,
+          profilePicture: true,
+          applications: true,
+          badges: true,
+          certificates: true,
+          skills: {
+            include: {
+              category: true,
+            },
+          },
+          contributions: true,
+          donations: true,
+          messages: true,
+          reports: true,
+          reviews: true,
+          tasks: true,
+        },
       });
 
       if (!user) throw new NotFoundException();
@@ -147,6 +170,25 @@ export class UsersService {
       const user = await this.prisma.users.findUnique({
         where: {
           username: username,
+        },
+        include: {
+          role: true,
+          location: true,
+          profilePicture: true,
+          applications: true,
+          badges: true,
+          certificates: true,
+          skills: {
+            include: {
+              category: true,
+            },
+          },
+          contributions: true,
+          donations: true,
+          messages: true,
+          reports: true,
+          reviews: true,
+          tasks: true,
         },
       });
 
@@ -219,6 +261,9 @@ export class UsersService {
           socialLinks: updateUserDto.socialLinks as any,
           notificationPreference: updateUserDto.notificationPreference as any,
           gender: updateUserDto.gender as Gender,
+          skills: {
+            connect: updateUserDto.skills?.map((id) => ({ id })),
+          },
         },
       });
 

@@ -42,7 +42,13 @@ export class SkillCategoriesService {
 
   async findAll() {
     try {
-      return await this.prisma.skillCategories.findMany();
+      return await this.prisma.skillCategories.findMany({
+        include: {
+          _count: {
+            select: { skills: true },
+          },
+        },
+      });
     } catch (error) {
       throw new InternalServerErrorException(
         'Failed to find all skill categories. Please try again later',
@@ -83,6 +89,11 @@ export class SkillCategoriesService {
     try {
       const category = await this.prisma.skillCategories.findUnique({
         where: { name: name },
+        include: {
+          _count: {
+            select: { skills: true },
+          },
+        },
       });
 
       if (!category) {

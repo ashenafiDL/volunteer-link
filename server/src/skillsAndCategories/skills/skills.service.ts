@@ -57,6 +57,7 @@ export class SkillsService {
     try {
       return await this.prisma.skills.findMany({
         include: {
+          category: true,
           _count: {
             select: {
               projects: true,
@@ -77,6 +78,7 @@ export class SkillsService {
       const skill = await this.prisma.skills.findUnique({
         where: { id: id },
         include: {
+          category: true,
           _count: {
             select: {
               projects: true,
