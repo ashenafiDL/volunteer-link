@@ -28,7 +28,7 @@ export default function SideNav() {
   ];
 
   const handleRouteChange = () => {
-    const index = navItems.findIndex((item) => pathName.startsWith(item.href));
+    const index = navItems.findIndex((item) => item.href === pathName);
     setActiveNavItem(index);
   };
 

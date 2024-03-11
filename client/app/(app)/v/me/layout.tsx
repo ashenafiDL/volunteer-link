@@ -2,9 +2,9 @@
 
 import { AuthContext } from "@/app/lib/contexts/AppContext";
 import React, { useContext, useEffect, useState } from "react";
-import SideNav from "./components/SideNav";
-import SocialLinks from "./components/SocialLinks";
-import UserProfile from "./components/UserProfile";
+import SideNav from "../components/SideNav";
+import SocialLinks from "../components/SocialLinks";
+import UserProfile from "../components/UserProfile";
 
 export default function SidebarLayout({
   children,
@@ -40,7 +40,7 @@ export default function SidebarLayout({
           )}
         </div>
 
-        <SideNav username={user.username} />
+        <SideNav />
       </div>
 
       {/* Profile + setting + edit */}

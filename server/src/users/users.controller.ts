@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Patch, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Req,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import {
   ApiDeleteAccountEndpoint,
@@ -19,6 +27,13 @@ export class UserController {
   async getMe(@Req() req: any) {
     const id = req.user.sub;
     const user = await this.userService.findById(id);
+    return this.userService.sanitizeUserData(user);
+  }
+
+  @Get(':username')
+  @ApiGetMeEndpoint()
+  async getUserByUsername(@Param('username') username: string) {
+    const user = await this.userService.findByUsername(username);
     return this.userService.sanitizeUserData(user);
   }
 

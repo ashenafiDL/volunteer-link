@@ -5,10 +5,10 @@ import Card from "@/components/global/Card";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { GoArrowRight } from "react-icons/go";
-import PersonalInfoCard from "./components/PersonalInfoCard";
-import UserBioCard from "./components/UserBioCard";
-import UserSkillsCard from "./components/UserSkillsCard";
-import "./components/styles.css";
+import PersonalInfoCard from "../components/PersonalInfoCard";
+import UserBioCard from "../components/UserBioCard";
+import UserSkillsCard from "../components/UserSkillsCard";
+import "../components/styles.css";
 
 export default function Profile() {
   const { user } = useContext(AuthContext);
