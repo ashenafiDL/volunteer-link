@@ -26,14 +26,14 @@ export default function Header() {
     {
       label: "Profile",
       icon: <BiUserCircle size={24} />,
-      href: `/v/${user.username}`,
+      href: "/v/me",
     },
     { label: "Tasks", icon: <BiListCheck size={24} />, href: "#" },
     { label: "Applications", icon: <BiFile size={24} />, href: "#" },
     {
       label: "Settings",
       icon: <AiOutlineSetting size={24} />,
-      href: `/v/${user.username}/settings`,
+      href: "/v/me/settings",
     },
   ];
 

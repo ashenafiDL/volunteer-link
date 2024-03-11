@@ -70,7 +70,9 @@ export default function AppContext({
       if (response.status === 200) {
         setUser(response.data);
       }
-    } catch (error) {}
+    } catch (error) {
+      logout();
+    }
   };
 
   return (

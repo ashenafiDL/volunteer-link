@@ -1,0 +1,15 @@
+.card_title {
+  @apply text-2xl;
+}
+
+.personal_info_key {
+  @apply text-sm font-light;
+}
+
+.personal_info_value {
+  @apply text-xl;
+}
+
+.card {
+  @apply space-y-3;
+}

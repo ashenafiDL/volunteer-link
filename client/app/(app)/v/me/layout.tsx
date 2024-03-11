@@ -21,9 +21,9 @@ export default function SidebarLayout({
   }, [user]);
 
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">
       {/* Sidebar */}
-      <div className="space-y-6 self-start lg:sticky lg:top-20">
+      <div className="space-y-3 self-start lg:sticky lg:top-20">
         <div>
           {isUserLoaded && (
             <UserProfile
@@ -35,10 +35,8 @@ export default function SidebarLayout({
             />
           )}
 
-          {isUserLoaded && user.socialLinks.length > 0 ? (
+          {isUserLoaded && user.socialLinks.length > 0 && (
             <SocialLinks socialLinks={user.socialLinks} />
-          ) : (
-            <></>
           )}
         </div>
 

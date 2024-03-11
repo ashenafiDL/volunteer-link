@@ -31,7 +31,7 @@ export default function UserProfile({
         <span className="font-light text-text-200">{`Joined on ${format(createdAt, "MMMM yyyy")}`}</span>
       </div>
 
-      <Link href={`/v/${username}/edit`}>
+      <Link href="/v/me/edit">
         <BiSolidPencil size={28} />
       </Link>
     </Card>

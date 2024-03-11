@@ -11,7 +11,7 @@ export default function HeaderLayout({
       <Header />
 
       {/* Main content */}
-      <main className="min-h-screen bg-bg-200 py-6">
+      <main className="py-6">
         <div className="container">{children}</div>
       </main>
     </>

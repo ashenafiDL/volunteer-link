@@ -37,7 +37,7 @@ export default function SocialLinks({
     <Card classes="rounded-t-none">
       <p className="mb-4 text-text-200">Social Links</p>
 
-      <ul className="space-y-4 pl-4">
+      <ul className="space-y-3 pl-4">
         {socialLinks.map((link: { platform: string; url: string }) => {
           return (
             <li key={link.platform} className="cursor-pointer hover:underline">

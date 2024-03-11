@@ -8,7 +8,7 @@ import { useLayoutEffect, useState } from "react";
 import { AiOutlineSetting } from "react-icons/ai";
 import { BiUser } from "react-icons/bi";
 
-export default function SideNav({ username }: { username: string }) {
+export default function SideNav() {
   const [activeNavItem, setActiveNavItem] = useState<number | null>(null);
   const pathName = usePathname();
 
@@ -17,18 +17,18 @@ export default function SideNav({ username }: { username: string }) {
       icon: <BiUser size={28} />,
       title: "Profile",
       subtitle: "Email, location, skills, contributions, badges, applications",
-      href: `/v/${username}`,
+      href: "/v/me",
     },
     {
       icon: <AiOutlineSetting size={28} />,
       title: "Settings",
       subtitle: "Location preference, time preference, theme",
-      href: `/v/${username}/settings`,
+      href: "/v/me/settings",
     },
   ];
 
   const handleRouteChange = () => {
-    const index = navItems.findIndex((item) => item.href === pathName);
+    const index = navItems.findIndex((item) => pathName.startsWith(item.href));
     setActiveNavItem(index);
   };
 
@@ -43,11 +43,12 @@ export default function SideNav({ username }: { username: string }) {
           <Link key={item.title} href={item.href}>
             <Card
               classes={clsx(
-                index === 0 && "rounded-l lg:rounded-t",
-                index === navItems.length - 1 && "rounded-r lg:rounded-b",
+                index === 0 && "rounded-l lg:rounded-l-none lg:rounded-t",
+                index === navItems.length - 1 &&
+                  "rounded-r lg:rounded-b lg:rounded-r-none",
                 index === activeNavItem
                   ? "bg-primary-100 font-medium"
-                  : "bg-opacity-50 hover:bg-bg-200",
+                  : "bg-bg-100 hover:bg-opacity-50",
                 "flex cursor-pointer flex-row items-center gap-4 rounded-none p-4 lg:gap-7 lg:p-6",
               )}
             >
