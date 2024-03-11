@@ -6,7 +6,7 @@ import Button from "../global/Button";
 export default function Hero() {
   return (
     <section className=" bg-primary-100">
-      <div className="container flex h-[75vh] max-h-[700px] flex-row items-center justify-between  pb-32">
+      <div className="container flex h-[80vh] max-h-[700px] flex-row items-center justify-between  pb-32">
         <div className="flex w-full flex-col gap-8 xl:w-1/2">
           <h1 className="text-3xl font-bold text-text-100 md:text-6xl">
             Join Our Community of Volunteers

@@ -7,7 +7,7 @@ export async function fetchLocations() {
     throw new Error("Failed to fetch data");
   }
 
-  const data = await res.data;
+  const data = res.data;
 
   const sortedLocations = data.sort(
     (a: { name: string }, b: { name: string }) => {

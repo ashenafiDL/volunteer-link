@@ -15,7 +15,6 @@ import {
 } from './docs/users-controllers.doc';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
-import { Public } from 'src/auth/decorators/public.decorator';
 
 @ApiTags('Users')
 @Controller('users')
@@ -49,11 +48,5 @@ export class UserController {
   async delete(@Req() req) {
     const id = req.user.sub;
     return this.userService.deleteUser(id);
-  }
-  // userInfo
-  @Public()
-  @Get('userInfo')
-  getUserInfo() {
-    return this.userService.getUserInfo();
   }
 }

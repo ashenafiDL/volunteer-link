@@ -11,6 +11,7 @@ import { SkillCategoriesModule } from './skillsAndCategories/skill-categories/sk
 import { SkillsModule } from './skillsAndCategories/skills/skills.module';
 import { UsersModule } from './users/users.module';
 import { UsersService } from './users/users.service';
+import { StatsModule } from './misc/stats/stats.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UsersService } from './users/users.service';
     FilesModule,
     SkillsModule,
     SkillCategoriesModule,
+    StatsModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService, UsersService],

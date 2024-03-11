@@ -322,15 +322,4 @@ export class UsersService {
     const sanitizedUser = { ...userWithoutSensitive };
     return sanitizedUser;
   }
-  // get UserInfo
-  async getUserInfo() {
-    const user = await this.prisma.users.findMany({});
-    const org = await this.prisma.organizations.findMany({});
-    const proj = await this.prisma.projects.findMany({});
-    return {
-      user: user.length,
-      org: org.length,
-      proj: proj.length,
-    };
-  }
 }
