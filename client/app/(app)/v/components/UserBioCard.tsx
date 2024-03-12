@@ -9,7 +9,7 @@ export default function UserBioCard({ bio }: { bio: string }) {
 
   return (
     <Card classes="card">
-      <h5 className="card_title">Bio</h5>
+      <h5 className="card-title">Bio</h5>
 
       <div>
         <p

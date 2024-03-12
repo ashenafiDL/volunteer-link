@@ -1,26 +1,35 @@
 "use client";
 
-import { AuthContext } from "@/app/lib/contexts/AppContext";
+import { fetchUser } from "@/app/lib/users";
 import Card from "@/components/global/Card";
-import Link from "next/link";
-import { useContext } from "react";
-import { GoArrowLeft } from "react-icons/go";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import DetailsHeader from "../../components/DetailsHeader";
 import UserSkillsCard from "../../components/UserSkillsCard";
 
 export default function UserSkills() {
-  const { user } = useContext(AuthContext);
+  const pathname = usePathname();
+  const username = pathname.split("/")[2];
+  const [user, setUser] = useState<any>();
+
+  useEffect(() => {
+    async function getUserData() {
+      const res = await fetchUser(username);
+
+      if (res) {
+        setUser(res);
+      }
+    }
+
+    getUserData();
+  }, [username]);
 
   return (
     <div>
-      <div className="mb-3 flex items-center gap-4">
-        <Link href={"/v/me"}>
-          <GoArrowLeft size={28} />
-        </Link>
-        <span className="text-xl">Skills</span>
-      </div>
+      <DetailsHeader href={`/v/${user && user.username}`} text="Skills" />
 
       <Card>
-        {user.skills && user.skills.length > 0 && (
+        {user && user.skills && user.skills.length > 0 && (
           <UserSkillsCard skills={user.skills} />
         )}
       </Card>

@@ -1,15 +1,17 @@
 import axiosInstance from "../axiosInstance";
 
 export async function fetchUser(username: string) {
-  const res = await axiosInstance.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/users/${username}`,
-  );
+  try {
+    const res = await axiosInstance.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/${username}`,
+    );
 
-  if (res.status !== 200) {
-    throw new Error("Failed to fetch data");
+    if (res.status !== 200) {
+      throw new Error("Failed to fetch user");
+    }
+
+    return res.data;
+  } catch (error) {
+    return null;
   }
-
-  const data = await res.data;
-
-  return data;
 }

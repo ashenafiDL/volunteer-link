@@ -1,15 +1,27 @@
-.card_title {
+.card-title {
   @apply text-2xl;
 }
 
-.personal_info_key {
+.personal-info-key {
   @apply text-sm font-light;
 }
 
-.personal_info_value {
+.personal-info-value {
   @apply text-xl;
 }
 
 .card {
   @apply space-y-3;
+}
+
+.layout-container {
+  @apply grid grid-cols-1 gap-3 lg:grid-cols-3;
+}
+
+.layout-left-child {
+  @apply space-y-3 self-start lg:sticky lg:top-20;
+}
+
+.layout-right-child {
+  @apply space-y-3 lg:col-span-2;
 }

@@ -10,12 +10,14 @@ export default function UserProfile({
   username,
   email,
   createdAt,
+  ownProfile,
 }: {
   firstName: string;
   lastName: string;
   username: string;
   email: string;
   createdAt: string;
+  ownProfile: boolean;
 }) {
   return (
     <Card classes="flex items-center gap-6 rounded-b-none bg-primary-100">
@@ -31,9 +33,12 @@ export default function UserProfile({
         <span className="font-light text-text-200">{`Joined on ${format(createdAt, "MMMM yyyy")}`}</span>
       </div>
 
-      <Link href="/v/me/edit">
-        <BiSolidPencil size={28} />
-      </Link>
+      {/* Show the edit icon if the user is viewing his/her own profile */}
+      {ownProfile && (
+        <Link href="/v/me/edit">
+          <BiSolidPencil size={28} />
+        </Link>
+      )}
     </Card>
   );
 }

@@ -2,9 +2,8 @@
 
 import { AuthContext } from "@/app/lib/contexts/AppContext";
 import Card from "@/components/global/Card";
-import Link from "next/link";
 import { useContext } from "react";
-import { GoArrowLeft } from "react-icons/go";
+import DetailsHeader from "../../components/DetailsHeader";
 import UserSkillsCard from "../../components/UserSkillsCard";
 
 export default function UserSkills() {
@@ -12,12 +11,7 @@ export default function UserSkills() {
 
   return (
     <div>
-      <div className="mb-3 flex items-center gap-4">
-        <Link href={"/v/me"}>
-          <GoArrowLeft size={28} />
-        </Link>
-        <span className="text-xl">Skills</span>
-      </div>
+      <DetailsHeader href="/v/me" text="Skills" />
 
       <Card>
         {user.skills && user.skills.length > 0 && (
