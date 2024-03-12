@@ -18,7 +18,7 @@ export default function UserSkillsCard({ skills }: { skills: any }) {
             key={skill.name}
           >
             <div>
-              <span className="personal_info_value">{skill.name}</span>
+              <span className="personal-info-value">{skill.name}</span>
               <Chip>{skill.category.name}</Chip>
             </div>
             <p className="font-light text-text-200">{skill.description}</p>

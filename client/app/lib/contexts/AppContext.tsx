@@ -41,9 +41,9 @@ export default function AppContext({
 
   const logout = () => {
     router.replace("/sign-in");
+    setIsLoggedIn(false);
     setToken("");
     deleteCookie("token");
-    setIsLoggedIn(false);
     setUser({});
   };
 

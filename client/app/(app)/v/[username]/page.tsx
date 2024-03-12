@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import PersonalInfoCard from "../components/PersonalInfoCard";
 import ShowMoreCard from "../components/ShowMoreCard";
 import UserBioCard from "../components/UserBioCard";
+import UserEducationInfoCard from "../components/UserEducationInfoCard";
 import UserSkillsCard from "../components/UserSkillsCard";
 import "../components/styles.css";
 
@@ -35,7 +36,7 @@ export default function Profile() {
             firstName={user.firstName}
             lastName={user.lastName}
             gender={user.gender}
-            locationName={user.locationId && user.location.name}
+            locationName={user.location !== undefined && user.location.name}
             age={user.age}
             email={user.email}
           />
@@ -48,13 +49,32 @@ export default function Profile() {
             {user.skills && user.skills.length > 0 && (
               <>
                 <Card classes="space-y-3 rounded-b-none">
-                  <h5 className="card_title">Skills</h5>
+                  <h5 className="card-title">Skills</h5>
 
                   {/* Only show three skills */}
                   <UserSkillsCard skills={user.skills.slice(0, 3)} />
                 </Card>
                 {user.skills.length > 3 && (
                   <ShowMoreCard href={`/v/${user.username}/skills`} />
+                )}
+              </>
+            )}
+          </div>
+
+          {/* Education information card */}
+          <div>
+            {user.education && user.education.length > 0 && (
+              <>
+                <Card classes="space-y-3 rounded-b-none">
+                  <h5 className="card-title">Education</h5>
+
+                  {/* Only show three education info */}
+                  <UserEducationInfoCard
+                    educationInfo={user.education.slice(0, 3)}
+                  />
+                </Card>
+                {user.education.length > 3 && (
+                  <ShowMoreCard href={`/v/${user.username}/education`} />
                 )}
               </>
             )}
