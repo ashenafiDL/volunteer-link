@@ -22,8 +22,7 @@ import {
 export default function SignUpForm({ locations }: { locations: object[] }) {
   const router = useRouter();
 
-  const { setUser, setToken, isLoggedIn, setIsLoggedIn } =
-    useContext(AuthContext);
+  const { setUser, setToken, setIsLoggedIn } = useContext(AuthContext);
   const [snackbar, setSnackBar] = useState<{
     message: string;
     type: "error" | "warning" | "info" | "success";

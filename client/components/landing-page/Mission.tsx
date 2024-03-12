@@ -11,7 +11,7 @@ export default function Mission() {
             Empowering Communities Through Volunteering
           </h2>
         </div>
-        <p className="text-base text-text-200/90">
+        <p className="text-lg text-text-200/90">
           Bridging the gap between passionate individuals and worthy causes,
           sparking meaningful connections and fueling collaborative action
           through a seamless platform for volunteer engagement with non-profit

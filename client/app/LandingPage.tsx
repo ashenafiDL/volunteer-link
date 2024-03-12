@@ -10,7 +10,7 @@ import Link from "next/link";
 
 export default function LandingPage() {
   return (
-    <div className="max-w-screen overflow-hidden">
+    <div className="max-w-screen overflow-hidden bg-bg-100">
       <Header />
 
       <Hero />

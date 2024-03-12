@@ -33,13 +33,7 @@ export default function Hero() {
         </div>
 
         <div className="hidden w-1/2 md:w-1/3 xl:block">
-          <Image
-            className=""
-            src={HeroImage}
-            alt={""}
-            width={600}
-            height={600}
-          />
+          <Image src={HeroImage} alt="Hero image" width={600} height={600} />
         </div>
       </div>
     </section>

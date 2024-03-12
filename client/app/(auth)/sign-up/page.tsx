@@ -1,12 +1,11 @@
+import LoadingSkeleton from "@/Skeleton/LoadingSkeleton";
 import { fetchLocations } from "@/app/lib/locations";
 import Link from "next/link";
-import SignUpForm from "./SignUpForm";
 import { Suspense } from "react";
-import LoadingSkeleton from "@/Skeleton/LoadingSkeleton";
+import SignUpForm from "./SignUpForm";
 
 export default async function SignUp() {
   const locations = await fetchLocations();
-  await new Promise((resolve) => setTimeout(resolve, 2000));
 
   return (
     <>

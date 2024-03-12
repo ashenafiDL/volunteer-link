@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { BiDonateBlood, BiMenu, BiX } from "react-icons/bi";
 import Button from "../global/Button";
-import SearchInput from "../global/SearchInput";
 
 export default function Header() {
   const [navHidden, setNavHidden] = useState(true);
@@ -25,13 +24,7 @@ export default function Header() {
             "absolute right-0 top-full flex min-h-fit w-full items-center rounded-md bg-bg-100 px-5 py-4 shadow-lg duration-500 md:py-0 lg:static lg:w-auto lg:bg-primary-100 lg:shadow-none",
           )}
         >
-
           <ul className="flex w-full flex-col text-lg md:p-4 lg:flex-row lg:items-center lg:gap-8 lg:p-0 hover:[&>li>a]:text-accent-200 [&>li]:py-4">
-            
-            <li>
-              <SearchInput/>
-            </li>
-
             <li>
               <Link href="/organizations">Organizations</Link>
             </li>

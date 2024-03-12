@@ -3,25 +3,21 @@ import { fetchStats } from "@/app/lib/stats";
 export default async function Stats() {
   const res = await fetchStats();
 
-  if (!res) {
-    return null;
-  }
-
   const stats = [
     {
       key: "Users",
-      value: res.users.total,
+      value: res.users.total || 0,
       description: "The total number of registered users on the platform.",
     },
     {
       key: "Organizations",
-      value: res.organizations.total,
+      value: res.organizations.total || 0,
       description:
         "The total number of organizations that have registered and created profiles.",
     },
     {
       key: "Projects",
-      value: res.projects.total,
+      value: res.projects.total || 0,
       description:
         "The total number of active projects currently listed on the platform.",
     },

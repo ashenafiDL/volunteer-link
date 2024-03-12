@@ -1,7 +1,7 @@
-import Link from "next/link";
-import SignInForm from "./SignInForm";
-import { Suspense } from "react";
 import LoadingSkeleton from "@/Skeleton/LoadingSkeleton";
+import Link from "next/link";
+import { Suspense } from "react";
+import SignInForm from "./SignInForm";
 
 export default function SignIn() {
   return (

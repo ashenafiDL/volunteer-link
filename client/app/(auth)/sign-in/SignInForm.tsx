@@ -18,8 +18,7 @@ import * as Yup from "yup";
 export default function SignInForm() {
   const router = useRouter();
 
-  const { setUser, setToken, isLoggedIn, setIsLoggedIn } =
-    useContext(AuthContext);
+  const { setUser, setToken, setIsLoggedIn } = useContext(AuthContext);
   const [snackbar, setSnackBar] = useState<{
     message: string;
     type: "error" | "warning" | "success" | "info";
