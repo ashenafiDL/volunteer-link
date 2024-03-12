@@ -17,6 +17,7 @@ model Users {
   email                  String             @unique
   bio                    String?
   socialLinks            Json[]
+  education              Education[]
   password               String?
   role                   Roles              @relation(fields: [roleId], references: [id])
   roleId                 String
@@ -222,6 +223,17 @@ model Tasks {
   asignedToId String
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+}
+
+model Education {
+  id          String    @id @default(uuid())
+  field       String
+  institute   String
+  startDate   DateTime
+  endDate     DateTime?
+  description String?
+  Users       Users?    @relation(fields: [usersId], references: [id])
+  usersId     String?
 }
 
 // many to many relationship tables

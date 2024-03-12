@@ -56,7 +56,7 @@ export class AuthService {
   async signIn(email: string, pass: string): Promise<any> {
     try {
       // Find the user with the given email
-      const user = await this.usersService.findByEmail(email);
+      const user = await this.usersService.findOne(email);
 
       const passwordsMatch = await bcrypt.compare(pass, user.password);
 
@@ -85,7 +85,7 @@ export class AuthService {
 
   async forgotPassword(forgotPasswordDto: ForgotPasswordDto) {
     try {
-      const user = await this.usersService.findByEmail(forgotPasswordDto.email);
+      const user = await this.usersService.findOne(forgotPasswordDto.email);
 
       if (!user) {
         throw new NotFoundException();
@@ -115,9 +115,7 @@ export class AuthService {
 
   async verifyResetCode(verifyResetCodeDto: VerifyResetCodeDto) {
     try {
-      const user = await this.usersService.findByEmail(
-        verifyResetCodeDto.email,
-      );
+      const user = await this.usersService.findOne(verifyResetCodeDto.email);
 
       if (!user) {
         throw new NotFoundException('User not found');
@@ -149,7 +147,7 @@ export class AuthService {
 
   async resetPassword(email: string, newPassword: string) {
     try {
-      const user = await this.usersService.findByEmail(email);
+      const user = await this.usersService.findOne(email);
 
       if (!user) {
         throw new NotFoundException('User not found');

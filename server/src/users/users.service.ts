@@ -89,11 +89,11 @@ export class UsersService {
     }
   }
 
-  async findById(id: string) {
+  async findOne(selector: string) {
     try {
-      const user = await this.prisma.users.findUnique({
+      const user = await this.prisma.users.findFirst({
         where: {
-          id: id,
+          OR: [{ id: selector }, { username: selector }, { email: selector }],
         },
         include: {
           role: true,
@@ -107,82 +107,7 @@ export class UsersService {
               category: true,
             },
           },
-          contributions: true,
-          donations: true,
-          messages: true,
-          reports: true,
-          reviews: true,
-          tasks: true,
-        },
-      });
-
-      if (!user) throw new NotFoundException();
-      else return user;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      } else {
-        throw new InternalServerErrorException('Failed to find user');
-      }
-    }
-  }
-
-  async findByEmail(email: string) {
-    try {
-      const user = await this.prisma.users.findUnique({
-        where: {
-          email: email,
-        },
-        include: {
-          role: true,
-          location: true,
-          profilePicture: true,
-          applications: true,
-          badges: true,
-          certificates: true,
-          skills: {
-            include: {
-              category: true,
-            },
-          },
-          contributions: true,
-          donations: true,
-          messages: true,
-          reports: true,
-          reviews: true,
-          tasks: true,
-        },
-      });
-
-      if (!user) throw new NotFoundException();
-      else return user;
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        throw error;
-      } else {
-        throw new InternalServerErrorException('Failed to find user');
-      }
-    }
-  }
-
-  async findByUsername(username: string) {
-    try {
-      const user = await this.prisma.users.findUnique({
-        where: {
-          username: username,
-        },
-        include: {
-          role: true,
-          location: true,
-          profilePicture: true,
-          applications: true,
-          badges: true,
-          certificates: true,
-          skills: {
-            include: {
-              category: true,
-            },
-          },
+          education: true,
           contributions: true,
           donations: true,
           messages: true,
@@ -263,6 +188,9 @@ export class UsersService {
           gender: updateUserDto.gender as Gender,
           skills: {
             connect: updateUserDto.skills?.map((id) => ({ id })),
+          },
+          education: {
+            create: updateUserDto.education,
           },
         },
       });

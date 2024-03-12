@@ -11,6 +11,7 @@ import { ApiTags } from '@nestjs/swagger';
 import {
   ApiDeleteAccountEndpoint,
   ApiGetMeEndpoint,
+  ApiGetUserByUsernameEndpoint,
   ApiUpdateProfileEndpoint,
 } from './docs/users-controllers.doc';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -25,14 +26,14 @@ export class UserController {
   @ApiGetMeEndpoint()
   async getMe(@Req() req: any) {
     const id = req.user.sub;
-    const user = await this.userService.findById(id);
+    const user = await this.userService.findOne(id);
     return this.userService.sanitizeUserData(user);
   }
 
   @Get(':username')
-  @ApiGetMeEndpoint()
+  @ApiGetUserByUsernameEndpoint()
   async getUserByUsername(@Param('username') username: string) {
-    const user = await this.userService.findByUsername(username);
+    const user = await this.userService.findOne(username);
     return this.userService.sanitizeUserData(user);
   }
 

@@ -10,6 +10,7 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
+import { EducationInfoDto } from './education-info.dto';
 import { NotificationOptionDto } from './notification-option.dto';
 import { SocialLinkDto } from './social-link.dto';
 
@@ -97,4 +98,14 @@ export class UserDto {
   @ApiProperty({ description: 'IDs of the users skills' })
   @IsString({ each: true })
   skills: string[];
+
+  @ApiProperty({
+    description:
+      'A list of key value pairs containing the users education information',
+    type: [EducationInfoDto],
+  })
+  @IsArray()
+  @ValidateNested({ each: true }) // Validate each element of the array
+  @Type(() => EducationInfoDto) // Specify the type of each element
+  education: EducationInfoDto[];
 }

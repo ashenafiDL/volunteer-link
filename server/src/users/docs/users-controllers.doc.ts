@@ -1,4 +1,9 @@
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiNotFoundResponse,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { applyCustomDecorators } from 'src/lib/applyCustomDecorators';
 
 export const ApiGetMeEndpoint = () => {
@@ -18,6 +23,19 @@ export const ApiGetMeEndpoint = () => {
       description:
         'Internal Server Error - Failed to get user profile. Please try again later.',
     }),
+  ]);
+};
+
+export const ApiGetUserByUsernameEndpoint = () => {
+  return applyCustomDecorators([
+    ApiOperation({ summary: 'Get user by username' }),
+    ApiParam({
+      name: 'username',
+      description: 'Username of the user to retrieve',
+    }),
+    ApiResponse({ status: 200, description: 'User found and retrieved' }),
+    ApiNotFoundResponse({ description: 'User not found' }),
+    ApiResponse({ status: 500, description: 'Failed to find user' }),
   ]);
 };
 
