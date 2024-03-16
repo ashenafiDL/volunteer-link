@@ -4,6 +4,7 @@ import React from "react";
 export default function Button({
   type,
   variant,
+  color,
   size,
   disabled,
   icon,
@@ -12,6 +13,7 @@ export default function Button({
 }: {
   type?: "submit" | "reset";
   variant: "filled" | "text" | "outlined";
+  color?: "primary" | "secondary" | "info" | "success" | "warning" | "error";
   size: "xs" | "sm" | "base" | "lg" | "xl";
   disabled?: boolean;
   icon?: React.ReactNode;
@@ -33,6 +35,12 @@ export default function Button({
           "border border-bg-100 text-accent-200 hover:border hover:border-accent-100":
             variant === "text" && !disabled,
           "cursor-not-allowed text-bg-300": variant === "text" && disabled,
+        },
+        {
+          "border-info bg-info": color === "info",
+          "border-error bg-error": color === "error",
+          "border-success bg-success": color === "success",
+          "border-warning bg-warning": color === "warning",
         },
         { classes },
         `rounded px-4 py-2 text-${size} flex flex-row items-center justify-center gap-4 duration-200`,

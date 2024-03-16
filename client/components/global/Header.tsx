@@ -72,7 +72,7 @@ export default function Header() {
   }, []);
 
   return (
-    <div className="sticky top-0 bg-primary-100 py-2 text-text-100">
+    <div className="sticky top-0 z-10 bg-primary-100 py-2 text-text-100">
       <div className="container flex w-full items-center justify-between">
         {/* Logo section of the header */}
         <Link href="/home" className="flex items-center gap-2">

@@ -30,7 +30,7 @@ export default function UserProfile({
           {/* <BiBadge size={24} /> */}
         </div>
         <span className="text-lg">{`@${username}`}</span>
-        <span className="font-light text-text-200">{`Joined on ${format(createdAt, "MMMM yyyy")}`}</span>
+        <span className="font-light text-text-200">{`Joined on ${createdAt && format(createdAt, "MMMM yyyy")}`}</span>
       </div>
 
       {/* Show the edit icon if the user is viewing his/her own profile */}

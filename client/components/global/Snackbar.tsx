@@ -2,12 +2,12 @@
 
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import { BiX } from "react-icons/bi";
+import { BiInfoCircle, BiX } from "react-icons/bi";
 
 const Snackbar = ({
   message,
   type,
-  duration = 300,
+  duration,
   setSnackbar,
 }: {
   message: string;
@@ -43,19 +43,26 @@ const Snackbar = ({
     <div
       className={clsx(
         showSnackbar ? "-translate-y-0" : "-translate-y-56",
-        "fixed right-8 top-8 flex max-w-96 transform flex-row items-start gap-4 text-pretty rounded px-4 py-2 text-lg leading-tight text-bg-100 shadow-xl transition-transform duration-500",
+        "fixed right-5 top-5 z-50 flex max-w-lg transform flex-row items-start rounded px-4 py-4 text-lg leading-tight text-bg-100 shadow-xl transition-all duration-500",
         types[type],
       )}
     >
-      <p>{message}</p>
+      <div className="flex w-full flex-grow flex-row items-start gap-2">
+        <div>
+          <BiInfoCircle size={24} />
+        </div>
+        <p>{message}</p>
+      </div>
 
-      <BiX
-        size={32}
+      <div
+        role="button"
+        className="mx-2"
         onClick={() => {
-          setSnackbar(null);
           setShowSnackbar(false);
         }}
-      />
+      >
+        <BiX size={28} />
+      </div>
     </div>
   );
 };

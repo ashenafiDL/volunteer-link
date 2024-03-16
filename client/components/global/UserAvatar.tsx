@@ -60,7 +60,7 @@ export default function UserAvatar({
       )}
     >
       <span className="text-xl font-medium text-primary-300">
-        {name.charAt(0).toUpperCase() || ""}
+        {name?.charAt(0)?.toUpperCase()}
       </span>
     </div>
   );
