@@ -25,3 +25,7 @@
 .layout-right-child {
   @apply space-y-3 lg:col-span-2;
 }
+
+.setting-item {
+  @apply flex flex-row items-center justify-between;
+}
