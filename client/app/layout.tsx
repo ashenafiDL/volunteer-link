@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Providers from "./Providers";
 import "./globals.css";
 import AuthContext from "./lib/contexts/AppContext";
 
@@ -13,9 +14,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="bg-bg-200 text-text-100">
-        <AuthContext>{children}</AuthContext>
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <body className="dark-theme bg-bg-200 text-text-100">
+        <AuthContext>
+          {/* Theme provider for next-themes */}
+          <Providers>{children}</Providers>
+        </AuthContext>
       </body>
     </html>
   );

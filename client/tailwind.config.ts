@@ -8,27 +8,27 @@ const config: Config = {
   theme: {
     colors: {
       primary: {
-        100: "#D4EAF7",
-        200: "#B6CCD8",
-        300: "#3B3C3D",
+        100: "rgb(var(--primary-100) / <alpha-value>)",
+        200: "rgb(var(--primary-200) / <alpha-value>)",
+        300: "rgb(var(--primary-300) / <alpha-value>)",
       },
       accent: {
-        100: "#71C4EF",
-        200: "#00668C",
+        100: "rgb(var(--accent-100) / <alpha-value>)",
+        200: "rgb(var(--accent-200) / <alpha-value>)",
       },
       text: {
-        100: "#1D1C1C",
-        200: "#313D44",
+        100: "rgb(var(--text-100) / <alpha-value>)",
+        200: "rgb(var(--text-200) / <alpha-value>)",
       },
       bg: {
-        100: "#FFFEFB",
-        200: "#F5F4F1",
-        300: "#CCCBC8",
+        100: "rgb(var(--bg-100) / <alpha-value>)",
+        200: "rgb(var(--bg-200) / <alpha-value>)",
+        300: "rgb(var(--bg-300) / <alpha-value>)",
       },
-      error: "#FF6348",
-      warning: "#FFC107",
-      success: "#4CAF50",
-      info: "#3498DB",
+      error: "rgb(var(--error) / <alpha-value>)",
+      warning: "rgb(var(--warning) / <alpha-value>)",
+      success: "rgb(var(--success) / <alpha-value>)",
+      info: "rgb(var(--info) / <alpha-value>)",
     },
     container: {
       center: true,
@@ -41,6 +41,7 @@ const config: Config = {
       },
     },
   },
+  darkMode: "class",
   plugins: [require("@tailwindcss/forms")],
 };
 export default config;
