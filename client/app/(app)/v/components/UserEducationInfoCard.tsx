@@ -31,7 +31,7 @@ export default function UserEducationInfoCard({
           >
             <div>
               <span className="block text-xl">{item.field}</span>
-              <div className="">
+              <div>
                 <span className="text-lg">{item.institute}</span>
                 <span className="px-3 text-text-200">
                   {`${format(item.startDate, "MMMM yyyy")}`}

@@ -15,6 +15,7 @@ export default function TextInput({
     autoComplete?: string;
     as?: "select" | "checkbox" | "textarea";
     maxLength?: number;
+    placeholder?: string;
   };
 }) {
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -32,9 +33,10 @@ export default function TextInput({
           meta.error && meta.touched
             ? "border-error focus:border-error focus:ring-error"
             : "focus:border-accent-200 focus:ring-accent-200",
-          "-mb-2 w-full",
+          "-mb-2 w-full bg-bg-100",
           classes,
         )}
+        placeholder={props.placeholder}
       />
 
       <div className="min-h-[1.25rem] text-sm text-error">
