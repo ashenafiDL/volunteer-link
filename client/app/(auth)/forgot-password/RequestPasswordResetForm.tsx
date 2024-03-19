@@ -1,11 +1,8 @@
 import { emailValidation } from "@/app/lib/forms/verificationSchemas";
 import { TextInput } from "@/components/formElements";
-import Button from "@/components/global/Button";
-import Snackbar from "@/components/global/Snackbar";
 import axios from "axios";
 import { Form, Formik } from "formik";
 import Link from "next/link";
-import { useState } from "react";
 import * as Yup from "yup";
 
 export default function RequestPasswordResetForm({
@@ -15,23 +12,8 @@ export default function RequestPasswordResetForm({
   setEmailSent: (success: boolean) => void;
   setEmail: (email: string) => void;
 }) {
-  const [snackbar, setSnackBar] = useState<{
-    message: string;
-    type: "error" | "warning" | "success" | "info";
-    duration: number;
-  } | null>(null);
-
   return (
     <>
-      {snackbar && (
-        <Snackbar
-          message={snackbar.message}
-          type={snackbar.type}
-          duration={snackbar.duration}
-          setSnackbar={setSnackBar}
-        />
-      )}
-
       <div className="space-y-2">
         <h3 className="text-3xl font-medium leading-9">
           Forgot your password?
@@ -57,13 +39,7 @@ export default function RequestPasswordResetForm({
             );
 
             setEmailSent(true);
-          } catch (error: any) {
-            setSnackBar({
-              message: error.response.data.message,
-              type: "error",
-              duration: 5000,
-            });
-          }
+          } catch (error: any) {}
         }}
       >
         {({ isSubmitting }) => (
@@ -77,13 +53,7 @@ export default function RequestPasswordResetForm({
               }}
             />
 
-            <Button
-              variant="filled"
-              size="base"
-              text="Send"
-              type="submit"
-              disabled={isSubmitting}
-            />
+            <button className="btn">Send</button>
           </Form>
         )}
       </Formik>

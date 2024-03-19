@@ -1,18 +1,15 @@
 import HeroImage from "@/public/img/hero-image.svg";
 import Image from "next/image";
 import Link from "next/link";
-import Button from "../global/Button";
 
 export default function Hero() {
   return (
-    <section className=" bg-primary-100">
-      <div className="container flex h-[80vh] max-h-[700px] flex-row items-center justify-between  pb-32">
-        <div className="flex w-full flex-col gap-8 xl:w-1/2">
-          <h1 className="text-3xl font-bold text-text-100 md:text-6xl">
-            Join Our Community of Volunteers
-          </h1>
+    <section>
+      <div className="container flex h-[80vh] max-h-[700px] flex-row items-center justify-between pb-32">
+        <div className="prose flex w-full flex-col lg:prose-lg xl:w-1/2">
+          <h1>Join Our Community of Volunteers</h1>
 
-          <p className="text-xl text-text-200">
+          <p className="text-text-200 text-xl">
             Join us in making a difference in our communities. Find
             opportunities to volunteer with non-profit organizations that match
             your interests.
@@ -20,14 +17,10 @@ export default function Hero() {
 
           <div className="flex flex-row gap-6">
             <Link href="/projects">
-              <Button
-                variant={"outlined"}
-                size={"base"}
-                text={"Browse Projects"}
-              />
+              <button className="btn btn-outline">Browse Projects</button>
             </Link>
             <Link href="/sign-up">
-              <Button variant={"filled"} size={"base"} text={"Sign Up"} />
+              <button className="btn">Sign Up</button>
             </Link>
           </div>
         </div>

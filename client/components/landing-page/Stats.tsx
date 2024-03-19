@@ -28,15 +28,13 @@ export default async function Stats() {
       {stats.map((item) => (
         <div
           key={item.key}
-          className="flex flex-shrink flex-col items-center gap-8 rounded-lg bg-bg-100 px-8 py-8 shadow-md duration-200 hover:scale-105 hover:shadow-2xl xl:max-w-[280px]"
+          className="card rounded-md px-8 py-10 shadow-md duration-200 hover:scale-105 hover:shadow-2xl xl:max-w-[280px]"
         >
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-5xl font-semibold">{item.value}</span>
-            <span className="text-text-200">{item.key}</span>
+          <div className="prose text-center lg:prose-lg">
+            <h1>{item.value}</h1>
+            <p className="font-semibold">{item.key}</p>
           </div>
-          <p className="text-center text-sm font-light text-text-200">
-            {item.description}
-          </p>
+          <p className="text-center text-sm font-light">{item.description}</p>
         </div>
       ))}
     </div>

@@ -1,8 +1,6 @@
-import Button from "@/components/global/Button";
-import Snackbar from "@/components/global/Snackbar";
 import axios from "axios";
 import Link from "next/link";
-import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useRef } from "react";
 
 export default function VerifyResetCodeForm({
   email,
@@ -12,12 +10,6 @@ export default function VerifyResetCodeForm({
   setIsValidCode: (isValidCode: boolean) => void;
 }) {
   const inputs = useRef<HTMLInputElement[]>([]);
-
-  const [snackbar, setSnackBar] = useState<{
-    message: string;
-    type: "error" | "warning" | "success" | "info";
-    duration: number;
-  } | null>(null);
 
   useEffect(() => {
     inputs.current[0].focus(); // Focus on the first input initially
@@ -68,26 +60,11 @@ export default function VerifyResetCodeForm({
         const expiresIn = new Date(Date.now() + 48 * 60 * 60 * 1000); // Expires in 2 day
         document.cookie = `token=${res.data.token}; expires=${expiresIn.toUTCString()}; Secure; path=/`;
       }
-    } catch (error: any) {
-      setSnackBar({
-        message: error.response.data.message,
-        type: "error",
-        duration: 5000,
-      });
-    }
+    } catch (error: any) {}
   };
 
   return (
     <>
-      {snackbar && (
-        <Snackbar
-          message={snackbar.message}
-          type={snackbar.type}
-          duration={snackbar.duration}
-          setSnackbar={setSnackBar}
-        />
-      )}
-
       <div className="space-y-2">
         <h3 className="text-3xl font-medium leading-9">Check your inbox.</h3>
         <p className="font-normal leading-tight">
@@ -116,13 +93,7 @@ export default function VerifyResetCodeForm({
           ))}
         </div>
 
-        <Button
-          variant="filled"
-          size="base"
-          text="Verify"
-          type="submit"
-          // disabled={isSubmitting}
-        />
+        <button className="btn">Verify</button>
       </form>
 
       <Link className="self-center" href="/sign-in">

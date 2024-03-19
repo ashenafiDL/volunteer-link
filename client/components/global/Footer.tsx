@@ -12,7 +12,7 @@ import {
 
 export default function Footer() {
   return (
-    <div className="bg-info text-sm text-bg-100">
+    <div>
       <div className="container flex flex-row items-start justify-between py-16">
         <div className="w-full space-y-20 lg:w-1/3">
           <div className="space-y-8">
@@ -21,14 +21,14 @@ export default function Footer() {
               <span className="text-3xl font-semibold">VolunteerLink</span>
             </div>
 
-            <p className="text-base">
+            <p>
               Ut est velit velit. Magnam quisquam dolor labore. Ipsum eius
               aliquam dolor quiquia quaerat. Eius aliquam modi est. Etincidunt
               tempora numquam quiquia. Magnam sed quiquia modi ut dolor.
             </p>
           </div>
 
-          <div className="flex flex-row gap-16 [&>span>svg>path]:fill-bg-100">
+          <div className="flex flex-row gap-16">
             <BiLogoYoutube size={32} />
 
             <BiLogoLinkedinSquare size={32} />
@@ -78,7 +78,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-bg-300/60 py-1 opacity-75">
+      <div className="border-t py-1">
         <div className="container flex flex-col justify-between md:flex-row">
           <span>@VolunteerLink. All rights reserved.</span>
           <div className="space-x-8">

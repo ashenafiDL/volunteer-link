@@ -1,7 +1,6 @@
 "use client";
 
 import { AuthContext } from "@/app/lib/contexts/AppContext";
-import Card from "@/components/global/Card";
 import { useContext } from "react";
 import DetailsHeader from "../../components/DetailsHeader";
 import UserEducationInfoCard from "../../components/UserEducationInfoCard";
@@ -13,11 +12,11 @@ export default function UserSkills() {
     <div>
       <DetailsHeader href="/v/me" text="Education" />
 
-      <Card>
+      <div className="card">
         {user.education && user.education.length > 0 && (
           <UserEducationInfoCard educationInfo={user.education} />
         )}
-      </Card>
+      </div>
     </div>
   );
 }

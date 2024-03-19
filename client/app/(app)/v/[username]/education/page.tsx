@@ -1,7 +1,6 @@
 "use client";
 
 import { fetchUser } from "@/app/lib/users";
-import Card from "@/components/global/Card";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import DetailsHeader from "../../components/DetailsHeader";
@@ -28,11 +27,11 @@ export default function UserSkills() {
     <div>
       <DetailsHeader href={`/v/${user && user.username}`} text="Education" />
 
-      <Card>
+      <div className="card">
         {user && user.education && user.education.length > 0 && (
           <UserEducationInfoCard educationInfo={user.education} />
         )}
-      </Card>
+      </div>
     </div>
   );
 }

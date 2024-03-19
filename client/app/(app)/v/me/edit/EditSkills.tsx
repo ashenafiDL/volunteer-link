@@ -2,8 +2,6 @@
 
 import { AuthContext } from "@/app/lib/contexts/AppContext";
 import { TextInput } from "@/components/formElements";
-import Card from "@/components/global/Card";
-import Chip from "@/components/global/Chip";
 import clsx from "clsx";
 import { Form, Formik } from "formik";
 import { useContext } from "react";
@@ -17,7 +15,7 @@ export default function EditSkills() {
     <div className="space-y-1">
       <p>Skills</p>
 
-      <Card classes="space-y-3">
+      <div className="card space-y-3">
         {user &&
           user.skills &&
           user.skills.length > 0 &&
@@ -45,9 +43,9 @@ export default function EditSkills() {
                 >
                   <div>
                     <span className="personal-info-value">{skill.name}</span>
-                    <Chip>{skill.category.name}</Chip>
+                    <div className="badge">{skill.category.name}</div>
                   </div>
-                  <p className="line-clamp-1 font-light text-text-200">
+                  <p className="text-text-200 line-clamp-1 font-light">
                     {skill.description}
                   </p>
                 </div>
@@ -82,7 +80,7 @@ export default function EditSkills() {
             )}
           </Formik>
         </div>
-      </Card>
+      </div>
     </div>
   );
 }

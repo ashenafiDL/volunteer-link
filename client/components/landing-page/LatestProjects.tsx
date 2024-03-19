@@ -24,7 +24,7 @@ const SAMPLE_DATA = [
     title: "Community Cleanup",
     location: "City Park",
     organizationName: "Green Earth Society",
-    logo: "/icons/logo.svg",
+    logo: null,
     description:
       "Join us in cleaning up the park and promoting environmental awareness. Join us in cleaning up the park and promoting environmental awareness. Join us in cleaning up the park and promoting environmental awareness.",
     startDate: "2023-02-15",
@@ -36,7 +36,7 @@ const SAMPLE_DATA = [
     title: "Food Drive",
     location: "Local Food Bank",
     organizationName: "Helping Hands Foundation",
-    logo: "/icons/logo.svg",
+    logo: null,
     description:
       "Collecting non-perishable food items for families in need. Join us in cleaning up the park and promoting environmental awareness. Join us in cleaning up the park and promoting environmental awareness.",
     startDate: "2023-03-10",
@@ -48,7 +48,7 @@ const SAMPLE_DATA = [
     title: "Educational Workshop",
     location: "Community Center",
     organizationName: "Knowledge Empowerment Initiative",
-    logo: "/icons/logo.svg",
+    logo: null,
     description:
       "Empowering youth through educational workshops and skill-building sessions. Join us in cleaning up the park and promoting environmental awareness. Join us in cleaning up the park and promoting environmental awareness.",
     startDate: "2023-04-05",
@@ -60,7 +60,7 @@ const SAMPLE_DATA = [
     title: "Senior Center Visit",
     location: "Sunset Care Home",
     organizationName: "Joyful Hearts Association",
-    logo: "/icons/logo.svg",
+    logo: null,
     description: "Spending quality time with seniors at the care home.",
     startDate: "2023-05-20",
     endDate: "2023-05-20",
@@ -71,7 +71,7 @@ const SAMPLE_DATA = [
     title: "Animal Shelter Support",
     location: "City Animal Shelter",
     organizationName: "Paws for Love",
-    logo: "/icons/logo.svg",
+    logo: null,
     description: "Assisting with animal care and shelter maintenance.",
     startDate: "2023-06-08",
     endDate: "2023-06-08",
@@ -82,7 +82,7 @@ const SAMPLE_DATA = [
     title: "Habitat Restoration",
     location: "Nature Reserve",
     organizationName: "Wilderness Guardians",
-    logo: "/icons/logo.svg",
+    logo: null,
     description:
       "Rehabilitating natural habitats and protecting local ecosystems.",
     startDate: "2023-07-15",
@@ -94,7 +94,7 @@ const SAMPLE_DATA = [
     title: "Blood Drive",
     location: "Community Hospital",
     organizationName: "Lifeblood Association",
-    logo: "/icons/logo.svg",
+    logo: null,
     description: "Donating blood to save lives.",
     startDate: "2023-08-30",
     endDate: "2023-09-01",
@@ -105,7 +105,7 @@ const SAMPLE_DATA = [
     title: "Homeless Shelter Assistance",
     location: "City Homeless Shelter",
     organizationName: "Hopeful Hearts Foundation",
-    logo: "/icons/logo.svg",
+    logo: null,
     description: "Providing support and resources to homeless individuals.",
     startDate: "2023-10-10",
     endDate: "2023-10-12",
@@ -116,7 +116,7 @@ const SAMPLE_DATA = [
     title: "Environmental Seminar",
     location: "University Auditorium",
     organizationName: "Green Future Initiative",
-    logo: "/icons/logo.svg",
+    logo: null,
     description:
       "Raising awareness about environmental conservation and sustainability.",
     startDate: "2023-11-18",
@@ -128,7 +128,7 @@ const SAMPLE_DATA = [
     title: "Youth Sports Coaching",
     location: "City Sports Complex",
     organizationName: "Sports for All Foundation",
-    logo: "/icons/logo.svg",
+    logo: null,
     description: "Coaching and mentoring youth in various sports activities.",
     startDate: "2023-12-05",
     endDate: "2023-12-07",
@@ -173,22 +173,36 @@ export default function LatestProjects() {
           return (
             <SwiperSlide
               key={project.id}
-              className="mb-20 space-y-6 rounded-md bg-primary-100 p-8 shadow-md"
+              className="mb-20 space-y-6 rounded-md p-8 shadow-md"
             >
               <div className="flex flex-row gap-6">
-                <Image
-                  className="overflow-hidden"
-                  src={project.logo}
-                  width={56}
-                  height={56}
-                  alt={`Logo of ${project.organizationName}`}
-                />
+                {project.logo ? (
+                  <div className="avatar">
+                    <div className="w-24 rounded-full">
+                      <Image
+                        className="overflow-hidden"
+                        src={project.logo}
+                        width={56}
+                        height={56}
+                        alt={`Logo of ${project.organizationName}`}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="avatar placeholder">
+                    <div className="w-16 rounded-full bg-neutral text-neutral-content">
+                      <span className="text-3xl">
+                        {project.organizationName.charAt(0)}
+                      </span>
+                    </div>
+                  </div>
+                )}
 
                 <div>
-                  <p className="line-clamp-1 text-2xl font-medium text-text-100">
+                  <p className="line-clamp-1 text-2xl font-medium">
                     {project.title}
                   </p>
-                  <div className="line-clamp-1 text-sm text-text-200">
+                  <div className="line-clamp-1 text-sm">
                     <span>{project.location}</span>
                     <span className="mx-2 border-r"></span>
                     <span>{project.organizationName}</span>
@@ -196,11 +210,9 @@ export default function LatestProjects() {
                 </div>
               </div>
 
-              <div className="line-clamp-4 text-text-200">
-                {project.description}
-              </div>
+              <p className="line-clamp-4">{project.description}</p>
 
-              <div className="flex justify-between text-sm text-text-200">
+              <div className="flex justify-between text-sm">
                 <div>{`${project.startDate} to ${project.endDate}`}</div>
                 <div>{project.numberOfVolunteers} volunteers</div>
               </div>

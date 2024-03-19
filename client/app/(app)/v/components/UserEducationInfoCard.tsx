@@ -8,7 +8,7 @@ export default function UserEducationInfoCard({
   educationInfo: any;
 }) {
   return (
-    <div className="divide-y divide-bg-300/50">
+    <div className="divide-y">
       {educationInfo.map(
         (
           item: {
@@ -33,7 +33,7 @@ export default function UserEducationInfoCard({
               <span className="block text-xl">{item.field}</span>
               <div>
                 <span className="text-lg">{item.institute}</span>
-                <span className="px-3 text-text-200">
+                <span className="px-3">
                   {`${format(item.startDate, "MMMM yyyy")}`}
                   {" - "}
                   {item.endDate
@@ -42,7 +42,7 @@ export default function UserEducationInfoCard({
                 </span>
               </div>
             </div>
-            <p className="font-light text-text-200">{item.description}</p>
+            <p className="font-light">{item.description}</p>
           </div>
         ),
       )}

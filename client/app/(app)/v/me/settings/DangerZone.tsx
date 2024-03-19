@@ -2,9 +2,6 @@
 
 import axiosInstance from "@/app/axiosInstance";
 import { AuthContext } from "@/app/lib/contexts/AppContext";
-import Button from "@/components/global/Button";
-import Card from "@/components/global/Card";
-import Modal from "@/components/global/Modal";
 import { useContext, useState } from "react";
 import SettingItemText from "../../components/SettingItemText";
 
@@ -33,25 +30,19 @@ export default function DangerZone() {
   return (
     <div className="space-y-1">
       <p className="text-error">Danger Zone</p>
-      <Card classes="setting-item border border-error">
+      <div className="setting-item border border-error">
         <SettingItemText
           title="Delete Account"
           subtitle="Deletes your account and all data connected to it"
         />
 
         <div onClick={() => setShowModal(true)}>
-          <Button
-            variant="filled"
-            color="error"
-            size="base"
-            text="Delete Account"
-            classes="bg-error"
-          />
+          <button className="btn btn-error">Delete Account</button>
         </div>
-      </Card>
+      </div>
 
       {/* Delete account modal */}
-      <Modal showModal={showModal} setShowModal={setShowModal}>
+      {/* <div showModal={showModal} setShowModal={setShowModal}>
         <h1 className="text-2xl font-bold">Delete Account</h1>
         <p className="text-text-200">
           Are you sure you want to delete your account. This action is not
@@ -60,13 +51,13 @@ export default function DangerZone() {
 
         <div className="mt-5 flex flex-row justify-end gap-4">
           <div onClick={() => setShowModal(false)}>
-            <Button variant="text" size="base" text="Cancel" />
+            <button className="btn btn-outline">Cancel</button>
           </div>
           <div onClick={handleDelete}>
-            <Button variant="filled" color="error" size="base" text="Delete" />
+            <button className="btn btn-error">Delete</button>
           </div>
         </div>
-      </Modal>
+      </div> */}
     </div>
   );
 }

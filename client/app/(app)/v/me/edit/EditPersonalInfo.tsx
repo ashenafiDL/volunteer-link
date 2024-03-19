@@ -9,7 +9,6 @@ import {
   usernameValidation,
 } from "@/app/lib/forms/verificationSchemas";
 import { TextInput } from "@/components/formElements";
-import Card from "@/components/global/Card";
 import { Form, Formik } from "formik";
 import { useContext } from "react";
 import * as Yup from "yup";
@@ -21,7 +20,7 @@ export default function EditPersonalInfo() {
     <div className="space-y-1">
       <p>Personal Info</p>
 
-      <Card classes="space-y-6">
+      <div className="card space-y-6">
         {user && (
           <Formik
             initialValues={{
@@ -134,7 +133,7 @@ export default function EditPersonalInfo() {
             )}
           </Formik>
         )}
-      </Card>
+      </div>
     </div>
   );
 }

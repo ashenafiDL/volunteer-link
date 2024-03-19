@@ -1,4 +1,3 @@
-import Card from "@/components/global/Card";
 import UserAvatar from "@/components/global/UserAvatar";
 import { format } from "date-fns";
 import Link from "next/link";
@@ -20,7 +19,7 @@ export default function UserProfile({
   ownProfile: boolean;
 }) {
   return (
-    <Card classes="flex items-center gap-6 rounded-b-none bg-primary-100">
+    <div className="card flex items-center gap-6 rounded-b-none">
       <UserAvatar email={email} name={firstName} size="lg" />
 
       <div className="flex flex-grow flex-col">
@@ -30,7 +29,7 @@ export default function UserProfile({
           {/* <BiBadge size={24} /> */}
         </div>
         <span className="text-lg">{`@${username}`}</span>
-        <span className="font-light text-text-200">{`Joined on ${createdAt && format(createdAt, "MMMM yyyy")}`}</span>
+        <span className="font-light">{`Joined on ${createdAt && format(createdAt, "MMMM yyyy")}`}</span>
       </div>
 
       {/* Show the edit icon if the user is viewing his/her own profile */}
@@ -39,6 +38,6 @@ export default function UserProfile({
           <BiSolidPencil size={28} />
         </Link>
       )}
-    </Card>
+    </div>
   );
 }

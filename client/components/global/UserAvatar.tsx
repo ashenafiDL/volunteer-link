@@ -49,44 +49,69 @@ export default function UserAvatar({
   const getSize = () => sizeMap[size];
 
   const renderFallback = () => (
-    <div
-      className={clsx(
-        "flex items-center justify-center rounded-full bg-bg-300",
-        size === "xs" && "size-6",
-        size === "sm" && "size-8",
-        size === "base" && "size-10",
-        size === "lg" && "size-20",
-        size === "xl" && "size-32",
-      )}
-    >
-      <span className="text-xl font-medium text-primary-300">
-        {name?.charAt(0)?.toUpperCase()}
-      </span>
+    <div className="avatar placeholder">
+      <div className="w-16 rounded-full bg-neutral text-neutral-content">
+        <span className="text-xl">AI</span>
+      </div>
     </div>
+    // <div
+    //   className={clsx(
+    //     "flex items-center justify-center rounded-full bg-bg-300",
+    //     size === "xs" && "size-6",
+    //     size === "sm" && "size-8",
+    //     size === "base" && "size-10",
+    //     size === "lg" && "size-20",
+    //     size === "xl" && "size-32",
+    //   )}
+    // >
+    //   <span className="text-xl font-medium text-primary-300">
+    //     {name?.charAt(0)?.toUpperCase()}
+    //   </span>
+    // </div>
   );
 
   return (
     <>
       {avatar ? (
-        <div
-          className={clsx(
-            "flex items-center justify-center rounded-full bg-bg-300",
-            size === "xs" && "size-6",
-            size === "sm" && "size-8",
-            size === "base" && "size-10",
-            size === "lg" && "size-20",
-            size === "xl" && "size-32",
-          )}
-        >
-          <Image
-            src={avatar}
-            width={getSize()}
-            height={getSize()}
-            alt={name}
-            className="h-full w-full rounded-full"
-          />
+        <div className="avatar">
+          <div
+            className={clsx(
+              "rounded-full",
+              size === "xs" && "size-6",
+              size === "sm" && "size-8",
+              size === "base" && "size-10",
+              size === "lg" && "size-20",
+              size === "xl" && "size-32",
+            )}
+          >
+            <Image
+              src={avatar}
+              width={getSize()}
+              height={getSize()}
+              alt={name}
+              className="h-full w-full rounded-full"
+            />
+          </div>
         </div>
       ) : (
+        // <div
+        //   className={clsx(
+        //     "flex items-center justify-center rounded-full bg-bg-300",
+        //     size === "xs" && "size-6",
+        //     size === "sm" && "size-8",
+        //     size === "base" && "size-10",
+        //     size === "lg" && "size-20",
+        //     size === "xl" && "size-32",
+        //   )}
+        // >
+        //   <Image
+        //     src={avatar}
+        //     width={getSize()}
+        //     height={getSize()}
+        //     alt={name}
+        //     className="h-full w-full rounded-full"
+        //   />
+        // </div>
         renderFallback()
       )}
     </>

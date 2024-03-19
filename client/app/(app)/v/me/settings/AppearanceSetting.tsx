@@ -1,6 +1,6 @@
 "use client";
 
-import Card from "@/components/global/Card";
+import "tailwindcss/tailwind.css";
 import Toggle from "@/components/global/Toggle";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
@@ -27,18 +27,20 @@ export default function AppearanceSetting() {
   return (
     <div className="space-y-1">
       <p>Appearance</p>
-      <Card classes="setting-item">
+      <div className="setting-item card">
         <SettingItemText
           title="Theme"
           subtitle="Customize the appearance of the website"
         />
+
+        <span>{theme}</span>
 
         <Toggle
           options={themeOptions}
           selected={theme === "light" ? 0 : theme === "dark" ? 2 : 1}
           onChange={handleChange}
         />
-      </Card>
+      </div>
     </div>
   );
 }

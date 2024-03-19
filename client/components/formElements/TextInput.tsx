@@ -33,7 +33,7 @@ export default function TextInput({
           meta.error && meta.touched
             ? "border-error focus:border-error focus:ring-error"
             : "focus:border-accent-200 focus:ring-accent-200",
-          "-mb-2 w-full bg-bg-100",
+          "bg-bg-100 -mb-2 w-full",
           classes,
         )}
         placeholder={props.placeholder}

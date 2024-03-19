@@ -2,8 +2,6 @@
 
 import { AuthContext } from "@/app/lib/contexts/AppContext";
 import SocialLinksInput from "@/components/formElements/SocialLinksInput";
-import Button from "@/components/global/Button";
-import Card from "@/components/global/Card";
 import { useContext } from "react";
 import { BiX } from "react-icons/bi";
 
@@ -14,7 +12,7 @@ export default function EditSocialLinks() {
     <div className="space-y-1">
       <p>Edit Social Links</p>
 
-      <Card classes="space-y-6">
+      <div className="card space-y-6">
         {user &&
           user?.socialLinks?.map(
             ({
@@ -37,9 +35,9 @@ export default function EditSocialLinks() {
           )}
 
         {user && user?.socialLinks?.length < 6 && (
-          <Button variant="text" size="base" text="Add social link" />
+          <button className="btn">Add social links</button>
         )}
-      </Card>
+      </div>
     </div>
   );
 }

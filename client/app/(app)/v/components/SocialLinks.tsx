@@ -1,4 +1,3 @@
-import Card from "@/components/global/Card";
 import Link from "next/link";
 import {
   FaBehance,
@@ -34,8 +33,8 @@ export default function SocialLinks({
   };
 
   return (
-    <Card classes="rounded-t-none">
-      <p className="mb-4 text-text-200">Social Links</p>
+    <div className="card rounded-t-none">
+      <p className="mb-4">Social Links</p>
 
       <ul className="space-y-3 pl-4">
         {socialLinks.map((link: { platform: string; url: string }) => {
@@ -53,6 +52,6 @@ export default function SocialLinks({
           );
         })}
       </ul>
-    </Card>
+    </div>
   );
 }

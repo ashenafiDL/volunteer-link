@@ -1,4 +1,3 @@
-import LoadingSkeleton from "@/Skeleton/LoadingSkeleton";
 import { fetchLocations } from "@/app/lib/locations";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -24,9 +23,7 @@ export default async function SignUp() {
         </p>
       </div>
 
-      <Suspense fallback={<LoadingSkeleton />}>
-        <SignUpForm locations={locations} />
-      </Suspense>
+      <SignUpForm locations={locations} />
 
       <Link className="self-center" href="/sign-in">
         <span>Already have an account? </span>

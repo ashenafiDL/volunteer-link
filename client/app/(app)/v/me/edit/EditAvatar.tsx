@@ -1,8 +1,6 @@
 "use client";
 
 import { AuthContext } from "@/app/lib/contexts/AppContext";
-import Button from "@/components/global/Button";
-import Card from "@/components/global/Card";
 import UserAvatar from "@/components/global/UserAvatar";
 import { useContext } from "react";
 import "../../components/styles.css";
@@ -13,7 +11,7 @@ export default function EditAvatar() {
   return (
     <div className="space-y-1">
       <p>Profile Picture</p>
-      <Card classes="space-y-6">
+      <div className="card space-y-6">
         <UserAvatar
           email={user && user.email}
           name={user && user.firstName}
@@ -21,18 +19,13 @@ export default function EditAvatar() {
         />
 
         <div className="flex gap-6">
-          <Button variant="filled" size="base" text="Update profile picture" />
+          <button className="btn">Update profile picture</button>
 
           <div>
-            <Button
-              variant="text"
-              size="base"
-              text="Remove profile picture"
-              color="error"
-            />
+            <button className="btn btn-error">Remove profile picture</button>
           </div>
         </div>
-      </Card>
+      </div>
     </div>
   );
 }

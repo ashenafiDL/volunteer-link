@@ -5,12 +5,10 @@ import {
   repeatPasswordValidation,
 } from "@/app/lib/forms/verificationSchemas";
 import { TextInput } from "@/components/formElements";
-import Button from "@/components/global/Button";
-import Snackbar from "@/components/global/Snackbar";
 import { Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import * as Yup from "yup";
 
 export default function ResetPasswordForm({
@@ -25,23 +23,8 @@ export default function ResetPasswordForm({
   const router = useRouter();
   const { setIsLoggedIn, setToken, setUser } = useContext(AuthContext);
 
-  const [snackbar, setSnackBar] = useState<{
-    message: string;
-    type: "error" | "warning" | "success" | "info";
-    duration: number;
-  } | null>(null);
-
   return (
     <>
-      {snackbar && (
-        <Snackbar
-          message={snackbar.message}
-          type={snackbar.type}
-          duration={snackbar.duration}
-          setSnackbar={setSnackBar}
-        />
-      )}
-
       <div className="space-y-2">
         <h3 className="text-3xl font-medium leading-9">
           Enter your new password
@@ -75,13 +58,7 @@ export default function ResetPasswordForm({
             setEmail("");
 
             router.replace("/");
-          } catch (error: any) {
-            setSnackBar({
-              message: error.response.data.message,
-              type: "error",
-              duration: 5000,
-            });
-          }
+          } catch (error: any) {}
         }}
       >
         {({ isSubmitting }) => (
@@ -104,13 +81,7 @@ export default function ResetPasswordForm({
               }}
             />
 
-            <Button
-              variant="filled"
-              size="base"
-              text="Update"
-              type="submit"
-              disabled={isSubmitting}
-            />
+            <button className="btn">Update</button>
           </Form>
         )}
       </Formik>

@@ -1,4 +1,3 @@
-import Card from "@/components/global/Card";
 import "./styles.css";
 
 export default function PersonalInfoCard({
@@ -17,7 +16,7 @@ export default function PersonalInfoCard({
   email: string;
 }) {
   return (
-    <Card classes="card">
+    <div className="card">
       <h5 className="card-title">Personal Information</h5>
 
       <div className="3xl:grid-cols-3 grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -46,6 +45,6 @@ export default function PersonalInfoCard({
           <p className="personal-info-value">{`${email}`}</p>
         </div>
       </div>
-    </Card>
+    </div>
   );
 }

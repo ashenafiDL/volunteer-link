@@ -1,9 +1,8 @@
-import Chip from "@/components/global/Chip";
 import clsx from "clsx";
 
 export default function UserSkillsCard({ skills }: { skills: any }) {
   return (
-    <div className="divide-y divide-bg-300/50">
+    <div className="divide-y">
       {skills.map(
         (
           skill: { name: string; description: string; category: any },
@@ -19,9 +18,9 @@ export default function UserSkillsCard({ skills }: { skills: any }) {
           >
             <div>
               <span className="personal-info-value">{skill.name}</span>
-              <Chip>{skill.category.name}</Chip>
+              <div className="badge">{skill.category.name}</div>
             </div>
-            <p className="font-light text-text-200">{skill.description}</p>
+            <p className="font-light">{skill.description}</p>
           </div>
         ),
       )}

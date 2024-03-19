@@ -72,7 +72,7 @@ export default function Header() {
   }, []);
 
   return (
-    <div className="sticky top-0 z-10 bg-primary-100 py-2 text-text-100">
+    <div className="bg-primary-100 text-text-100 sticky top-0 z-10 py-2">
       <div className="container flex w-full items-center justify-between">
         {/* Logo section of the header */}
         <Link href="/home" className="flex items-center gap-2">
@@ -106,14 +106,14 @@ export default function Header() {
               ref={popupRef}
               className={clsx(
                 dropdownHidden ? "hidden" : "block",
-                "absolute right-0 mt-3 w-52 overflow-clip rounded-md bg-bg-100 shadow-md lg:left-1/2 lg:-translate-x-1/2",
+                "bg-bg-100 absolute right-0 mt-3 w-52 overflow-clip rounded-md shadow-md lg:left-1/2 lg:-translate-x-1/2",
               )}
             >
               {menuItems.map((item) => (
                 <Link
                   key={item.label}
                   onClick={handleMenuItemClick}
-                  className="flex items-center gap-4 px-4 py-2 text-lg transition-colors duration-300 hover:bg-bg-200"
+                  className="hover:bg-bg-200 flex items-center gap-4 px-4 py-2 text-lg transition-colors duration-300"
                   href={item.href}
                 >
                   {item.icon}
@@ -125,7 +125,7 @@ export default function Header() {
 
               <div
                 onClick={handleLogout}
-                className="flex cursor-pointer items-center gap-4 px-4 py-2 text-lg transition-colors duration-300 hover:bg-bg-200"
+                className="hover:bg-bg-200 flex cursor-pointer items-center gap-4 px-4 py-2 text-lg transition-colors duration-300"
               >
                 <BiLogOut size={24} />
                 <span>Logout</span>

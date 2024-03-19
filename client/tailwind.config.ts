@@ -6,42 +6,55 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    colors: {
-      primary: {
-        100: "rgb(var(--primary-100) / <alpha-value>)",
-        200: "rgb(var(--primary-200) / <alpha-value>)",
-        300: "rgb(var(--primary-300) / <alpha-value>)",
-      },
-      accent: {
-        100: "rgb(var(--accent-100) / <alpha-value>)",
-        200: "rgb(var(--accent-200) / <alpha-value>)",
-      },
-      text: {
-        100: "rgb(var(--text-100) / <alpha-value>)",
-        200: "rgb(var(--text-200) / <alpha-value>)",
-      },
-      bg: {
-        100: "rgb(var(--bg-100) / <alpha-value>)",
-        200: "rgb(var(--bg-200) / <alpha-value>)",
-        300: "rgb(var(--bg-300) / <alpha-value>)",
-      },
-      error: "rgb(var(--error) / <alpha-value>)",
-      warning: "rgb(var(--warning) / <alpha-value>)",
-      success: "rgb(var(--success) / <alpha-value>)",
-      info: "rgb(var(--info) / <alpha-value>)",
-    },
     container: {
       center: true,
       padding: {
         DEFAULT: "1rem",
         sm: "2rem",
         lg: "4rem",
-        // xl: "5rem",
-        // "2xl": "6rem",
       },
     },
   },
-  darkMode: "class",
-  plugins: [require("@tailwindcss/forms")],
+  plugins: [
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/typography"),
+    require("daisyui"),
+  ],
+
+  daisyui: {
+    themes: [
+      {
+        light: {
+          primary: "#d4eefa",
+          secondary: "#b6ccde",
+          accent: "#71c4ef",
+          neutral: "#3b3c3f",
+          "base-100": "#fff",
+          info: "#3498db",
+          success: "#4caf50",
+          warning: "#ffc107",
+          error: "#fd6c4c",
+        },
+        dark: {
+          primary: "#8abed7",
+          secondary: "#7aa0b5",
+          accent: "#4b97cc" /* Adjusted accent color */,
+          neutral: "#a5a6aa" /* Adjusted neutral color */,
+          "base-100": "#2E2E2E" /* Dark background */,
+          info: "#56a5e4" /* Adjusted information color */,
+          success: "#68af5d" /* Adjusted success color */,
+          warning: "#e3a503" /* Adjusted warning color */,
+          error: "#e37c61" /* Adjusted error color */,
+        },
+      },
+    ],
+    darkTheme: "dark",
+    base: true,
+    styled: true,
+    utils: true,
+    prefix: "",
+    logs: true,
+    themeRoot: ":root",
+  },
 };
 export default config;

@@ -10,10 +10,6 @@
   @apply text-xl;
 }
 
-.card {
-  @apply space-y-3;
-}
-
 .layout-container {
   @apply grid grid-cols-1 gap-3 lg:grid-cols-3;
 }

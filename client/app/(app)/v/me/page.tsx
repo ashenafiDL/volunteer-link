@@ -1,7 +1,6 @@
 "use client";
 
 import { AuthContext } from "@/app/lib/contexts/AppContext";
-import Card from "@/components/global/Card";
 import { useContext, useEffect, useState } from "react";
 import PersonalInfoCard from "../components/PersonalInfoCard";
 import ShowMoreCard from "../components/ShowMoreCard";
@@ -40,12 +39,12 @@ export default function Profile() {
           <div>
             {user.skills && user.skills.length > 0 && (
               <>
-                <Card classes="space-y-3 rounded-b-none">
+                <div className="card space-y-3 rounded-b-none">
                   <h5 className="card-title">Skills</h5>
 
                   {/* Only show three skills */}
                   <UserSkillsCard skills={user.skills.slice(0, 3)} />
-                </Card>
+                </div>
                 {user.skills.length > 3 && (
                   <ShowMoreCard href={"/v/me/skills"} />
                 )}
@@ -57,14 +56,14 @@ export default function Profile() {
           <div>
             {user.education && user.education.length > 0 && (
               <>
-                <Card classes="space-y-3 rounded-b-none">
+                <div className="space-y-3 rounded-b-none">
                   <h5 className="card-title">Education</h5>
 
                   {/* Only show three education info */}
                   <UserEducationInfoCard
                     educationInfo={user.education.slice(0, 3)}
                   />
-                </Card>
+                </div>
                 {user.education.length > 3 && (
                   <ShowMoreCard href={"/v/me/education"} />
                 )}

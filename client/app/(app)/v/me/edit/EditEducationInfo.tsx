@@ -1,8 +1,6 @@
 "use client";
 
 import { AuthContext } from "@/app/lib/contexts/AppContext";
-import Button from "@/components/global/Button";
-import Card from "@/components/global/Card";
 import { format } from "date-fns";
 import { useContext } from "react";
 import { BiSolidPencil, BiSolidTrashAlt } from "react-icons/bi";
@@ -14,7 +12,7 @@ export default function EditEducationInfo() {
     <div className="space-y-1">
       <p>Education Information</p>
 
-      <Card classes="space-y-6">
+      <div className="card space-y-6">
         {user &&
           user?.education?.map((item: any) => (
             <div key={item.id} className="flex flex-row items-center gap-8">
@@ -23,7 +21,7 @@ export default function EditEducationInfo() {
                   <span className="block text-xl">{item.field}</span>
                   <div>
                     <span className="text-lg">{item.institute}</span>
-                    <span className="px-3 text-text-200">
+                    <span className="px-3">
                       {`${format(item.startDate, "MMMM yyyy")}`}
                       {" - "}
                       {item.endDate
@@ -32,9 +30,7 @@ export default function EditEducationInfo() {
                     </span>
                   </div>
                 </div>
-                <p className="line-clamp-1 font-light text-text-200">
-                  {item.description}
-                </p>
+                <p className="line-clamp-1 font-light">{item.description}</p>
               </div>
 
               <div className="flex flex-row gap-2">
@@ -44,8 +40,8 @@ export default function EditEducationInfo() {
             </div>
           ))}
 
-        <Button variant="filled" size="base" text="Add education info" />
-      </Card>
+        <button className="btn">Add education info</button>
+      </div>
     </div>
   );
 }

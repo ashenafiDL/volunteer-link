@@ -14,12 +14,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body className="dark-theme bg-bg-200 text-text-100">
-        <AuthContext>
-          {/* Theme provider for next-themes */}
-          <Providers>{children}</Providers>
-        </AuthContext>
+        <Providers>
+          <AuthContext>
+            {/* Theme provider for next-themes */}
+            {children}
+          </AuthContext>
+        </Providers>
       </body>
     </html>
   );

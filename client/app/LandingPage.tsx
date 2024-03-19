@@ -1,4 +1,3 @@
-import Button from "@/components/global/Button";
 import Footer from "@/components/global/Footer";
 import Header from "@/components/landing-page/Header";
 import Hero from "@/components/landing-page/Hero";
@@ -10,7 +9,7 @@ import Link from "next/link";
 
 export default function LandingPage() {
   return (
-    <div className="max-w-screen overflow-hidden bg-bg-100">
+    <div className="max-w-screen overflow-hidden">
       <Header />
 
       <Hero />
@@ -25,15 +24,13 @@ export default function LandingPage() {
         <WhyVolunteer />
 
         {/* Join us section */}
-        <div className="container flex flex-col items-center justify-center gap-2 text-center">
-          <h1 className="text-2xl font-semibold md:text-3xl lg:text-5xl">
-            Ready to make a difference?
-          </h1>
-          <p className="mb-8 text-sm text-text-200 md:text-base lg:text-2xl">
+        <div className="prose lg:prose-lg container min-w-full text-center">
+          <h1>Ready to make a difference?</h1>
+          <p className="mb-8">
             Get involved today and help us build a better community.
           </p>
           <Link href="/sign-up">
-            <Button variant={"filled"} size={"base"} text={"Join Us"} />
+            <button className="btn">Join Us</button>
           </Link>
         </div>
 
