@@ -72,17 +72,20 @@ export default function Header() {
   }, []);
 
   return (
-    <div className="bg-primary-100 text-text-100 sticky top-0 z-10 py-2">
-      <div className="container flex w-full items-center justify-between">
+    <div className="sticky top-0 z-10 bg-primary py-2">
+      <div className="container flex w-full items-center justify-between bg-primary">
         {/* Logo section of the header */}
-        <Link href="/home" className="flex items-center gap-2">
+        <Link
+          href="/home"
+          className="flex items-center gap-2 text-primary-content"
+        >
           <BiDonateBlood size={28} />
           <span className="text-xl font-medium">VolunteerLink</span>
         </Link>
 
         {/* Notification + search + user avatar */}
         <div className="flex items-center gap-4">
-          <SlBell size={24} />
+          <SlBell className="text-primary-content" size={24} />
 
           {/* User avatar */}
           <div className="relative">
@@ -106,14 +109,14 @@ export default function Header() {
               ref={popupRef}
               className={clsx(
                 dropdownHidden ? "hidden" : "block",
-                "bg-bg-100 absolute right-0 mt-3 w-52 overflow-clip rounded-md shadow-md lg:left-1/2 lg:-translate-x-1/2",
+                "absolute right-0 mt-3 w-52 overflow-clip rounded-md bg-base-100 shadow shadow-md lg:left-1/2 lg:-translate-x-1/2",
               )}
             >
               {menuItems.map((item) => (
                 <Link
                   key={item.label}
                   onClick={handleMenuItemClick}
-                  className="hover:bg-bg-200 flex items-center gap-4 px-4 py-2 text-lg transition-colors duration-300"
+                  className="flex items-center gap-4 px-4 py-2 text-lg transition-colors duration-300 hover:bg-base-200"
                   href={item.href}
                 >
                   {item.icon}
@@ -121,11 +124,11 @@ export default function Header() {
                 </Link>
               ))}
 
-              <hr className="border-bg-300" />
+              <hr className="border-neutral-content" />
 
               <div
                 onClick={handleLogout}
-                className="hover:bg-bg-200 flex cursor-pointer items-center gap-4 px-4 py-2 text-lg transition-colors duration-300"
+                className="flex cursor-pointer items-center gap-4 px-4 py-2 text-lg transition-colors duration-300 hover:bg-base-200"
               >
                 <BiLogOut size={24} />
                 <span>Logout</span>

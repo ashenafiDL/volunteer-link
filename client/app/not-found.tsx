@@ -22,7 +22,7 @@ export default function PageNotFound() {
           />
         </div>
 
-        <div className="prose lg:prose-lg space-y-4 text-center">
+        <div className="prose space-y-4 text-center lg:prose-lg">
           <h1>404 - Page not found</h1>
           <p>Oops! The page you are looking for could not be found.</p>
         </div>
@@ -32,7 +32,7 @@ export default function PageNotFound() {
             <button className="btn btn-outline">Try Again</button>
           </div>
           <Link href="/">
-            <button className="btn">Go to home page</button>
+            <button className="btn btn-primary">Go to home page</button>
           </Link>
         </div>
       </main>

@@ -29,7 +29,7 @@ export default function SelectInput({
           meta.error && meta.touched
             ? "border-error focus:border-error focus:ring-error"
             : "focus:border-accent-200 focus:ring-accent-200",
-          "-mb-2 w-full",
+          "-mb-2 w-full bg-base-100",
         )}
         {...field}
         {...props}

@@ -19,7 +19,7 @@ export default function UserProfile({
   ownProfile: boolean;
 }) {
   return (
-    <div className="card flex items-center gap-6 rounded-b-none">
+    <div className="card-body flex flex-row items-center gap-6 rounded-t bg-primary text-primary-content">
       <UserAvatar email={email} name={firstName} size="lg" />
 
       <div className="flex flex-grow flex-col">

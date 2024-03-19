@@ -6,12 +6,12 @@ import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
 
 export default function WhyVolunteer() {
   return (
-    <div className="py-16">
+    <div className="bg-accent py-16 text-accent-content">
       <div className="container flex flex-row items-center justify-between gap-10">
         <div className="w-full space-y-16 lg:w-1/2">
-          <div className="prose space-y-2 lg:prose-lg">
+          <div className="prose space-y-2 text-accent-content lg:prose-lg">
             <p>Benefits of Volunteering</p>
-            <h1>Why Volunteer?</h1>
+            <h1 className="text-accent-content">Why Volunteer?</h1>
           </div>
           <p>
             Volunteering provides valuable community services, so more money can

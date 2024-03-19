@@ -15,7 +15,7 @@ export default function SignIn() {
 
       <Link className="self-center" href="/sign-up">
         <span>Don’t have an account? </span>
-        <span className="underline">Create one.</span>
+        <span className="text-primary underline">Create one.</span>
       </Link>
     </>
   );

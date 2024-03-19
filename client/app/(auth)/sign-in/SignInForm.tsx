@@ -68,7 +68,11 @@ export default function SignInForm() {
             Forgot password?
           </Link>
 
-          <button disabled={isSubmitting} type="submit" className="btn">
+          <button
+            disabled={isSubmitting}
+            type="submit"
+            className="btn btn-primary"
+          >
             Sign In
           </button>
         </Form>

@@ -12,7 +12,7 @@ import {
 
 export default function Footer() {
   return (
-    <div>
+    <div className="bg-accent text-accent-content">
       <div className="container flex flex-row items-start justify-between py-16">
         <div className="w-full space-y-20 lg:w-1/3">
           <div className="space-y-8">
@@ -78,7 +78,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t py-1">
+      <div className="border-t border-t-accent-content/30 py-1 text-accent-content">
         <div className="container flex flex-col justify-between md:flex-row">
           <span>@VolunteerLink. All rights reserved.</span>
           <div className="space-x-8">

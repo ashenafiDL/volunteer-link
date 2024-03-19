@@ -31,7 +31,7 @@ const Toggle: React.FC<ToggleProps> = ({ options, selected = 0, onChange }) => {
     <div
       className={clsx(
         options.length === 2 ? "w-1/4" : "w-1/3",
-        "relative z-0 flex h-10 items-center rounded border border-bg-300 bg-bg-100",
+        "relative z-0 flex h-10 items-center rounded border border-base-300",
       )}
     >
       {optionElements}
@@ -43,10 +43,10 @@ const Toggle: React.FC<ToggleProps> = ({ options, selected = 0, onChange }) => {
           activeIndex === 0 && options.length === 2 && "left-0",
           activeIndex === 1 && options.length === 2 && "left-1/2",
           activeIndex === 0 && options.length === 2
-            ? "bg-bg-300"
+            ? "bg-base-300"
             : "bg-info/80",
           options.length === 2 ? "w-1/2" : "w-1/3",
-          "absolute flex h-full items-center justify-center rounded text-bg-100 transition-all",
+          "text-bg-100 absolute flex h-full items-center justify-center rounded transition-all",
         )}
       >
         {options[activeIndex]}

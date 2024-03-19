@@ -93,12 +93,12 @@ export default function VerifyResetCodeForm({
           ))}
         </div>
 
-        <button className="btn">Verify</button>
+        <button className="btn btn-primary">Verify</button>
       </form>
 
       <Link className="self-center" href="/sign-in">
         <span>Did you remember you password? </span>
-        <span className="underline">Sign in.</span>
+        <span className="text-primary underline">Sign in.</span>
       </Link>
     </>
   );

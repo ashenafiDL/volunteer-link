@@ -39,11 +39,13 @@ export default function Profile() {
           <div>
             {user.skills && user.skills.length > 0 && (
               <>
-                <div className="card space-y-3 rounded-b-none">
-                  <h5 className="card-title">Skills</h5>
+                <div className="card rounded-md rounded-b-none">
+                  <div className="card-body">
+                    <h5 className="card-title">Skills</h5>
 
-                  {/* Only show three skills */}
-                  <UserSkillsCard skills={user.skills.slice(0, 3)} />
+                    {/* Only show three skills */}
+                    <UserSkillsCard skills={user.skills.slice(0, 3)} />
+                  </div>
                 </div>
                 {user.skills.length > 3 && (
                   <ShowMoreCard href={"/v/me/skills"} />

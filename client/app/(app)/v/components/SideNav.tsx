@@ -42,11 +42,13 @@ export default function SideNav() {
           <Link key={item.title} href={item.href}>
             <div
               className={clsx(
-                index === 0 && "rounded-l lg:rounded-l-none lg:rounded-t",
+                index === 0 && "rounded-l lg:rounded-b-none lg:rounded-t",
                 index === navItems.length - 1 &&
-                  "rounded-r lg:rounded-b lg:rounded-r-none",
-                index === activeNavItem ? "font-medium" : "hover:bg-opacity-50",
-                "card flex cursor-pointer flex-row items-center gap-4 rounded-none p-4 lg:gap-7 lg:p-6",
+                  "rounded-r lg:rounded-b lg:rounded-t-none",
+                index === activeNavItem
+                  ? "bg-primary font-medium text-primary-content"
+                  : "hover:bg-opacity-50",
+                "flex cursor-pointer flex-row items-center gap-4 rounded-none border border-neutral/10 bg-base-100 p-4 lg:gap-7 lg:p-6",
               )}
             >
               <div>{item.icon}</div>

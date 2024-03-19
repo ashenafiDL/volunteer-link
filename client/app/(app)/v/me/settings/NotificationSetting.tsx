@@ -63,25 +63,27 @@ export default function NotificationSetting() {
   return (
     <div className="space-y-1">
       <p>Notification</p>
-      <div className="space-y-5">
-        {user &&
-          user.notificationPreference &&
-          Object.entries(user.notificationPreference).map(([key, value]) => (
-            <div key={key} className="setting-item">
-              <SettingItemText
-                title={texts[key].title}
-                subtitle={texts[key].subtitle}
-              />
+      <div className="card rounded-md">
+        <div className="card-body space-y-3">
+          {user &&
+            user.notificationPreference &&
+            Object.entries(user.notificationPreference).map(([key, value]) => (
+              <div key={key} className="setting-item">
+                <SettingItemText
+                  title={texts[key].title}
+                  subtitle={texts[key].subtitle}
+                />
 
-              <Toggle
-                options={["OFF", "ON"]}
-                selected={value ? 1 : 0}
-                onChange={(newValue: string) =>
-                  handleNotificationChange(key, newValue === "ON")
-                }
-              />
-            </div>
-          ))}
+                <Toggle
+                  options={["OFF", "ON"]}
+                  selected={value ? 1 : 0}
+                  onChange={(newValue: string) =>
+                    handleNotificationChange(key, newValue === "ON")
+                  }
+                />
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );

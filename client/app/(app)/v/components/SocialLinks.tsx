@@ -33,25 +33,30 @@ export default function SocialLinks({
   };
 
   return (
-    <div className="card rounded-t-none">
-      <p className="mb-4">Social Links</p>
+    <div className="rounded-b border border-neutral/15 bg-base-100">
+      <div className="card-body">
+        <p className="mb-4">Social Links</p>
 
-      <ul className="space-y-3 pl-4">
-        {socialLinks.map((link: { platform: string; url: string }) => {
-          return (
-            <li key={link.platform} className="cursor-pointer hover:underline">
-              <Link
-                target="_blank"
-                href={link.url}
-                className="flex items-center gap-4"
+        <ul className="space-y-3 pl-4">
+          {socialLinks.map((link: { platform: string; url: string }) => {
+            return (
+              <li
+                key={link.platform}
+                className="cursor-pointer hover:underline"
               >
-                {pickIcon(link.platform)}
-                <span className="text-lg">{link.url}</span>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+                <Link
+                  target="_blank"
+                  href={link.url}
+                  className="flex items-center gap-4"
+                >
+                  {pickIcon(link.platform)}
+                  <span className="text-lg">{link.url}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 }

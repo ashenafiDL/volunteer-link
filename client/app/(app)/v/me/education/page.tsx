@@ -12,10 +12,12 @@ export default function UserSkills() {
     <div>
       <DetailsHeader href="/v/me" text="Education" />
 
-      <div className="card">
-        {user.education && user.education.length > 0 && (
-          <UserEducationInfoCard educationInfo={user.education} />
-        )}
+      <div className="card rounded-md">
+        <div className="card-body">
+          {user.education && user.education.length > 0 && (
+            <UserEducationInfoCard educationInfo={user.education} />
+          )}
+        </div>
       </div>
     </div>
   );

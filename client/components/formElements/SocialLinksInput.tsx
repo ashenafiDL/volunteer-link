@@ -41,7 +41,7 @@ export default function SocialLinksInput({
 
   return (
     <div className="flex flex-grow flex-row">
-      <div className="flex min-w-[20%] flex-row items-center gap-4 border border-r-0 border-text-200/80 bg-bg-200 px-5 py-2 text-lg">
+      <div className="flex min-w-[20%] flex-row items-center gap-4 border border-r-0 border-neutral bg-base-200/60 px-5 py-2 text-lg">
         <div>{pickIcon(platform)}</div>
         <span>{platform}</span>
       </div>
@@ -65,10 +65,9 @@ export default function SocialLinksInput({
                   //   meta.error && meta.touched
                   //     ? "border-error focus:border-error focus:ring-error"
                   //     : "focus:border-accent-200 focus:ring-accent-200",
-                  "w-full bg-bg-100 py-3",
+                  "bg-bg-100 w-full py-3",
                 )}
               />
-              {/* <input type="text" className="w-full py-3" /> */}
             </Form>
           )}
         </Formik>

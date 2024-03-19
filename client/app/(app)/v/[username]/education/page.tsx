@@ -28,9 +28,11 @@ export default function UserSkills() {
       <DetailsHeader href={`/v/${user && user.username}`} text="Education" />
 
       <div className="card">
-        {user && user.education && user.education.length > 0 && (
-          <UserEducationInfoCard educationInfo={user.education} />
-        )}
+        <div className="card-body">
+          {user && user.education && user.education.length > 0 && (
+            <UserEducationInfoCard educationInfo={user.education} />
+          )}
+        </div>
       </div>
     </div>
   );

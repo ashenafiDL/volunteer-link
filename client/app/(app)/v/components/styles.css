@@ -1,5 +1,5 @@
 .card-title {
-  @apply text-2xl;
+  @apply mb-3 text-2xl font-medium;
 }
 
 .personal-info-key {

@@ -81,14 +81,14 @@ export default function ResetPasswordForm({
               }}
             />
 
-            <button className="btn">Update</button>
+            <button className="btn btn-primary">Update</button>
           </Form>
         )}
       </Formik>
 
       <Link className="self-center" href="/sign-in">
         <span>Did you remember you password? </span>
-        <span className="underline">Sign in.</span>
+        <span className="text-primary underline">Sign in.</span>
       </Link>
     </>
   );

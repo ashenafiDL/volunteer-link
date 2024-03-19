@@ -173,7 +173,7 @@ export default function LatestProjects() {
           return (
             <SwiperSlide
               key={project.id}
-              className="mb-20 space-y-6 rounded-md p-8 shadow-md"
+              className="mb-20 space-y-6 rounded-md bg-accent p-8 text-accent-content shadow-md"
             >
               <div className="flex flex-row gap-6">
                 {project.logo ? (

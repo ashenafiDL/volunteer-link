@@ -139,7 +139,11 @@ export default function SignUpForm({ locations }: { locations: object[] }) {
             />
           </div>
 
-          <button disabled={isSubmitting} type="submit" className="btn">
+          <button
+            disabled={isSubmitting}
+            type="submit"
+            className="btn btn-primary"
+          >
             Submit
           </button>
         </Form>

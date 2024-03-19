@@ -16,33 +16,35 @@ export default function PersonalInfoCard({
   email: string;
 }) {
   return (
-    <div className="card">
-      <h5 className="card-title">Personal Information</h5>
+    <div className="card rounded-md">
+      <div className="card-body">
+        <h3 className="card-title">Personal Information</h3>
 
-      <div className="3xl:grid-cols-3 grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div>
-          <p className="personal-info-key">Name</p>
-          <p className="personal-info-value capitalize">{`${firstName} ${lastName}`}</p>
-        </div>
+        <div className="3xl:grid-cols-3 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div>
+            <p className="personal-info-key">Name</p>
+            <p className="personal-info-value capitalize">{`${firstName} ${lastName}`}</p>
+          </div>
 
-        <div>
-          <p className="personal-info-key">Gender</p>
-          <p className="personal-info-value capitalize">{`${gender || "N/A"}`}</p>
-        </div>
+          <div>
+            <p className="personal-info-key">Gender</p>
+            <p className="personal-info-value capitalize">{`${gender || "N/A"}`}</p>
+          </div>
 
-        <div>
-          <p className="personal-info-key">Location</p>
-          <p className="personal-info-value">{`${locationName}`}</p>
-        </div>
+          <div>
+            <p className="personal-info-key">Location</p>
+            <p className="personal-info-value">{`${locationName}`}</p>
+          </div>
 
-        <div>
-          <p className="personal-info-key">Age</p>
-          <p className="personal-info-value">{`${age || "N/A"}`}</p>
-        </div>
+          <div>
+            <p className="personal-info-key">Age</p>
+            <p className="personal-info-value">{`${age || "N/A"}`}</p>
+          </div>
 
-        <div>
-          <p className="personal-info-key">Email</p>
-          <p className="personal-info-value">{`${email}`}</p>
+          <div>
+            <p className="personal-info-key">Email</p>
+            <p className="personal-info-value">{`${email}`}</p>
+          </div>
         </div>
       </div>
     </div>

@@ -53,14 +53,14 @@ export default function RequestPasswordResetForm({
               }}
             />
 
-            <button className="btn">Send</button>
+            <button className="btn btn-primary">Send</button>
           </Form>
         )}
       </Formik>
 
       <Link className="self-center" href="/sign-in">
         <span>Did you remember you password? </span>
-        <span className="underline">Sign in.</span>
+        <span className="text-primary underline">Sign in.</span>
       </Link>
     </>
   );

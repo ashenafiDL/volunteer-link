@@ -11,18 +11,20 @@ export default function EditAvatar() {
   return (
     <div className="space-y-1">
       <p>Profile Picture</p>
-      <div className="card space-y-6">
-        <UserAvatar
-          email={user && user.email}
-          name={user && user.firstName}
-          size="xl"
-        />
+      <div className="card rounded-md">
+        <div className="card-body">
+          <UserAvatar
+            email={user && user.email}
+            name={user && user.firstName}
+            size="xl"
+          />
 
-        <div className="flex gap-6">
-          <button className="btn">Update profile picture</button>
+          <div className="flex gap-6">
+            <button className="btn btn-primary">Update profile picture</button>
 
-          <div>
-            <button className="btn btn-error">Remove profile picture</button>
+            <div>
+              <button className="btn btn-error">Remove profile picture</button>
+            </div>
           </div>
         </div>
       </div>

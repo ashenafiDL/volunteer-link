@@ -9,7 +9,7 @@ export default function Header() {
   const [navHidden, setNavHidden] = useState(true);
 
   return (
-    <div>
+    <div className="bg-accent text-accent-content">
       <nav className="container relative flex items-center justify-between py-2">
         {/* Logo icon */}
         <Link href="/">
@@ -35,7 +35,7 @@ export default function Header() {
             </li>
             <li>
               <Link href="/sign-in">
-                <button className="btn">Sign In</button>
+                <button className="btn btn-outline">Sign In</button>
               </Link>
             </li>
           </ul>

@@ -42,47 +42,49 @@ export default function ProjectSetting() {
   return (
     <div className="space-y-1">
       <p>Project</p>
-      <div className="card space-y-5">
-        <div className="setting-item">
-          <SettingItemText
-            title="Time Preference"
-            subtitle="Customize your preferred time availability settings"
-          />
-
-          {user && user.timePreference && (
-            <Toggle
-              options={["Short Term", "Long Term", "Both"]}
-              selected={
-                user.timePreference === "SHORT_TERM"
-                  ? 0
-                  : user.timePreference === "LONG_TERM"
-                    ? 1
-                    : 2
-              }
-              onChange={handleTimePreferenceChange}
+      <div className="card rounded-md">
+        <div className="card-body space-y-3">
+          <div className="setting-item">
+            <SettingItemText
+              title="Time Preference"
+              subtitle="Customize your preferred time availability settings"
             />
-          )}
-        </div>
 
-        <div className="setting-item">
-          <SettingItemText
-            title="Locations Preference"
-            subtitle="Customize your preferred location settings"
-          />
+            {user && user.timePreference && (
+              <Toggle
+                options={["Short Term", "Long Term", "Both"]}
+                selected={
+                  user.timePreference === "SHORT_TERM"
+                    ? 0
+                    : user.timePreference === "LONG_TERM"
+                      ? 1
+                      : 2
+                }
+                onChange={handleTimePreferenceChange}
+              />
+            )}
+          </div>
 
-          {user && user.locationPreference && (
-            <Toggle
-              options={["In Person", "Remote", "Both"]}
-              selected={
-                user.locationPreference === "IN_PERSON"
-                  ? 0
-                  : user.locationPreference === "REMOTE"
-                    ? 1
-                    : 2
-              }
-              onChange={handleLocationPreferenceChange}
+          <div className="setting-item">
+            <SettingItemText
+              title="Locations Preference"
+              subtitle="Customize your preferred location settings"
             />
-          )}
+
+            {user && user.locationPreference && (
+              <Toggle
+                options={["In Person", "Remote", "Both"]}
+                selected={
+                  user.locationPreference === "IN_PERSON"
+                    ? 0
+                    : user.locationPreference === "REMOTE"
+                      ? 1
+                      : 2
+                }
+                onChange={handleLocationPreferenceChange}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
