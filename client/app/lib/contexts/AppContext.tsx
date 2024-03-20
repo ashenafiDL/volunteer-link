@@ -2,7 +2,7 @@
 
 import axiosInstance from "@/app/axiosInstance";
 import { useRouter } from "next/navigation";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { deleteCookie, getCookie } from "../cookies";
 
 interface AuthContextType {
@@ -10,6 +10,7 @@ interface AuthContextType {
   setToken: (token: string) => void;
   user: any; // Use the any type for user
   setUser: (user: any) => void;
+  getUser: () => void;
   logout: () => void;
   isLoggedIn: boolean;
   setIsLoggedIn: (isLoggedIn: boolean) => void;
@@ -20,6 +21,7 @@ export const AuthContext = createContext<AuthContextType>({
   setToken: (token: string) => {},
   user: {},
   setUser: (user: any) => {},
+  getUser: () => {},
   logout: () => {},
   isLoggedIn: false,
   setIsLoggedIn: (isLoggedIn: boolean) => {},
@@ -57,11 +59,11 @@ export default function AppContext({
     }
 
     if (token) {
-      getUserData();
+      getUser();
     }
   }, []);
 
-  const getUserData = async () => {
+  const getUser = async () => {
     try {
       const response = await axiosInstance.get(
         `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
@@ -69,6 +71,7 @@ export default function AppContext({
 
       if (response.status === 200) {
         setUser(response.data);
+        return response.data;
       }
     } catch (error) {
       logout();
@@ -83,6 +86,7 @@ export default function AppContext({
         logout,
         user,
         setUser,
+        getUser,
         isLoggedIn,
         setIsLoggedIn,
       }}
@@ -91,3 +95,13 @@ export default function AppContext({
     </AuthContext.Provider>
   );
 }
+
+export const useAuthContext = () => {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuthContext must be used within a AuthProvider");
+  }
+
+  return context;
+};

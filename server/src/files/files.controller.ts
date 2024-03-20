@@ -8,6 +8,7 @@ import {
   Param,
   ParseFilePipeBuilder,
   Post,
+  Req,
   Res,
   UploadedFile,
   UseInterceptors,
@@ -82,9 +83,10 @@ export class FilesController {
     }
   }
 
-  @Delete('deleteProfilePicture/:email')
+  @Delete('deleteProfilePicture')
   @ApiDeleteProfilePictureEndpoint()
-  deleteAvatar(@Param('email') email: string) {
-    return this.filesService.deleteProfilePicture(email);
+  deleteAvatar(@Req() req) {
+    const id = req.user['sub'];
+    return this.filesService.deleteProfilePicture(id);
   }
 }

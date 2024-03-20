@@ -46,14 +46,14 @@ export const ApiGetProfilePictureEndpoint = () => {
 
 export const ApiDeleteProfilePictureEndpoint = () => {
   return applyCustomDecorators([
-    ApiOperation({ summary: 'Delete profile picture of a user by email' }),
+    ApiOperation({ summary: 'Delete own profile picture.' }),
     ApiResponse({
       status: 200,
       description: 'Profile picture deleted successfully',
     }),
     ApiResponse({
       status: 404,
-      description: 'User with the specified email not found',
+      description: 'User with the specified id not found',
     }),
     ApiResponse({
       status: 500,

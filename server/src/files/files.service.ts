@@ -92,15 +92,15 @@ export class FilesService {
     }
   }
 
-  async deleteProfilePicture(email: string) {
-    // Check if the user existing and has profile picture
+  async deleteProfilePicture(id: string) {
+    // Check if the user exists and has profile picture
     const user = await this.prisma.users.findUnique({
-      where: { email, profilePictureId: { not: null } },
+      where: { id, profilePictureId: { not: null } },
     });
 
     if (!user) {
       throw new NotFoundException(
-        'A user with the specified email cannot be found',
+        'A user with the specified ID cannot be found',
       );
     }
 
@@ -120,7 +120,7 @@ export class FilesService {
 
     try {
       await this.prisma.users.update({
-        where: { email },
+        where: { id },
         data: {
           profilePictureId: null,
         },

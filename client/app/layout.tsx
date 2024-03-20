@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Providers from "./Providers";
 import "./globals.css";
-import AuthContext from "./lib/contexts/AppContext";
+import AppContext from "./lib/contexts/AppContext";
 
 export const metadata: Metadata = {
   title: "VolunteerLink",
@@ -18,7 +18,7 @@ export default function RootLayout({
       <body>
         {/* Theme provider for next-themes */}
         <Providers>
-          <AuthContext>{children}</AuthContext>
+          <AppContext>{children}</AppContext>
         </Providers>
       </body>
     </html>
