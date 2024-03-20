@@ -1,12 +1,11 @@
 "use client";
 
-import { AuthContext } from "@/app/lib/contexts/AppContext";
-import { useContext } from "react";
+import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import DetailsHeader from "../../components/DetailsHeader";
 import UserEducationInfoCard from "../../components/UserEducationInfoCard";
 
 export default function UserSkills() {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuthContext();
 
   return (
     <div>
@@ -14,7 +13,7 @@ export default function UserSkills() {
 
       <div className="card rounded-md">
         <div className="card-body">
-          {user.education && user.education.length > 0 && (
+          {user?.education?.length > 0 && (
             <UserEducationInfoCard educationInfo={user.education} />
           )}
         </div>

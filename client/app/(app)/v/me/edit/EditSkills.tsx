@@ -1,15 +1,14 @@
 "use client";
 
-import { AuthContext } from "@/app/lib/contexts/AppContext";
+import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import { TextInput } from "@/components/formElements";
 import clsx from "clsx";
 import { Form, Formik } from "formik";
-import { useContext } from "react";
 import { BiX } from "react-icons/bi";
 // import "../../components/styles.css";
 
 export default function EditSkills() {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuthContext();
 
   return (
     <div className="space-y-1">
@@ -17,9 +16,7 @@ export default function EditSkills() {
 
       <div className="card rounded-md">
         <div className="card-body">
-          {user &&
-            user.skills &&
-            user.skills.length > 0 &&
+          {user?.skills?.length > 0 &&
             user.skills.map(
               (
                 skill: {

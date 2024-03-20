@@ -60,7 +60,9 @@ export default function VerifyResetCodeForm({
         const expiresIn = new Date(Date.now() + 48 * 60 * 60 * 1000); // Expires in 2 day
         document.cookie = `token=${res.data.token}; expires=${expiresIn.toUTCString()}; Secure; path=/`;
       }
-    } catch (error: any) {}
+    } catch (error: any) {
+      // TODO: handle error
+    }
   };
 
   return (

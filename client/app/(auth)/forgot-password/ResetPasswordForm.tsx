@@ -1,5 +1,5 @@
 import axiosInstance from "@/app/axiosInstance";
-import { AuthContext } from "@/app/lib/contexts/AppContext";
+import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import {
   passwordValidation,
   repeatPasswordValidation,
@@ -8,7 +8,6 @@ import { TextInput } from "@/components/formElements";
 import { Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
 import * as Yup from "yup";
 
 export default function ResetPasswordForm({
@@ -21,7 +20,7 @@ export default function ResetPasswordForm({
   setEmail: (email: string) => void;
 }) {
   const router = useRouter();
-  const { setIsLoggedIn, setToken, setUser } = useContext(AuthContext);
+  const { setIsLoggedIn, setToken, setUser } = useAuthContext();
 
   return (
     <>
@@ -58,7 +57,9 @@ export default function ResetPasswordForm({
             setEmail("");
 
             router.replace("/");
-          } catch (error: any) {}
+          } catch (error: any) {
+            // TODO: - return the snackbar here
+          }
         }}
       >
         {({ isSubmitting }) => (
@@ -81,7 +82,9 @@ export default function ResetPasswordForm({
               }}
             />
 
-            <button className="btn btn-primary">Update</button>
+            <button disabled={isSubmitting} className="btn btn-primary">
+              Update
+            </button>
           </Form>
         )}
       </Formik>

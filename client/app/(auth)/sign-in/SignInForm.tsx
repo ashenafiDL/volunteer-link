@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthContext } from "@/app/lib/contexts/AppContext";
+import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import {
   emailValidation,
   passwordValidation,
@@ -10,13 +10,12 @@ import axios from "axios";
 import { Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
 import * as Yup from "yup";
 
 export default function SignInForm() {
   const router = useRouter();
 
-  const { setUser, setToken, setIsLoggedIn } = useContext(AuthContext);
+  const { setUser, setToken, setIsLoggedIn } = useAuthContext();
 
   return (
     <Formik
@@ -40,7 +39,9 @@ export default function SignInForm() {
           setIsLoggedIn(true);
 
           router.replace("/");
-        } catch (error: any) {}
+        } catch (error: any) {
+          // TODO: - return the snackbar here
+        }
       }}
     >
       {({ isSubmitting }) => (

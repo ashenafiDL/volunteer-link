@@ -1,12 +1,11 @@
 "use client";
 
 import axiosInstance from "@/app/axiosInstance";
-import { AuthContext } from "@/app/lib/contexts/AppContext";
-import { useContext } from "react";
+import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import SettingItemText from "../../components/SettingItemText";
 
 export default function DangerZone() {
-  const { logout, setIsLoggedIn, setToken, setUser } = useContext(AuthContext);
+  const { logout, setIsLoggedIn, setToken, setUser } = useAuthContext();
 
   const handleDelete = async () => {
     try {

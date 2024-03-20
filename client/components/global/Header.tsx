@@ -1,10 +1,10 @@
 "use client";
 
-import { AuthContext } from "@/app/lib/contexts/AppContext";
+import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import UserAvatar from "@/components/global/UserAvatar";
 import clsx from "clsx";
 import Link from "next/link";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AiOutlineSetting } from "react-icons/ai";
 import {
   BiDonateBlood,
@@ -16,9 +16,8 @@ import {
 import { SlBell } from "react-icons/sl";
 
 export default function Header() {
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout } = useAuthContext();
   const [dropdownHidden, setDropdownHidden] = useState<boolean>(true);
-  const [isUserLoaded, setIsUserLoaded] = useState<boolean>(false);
   const popupRef = useRef<HTMLDivElement>(null);
 
   // Menu items of the dropdown
@@ -46,14 +45,7 @@ export default function Header() {
     setDropdownHidden(true);
   };
 
-  // Wait for the user object to load at initial load time
-  useEffect(() => {
-    if (user && Object.keys(user).length > 0) {
-      setIsUserLoaded(true);
-    }
-  }, [user]);
-
-  // Close the dropdown if the user clicks outside
+  // Close the dropdown if the user clicks outside the dropdown area
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -89,27 +81,25 @@ export default function Header() {
 
           {/* User avatar */}
           <div className="relative">
-            {isUserLoaded && (
-              <div
-                onClick={() => {
-                  setDropdownHidden(!dropdownHidden);
-                }}
-                className="cursor-pointer"
-              >
-                <UserAvatar
-                  email={user.email}
-                  name={user.firstName}
-                  size="base"
-                />
-              </div>
-            )}
+            <div
+              onClick={() => {
+                setDropdownHidden(!dropdownHidden);
+              }}
+              className="cursor-pointer"
+            >
+              <UserAvatar
+                email={user.email}
+                name={user.firstName}
+                size="base"
+              />
+            </div>
 
             {/* Dropdown menu items */}
             <div
               ref={popupRef}
               className={clsx(
                 dropdownHidden ? "hidden" : "block",
-                "absolute right-0 mt-3 w-52 overflow-clip rounded-md bg-base-100 shadow shadow-md lg:left-1/2 lg:-translate-x-1/2",
+                "absolute right-0 mt-3 w-52 overflow-clip rounded-md bg-base-100 shadow-md lg:left-1/2 lg:-translate-x-1/2",
               )}
             >
               {menuItems.map((item) => (

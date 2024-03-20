@@ -1,9 +1,8 @@
 "use client";
 
 import axiosInstance from "@/app/axiosInstance";
-import { AuthContext } from "@/app/lib/contexts/AppContext";
+import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import Toggle from "@/components/global/Toggle";
-import { useContext } from "react";
 import SettingItemText from "../../components/SettingItemText";
 
 // Define a type for the texts object
@@ -12,7 +11,7 @@ type Texts = {
 };
 
 export default function NotificationSetting() {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuthContext();
 
   const texts: Texts = {
     task_assigned: {
@@ -57,7 +56,9 @@ export default function NotificationSetting() {
 
       if (res.status === 200) {
       }
-    } catch (error) {}
+    } catch (error) {
+      // TODO: handle error
+    }
   };
 
   return (
@@ -65,8 +66,7 @@ export default function NotificationSetting() {
       <p>Notification</p>
       <div className="card rounded-md">
         <div className="card-body space-y-3">
-          {user &&
-            user.notificationPreference &&
+          {user?.notificationPreference &&
             Object.entries(user.notificationPreference).map(([key, value]) => (
               <div key={key} className="setting-item">
                 <SettingItemText

@@ -24,8 +24,8 @@ export default function UserEducationInfoCard({
           <div
             className={clsx(
               "space-y-1 py-4",
-              index == 0 && "pt-0",
-              index == educationInfo.length - 1 && "pb-0",
+              index === 0 && "pt-0",
+              index === educationInfo.length - 1 && "pb-0",
             )}
             key={item.id}
           >

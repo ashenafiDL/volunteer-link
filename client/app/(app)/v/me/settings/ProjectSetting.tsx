@@ -1,13 +1,12 @@
 "use client";
 
 import axiosInstance from "@/app/axiosInstance";
-import { AuthContext } from "@/app/lib/contexts/AppContext";
+import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import Toggle from "@/components/global/Toggle";
-import { useContext } from "react";
 import SettingItemText from "../../components/SettingItemText";
 
 export default function ProjectSetting() {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuthContext();
 
   const handleTimePreferenceChange = async (value: string) => {
     try {
@@ -21,7 +20,9 @@ export default function ProjectSetting() {
       if (res.status === 200) {
         user.timePreference = value;
       }
-    } catch (error) {}
+    } catch (error) {
+      // TODO: handle error
+    }
   };
 
   const handleLocationPreferenceChange = async (value: string) => {
@@ -36,7 +37,9 @@ export default function ProjectSetting() {
       if (res.status === 200) {
         user.timePreference = value;
       }
-    } catch (error) {}
+    } catch (error) {
+      // TODO: handle error
+    }
   };
 
   return (
@@ -50,7 +53,7 @@ export default function ProjectSetting() {
               subtitle="Customize your preferred time availability settings"
             />
 
-            {user && user.timePreference && (
+            {user.timePreference && (
               <Toggle
                 options={["Short Term", "Long Term", "Both"]}
                 selected={
@@ -71,7 +74,7 @@ export default function ProjectSetting() {
               subtitle="Customize your preferred location settings"
             />
 
-            {user && user.locationPreference && (
+            {user.locationPreference && (
               <Toggle
                 options={["In Person", "Remote", "Both"]}
                 selected={

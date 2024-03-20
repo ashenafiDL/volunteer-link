@@ -18,6 +18,7 @@ export async function fetchLocations() {
 
     return sortedLocations;
   } catch (error) {
+    // TODO: handle error
     return null;
   }
 }

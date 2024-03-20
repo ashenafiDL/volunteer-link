@@ -11,8 +11,8 @@ export default function UserSkillsCard({ skills }: { skills: any }) {
           <div
             className={clsx(
               "space-y-1 py-4",
-              index == 0 && "pt-0",
-              index == skills.length - 1 && "pb-0",
+              index === 0 && "pt-0",
+              index === skills.length - 1 && "pb-0",
             )}
             key={skill.name}
           >

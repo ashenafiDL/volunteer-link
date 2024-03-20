@@ -12,6 +12,7 @@ export async function fetchStats() {
 
     return res.data;
   } catch (error) {
+    // TODO: - return the snackbar here
     return null;
   }
 }

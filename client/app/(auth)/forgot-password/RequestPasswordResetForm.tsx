@@ -39,7 +39,9 @@ export default function RequestPasswordResetForm({
             );
 
             setEmailSent(true);
-          } catch (error: any) {}
+          } catch (error: any) {
+            // TODO: show error
+          }
         }}
       >
         {({ isSubmitting }) => (
