@@ -1,43 +1,41 @@
 import clsx from "clsx";
 import { useField } from "formik";
 
-export default function SelectInput({
+export default function TextAreaInput({
   label,
   props,
-  children,
   classes,
 }: {
   label: string;
+  classes?: string;
   props: {
     name: string;
     id?: string;
-    autoComplete?: string;
-    as?: "select" | "checkbox" | "textarea";
+    rows?: number;
+    maxLength?: number;
+    placeholder?: string;
   };
-  children: React.ReactNode;
-  classes?: string;
 }) {
-  const [field, meta] = useField(props);
+  // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
+  const [field, meta] = useField(props.name);
 
   return (
-    <div className="flex w-full flex-col items-start justify-start gap-2">
+    <div className="flex flex-grow flex-col items-start justify-start gap-2">
       <label className="font-medium" htmlFor={props.id || props.name}>
         {label}
       </label>
-
-      <select
+      <textarea
+        {...field}
+        {...props}
         className={clsx(
           meta.error && meta.touched
             ? "border-error focus:border-error focus:ring-error"
             : "focus:border-primary focus:ring-primary",
           "-mb-2 w-full bg-base-100",
-          { classes },
+          classes,
         )}
-        {...field}
-        {...props}
-      >
-        {children}
-      </select>
+        placeholder={props.placeholder}
+      ></textarea>
 
       <div className="min-h-[1.25rem] text-sm text-error">
         {meta.error && meta.touched ? meta.error : ""}

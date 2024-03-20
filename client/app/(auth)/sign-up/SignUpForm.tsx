@@ -109,7 +109,6 @@ export default function SignUpForm({ locations }: { locations: object[] }) {
             label="Location"
             props={{
               name: "locationId",
-              type: "select",
             }}
           >
             <option>--Select your location--</option>

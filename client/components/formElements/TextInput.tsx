@@ -13,7 +13,6 @@ export default function TextInput({
     id?: string;
     type: string;
     autoComplete?: string;
-    as?: "select" | "checkbox" | "textarea";
     maxLength?: number;
     placeholder?: string;
   };
@@ -32,8 +31,8 @@ export default function TextInput({
         className={clsx(
           meta.error && meta.touched
             ? "border-error focus:border-error focus:ring-error"
-            : "focus:border-accent-200 focus:ring-accent-200",
-          "bg-bg-100 -mb-2 w-full bg-base-100",
+            : "focus:border-primary focus:ring-primary",
+          "-mb-2 w-full bg-base-100",
           classes,
         )}
         placeholder={props.placeholder}

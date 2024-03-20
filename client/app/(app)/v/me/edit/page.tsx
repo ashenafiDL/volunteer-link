@@ -1,3 +1,4 @@
+import { fetchLocations } from "@/app/lib/locations";
 import DetailsHeader from "../../components/DetailsHeader";
 import EditAvatar from "./EditAvatar";
 import EditEducationInfo from "./EditEducationInfo";
@@ -5,7 +6,9 @@ import EditPersonalInfo from "./EditPersonalInfo";
 import EditSkills from "./EditSkills";
 import EditSocialLinks from "./EditSocialLinks";
 
-export default function EditProfile() {
+export default async function EditProfile() {
+  const locations = await fetchLocations();
+
   return (
     <div>
       <DetailsHeader href="/v/me" text="Edit Profile" />
@@ -13,7 +16,7 @@ export default function EditProfile() {
       <div className="space-y-3">
         <EditAvatar />
 
-        <EditPersonalInfo />
+        <EditPersonalInfo locations={locations} />
 
         <EditSocialLinks />
 

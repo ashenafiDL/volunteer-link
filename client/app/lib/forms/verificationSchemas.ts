@@ -34,3 +34,19 @@ export const passwordValidation = Yup.string()
 export const repeatPasswordValidation = Yup.string()
   .oneOf([Yup.ref("password")], "Passwords must match")
   .required("Repeat password is required");
+
+export const bioTextValidation = Yup.string().max(
+  500,
+  "Bio must not exceed 500 characters",
+);
+
+export const ageValidation = Yup.number()
+  .integer("Age must be an integer")
+  .positive("Age must be a positive number")
+  .required("Age is required")
+  .min(18, "You must be at least 18 years old")
+  .max(100, "You must be less than 100 years old");
+
+export const genderValidation = Yup.string()
+  .required("Gender is required")
+  .oneOf(["MALE", "FEMALE"]);

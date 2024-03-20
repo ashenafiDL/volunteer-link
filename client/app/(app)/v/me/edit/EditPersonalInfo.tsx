@@ -1,19 +1,75 @@
 "use client";
 
+import axiosInstance from "@/app/axiosInstance";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import {
+  ageValidation,
+  bioTextValidation,
   emailValidation,
   firstNameValidation,
+  genderValidation,
   lastNameValidation,
   locationValidation,
   usernameValidation,
 } from "@/app/lib/forms/verificationSchemas";
-import { TextInput } from "@/components/formElements";
+import { SelectInput, TextInput } from "@/components/formElements";
+import TextAreaInput from "@/components/formElements/TextAreaInput";
 import { Form, Formik } from "formik";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
 
-export default function EditPersonalInfo() {
-  const { user } = useAuthContext();
+type Texts = {
+  [key: string]: any;
+};
+
+export default function EditPersonalInfo({
+  locations,
+}: {
+  locations: object[];
+}) {
+  const [isUserLoaded, setIsUserLoaded] = useState(false);
+  const [initialValues, setInitialValues] = useState<Texts>({});
+  const { user, getUser, setUser } = useAuthContext();
+
+  const handleSubmit = async (updates: any) => {
+    let changes: Texts = {};
+
+    for (const key in updates) {
+      if (initialValues[key] !== updates[key]) {
+        changes[key] = updates[key];
+      }
+    }
+
+    if (Object.keys(changes).length === 0) {
+      return;
+    }
+
+    const res = await axiosInstance.patch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/me/update`,
+      { ...changes },
+    );
+
+    if (res.status === 200) {
+      const updatedUser = getUser();
+      setUser(updatedUser);
+    }
+  };
+
+  useEffect(() => {
+    if (Object.keys(user).length > 0) {
+      setIsUserLoaded(true);
+      setInitialValues({
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        bio: user.bio || "",
+        username: user.username || "",
+        gender: user.gender || "",
+        age: user.age || 0,
+        email: user.email || "",
+        location: user?.location?.name || "",
+      });
+    }
+  }, [user]);
 
   return (
     <div className="space-y-1">
@@ -21,64 +77,55 @@ export default function EditPersonalInfo() {
 
       <div className="card rounded-md">
         <div className="card-body">
-          <Formik
-            initialValues={{
-              firstName: user.firstName,
-              lastName: user.lastName,
-              bio: user.bio,
-              username: user.username,
-              gender: user.gender,
-              age: user.age,
-              email: user.email,
-              location: user?.location?.name,
-            }}
-            validationSchema={Yup.object({
-              firstName: firstNameValidation,
-              lastName: lastNameValidation,
-              bio: Yup.string().max(160),
-              username: usernameValidation,
-              // TODO: Add gender, age and bio Yup validation schemas
-              gender: Yup.string(),
-              age: Yup.number(),
-              email: emailValidation,
-              location: locationValidation,
-            })}
-            onSubmit={async (values) => {}}
-          >
-            {({ isSubmitting }) => (
-              <Form className="flex flex-col gap-2">
-                <div className="flex flex-grow gap-4 xl:flex-row">
-                  <TextInput
-                    label="First Name"
+          {isUserLoaded && (
+            <Formik
+              initialValues={initialValues}
+              validationSchema={Yup.object({
+                firstName: firstNameValidation,
+                lastName: lastNameValidation,
+                bio: bioTextValidation,
+                username: usernameValidation,
+                gender: genderValidation,
+                age: ageValidation,
+                email: emailValidation,
+                location: locationValidation,
+              })}
+              onSubmit={async (values) => {
+                handleSubmit(values);
+              }}
+            >
+              {({ isSubmitting }) => (
+                <Form className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-4 lg:flex-grow xl:flex-row">
+                    <TextInput
+                      label="First Name"
+                      props={{
+                        name: "firstName",
+                        type: "text",
+                        autoComplete: "off",
+                      }}
+                    />
+
+                    <TextInput
+                      label="Last Name"
+                      props={{
+                        name: "lastName",
+                        type: "text",
+                        autoComplete: "off",
+                      }}
+                    />
+                  </div>
+
+                  <TextAreaInput
+                    label="Bio"
                     props={{
-                      name: "firstName",
-                      type: "text",
-                      autoComplete: "off",
+                      name: "bio",
+                      id: "bio",
+                      rows: 5,
                     }}
                   />
 
-                  <TextInput
-                    label="Last Name"
-                    props={{
-                      name: "lastName",
-                      type: "text",
-                      autoComplete: "off",
-                    }}
-                  />
-                </div>
-
-                <TextInput
-                  label="Bio"
-                  props={{
-                    name: "bio",
-                    id: "bio",
-                    type: "text",
-                    maxLength: 160,
-                  }}
-                />
-
-                <div className="flex flex-row gap-3">
-                  <div className="w-1/2">
+                  <div className="lg:w-1/2 lg:pr-2">
                     <TextInput
                       label="Username"
                       props={{
@@ -89,50 +136,80 @@ export default function EditPersonalInfo() {
                     />
                   </div>
 
-                  <div className="flex w-1/2 flex-row gap-4">
-                    <TextInput
-                      label="Gender"
-                      props={{
-                        name: "gender",
-                        id: "gender",
-                        type: "text",
-                      }}
-                    />
+                  <div className="flex flex-row gap-4 lg:w-1/2 lg:pr-2">
+                    <div className="w-1/2">
+                      <SelectInput
+                        label="Gender"
+                        props={{
+                          name: "gender",
+                          id: "gender",
+                        }}
+                      >
+                        <option value="MALE">Male</option>
+                        <option value="FEMALE">Female</option>
+                      </SelectInput>
+                    </div>
 
-                    <TextInput
-                      label="Age"
-                      props={{
-                        name: "age",
-                        id: "age",
-                        type: "number",
-                      }}
-                    />
+                    <div className="w-1/2">
+                      <TextInput
+                        label="Age"
+                        classes="w-1/2"
+                        props={{
+                          name: "age",
+                          id: "age",
+                          type: "number",
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex flex-grow gap-4 xl:flex-row">
-                  <TextInput
-                    label="Email"
-                    props={{
-                      name: "email",
-                      type: "email",
-                      autoComplete: "off",
-                    }}
-                  />
+                  <div className="flex flex-grow gap-4 xl:flex-row">
+                    <div className="w-1/2">
+                      <TextInput
+                        label="Email"
+                        props={{
+                          name: "email",
+                          type: "email",
+                          autoComplete: "off",
+                        }}
+                      />
+                    </div>
 
-                  {/* TODO: use select input */}
-                  <TextInput
-                    label="Location"
-                    props={{
-                      name: "location",
-                      type: "text",
-                      autoComplete: "off",
-                    }}
-                  />
-                </div>
-              </Form>
-            )}
-          </Formik>
+                    <div className="w-1/2">
+                      <SelectInput
+                        label="Location"
+                        props={{
+                          name: "locationId",
+                        }}
+                      >
+                        <option>--Select your location--</option>
+                        {locations.map((location: any) => {
+                          return (
+                            <option key={location.id} value={location.id}>
+                              {location.name}
+                            </option>
+                          );
+                        })}
+                      </SelectInput>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-row gap-4">
+                    <button type="reset" className="btn btn-outline">
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="btn btn-success"
+                    >
+                      Save Changes
+                    </button>
+                  </div>
+                </Form>
+              )}
+            </Formik>
+          )}
         </div>
       </div>
     </div>

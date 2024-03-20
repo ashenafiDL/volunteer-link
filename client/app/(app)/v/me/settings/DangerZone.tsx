@@ -20,7 +20,7 @@ export default function DangerZone() {
         setIsLoggedIn(false);
       }
     } catch (error) {
-      // TODO - return the snackbar here
+      // TODO: - return the snackbar here
     }
   };
 
