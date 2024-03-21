@@ -40,6 +40,8 @@ export class AuthService {
         email: newUser.email,
       });
     } catch (error) {
+      console.log(error);
+
       if (
         error instanceof NotFoundException ||
         error instanceof ConflictException
@@ -73,6 +75,8 @@ export class AuthService {
 
       return this.generateTokenAndUpdateUser(payload);
     } catch (error) {
+      console.log(error);
+
       if (error instanceof UnauthorizedException) {
         throw error;
       } else {

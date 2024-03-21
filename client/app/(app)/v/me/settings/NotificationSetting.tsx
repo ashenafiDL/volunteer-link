@@ -10,8 +10,13 @@ type Texts = {
   [key: string]: { title: string; subtitle: string };
 };
 
+type Options = {
+  [key: string]: any;
+};
+
 export default function NotificationSetting() {
   const { user } = useAuthContext();
+  console.log("user", user);
 
   const texts: Texts = {
     task_assigned: {
@@ -43,8 +48,13 @@ export default function NotificationSetting() {
   };
 
   const handleNotificationChange = async (key: string, value: boolean) => {
-    // Update the user's notification preference
-    user.notificationPreference[key] = value;
+    // Select the index of the changed option
+    const indexToBeUpdated = user.notificationPreference.findIndex(
+      (option: any) => option.option === key,
+    );
+
+    // Update the value of the selected option
+    user.notificationPreference[indexToBeUpdated].value = value;
 
     try {
       const res = await axiosInstance.patch(
@@ -55,6 +65,7 @@ export default function NotificationSetting() {
       );
 
       if (res.status === 200) {
+        // TODO: show snackbar here
       }
     } catch (error) {
       // TODO: handle error
@@ -66,23 +77,24 @@ export default function NotificationSetting() {
       <p>Notification</p>
       <div className="card rounded-md">
         <div className="card-body space-y-3">
-          {user?.notificationPreference &&
-            Object.entries(user.notificationPreference).map(([key, value]) => (
-              <div key={key} className="setting-item">
+          {user?.notificationPreference?.map(
+            (item: { option: string; value: boolean }, index: number) => (
+              <div key={index} className="setting-item">
                 <SettingItemText
-                  title={texts[key].title}
-                  subtitle={texts[key].subtitle}
+                  title={texts[item.option].title}
+                  subtitle={texts[item.option].subtitle}
                 />
 
                 <Toggle
                   options={["OFF", "ON"]}
-                  selected={value ? 1 : 0}
+                  selected={item.value ? 1 : 0}
                   onChange={(newValue: string) =>
-                    handleNotificationChange(key, newValue === "ON")
+                    handleNotificationChange(item.option, newValue === "ON")
                   }
                 />
               </div>
-            ))}
+            ),
+          )}
         </div>
       </div>
     </div>

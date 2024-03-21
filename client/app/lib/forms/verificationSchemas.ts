@@ -50,3 +50,8 @@ export const ageValidation = Yup.number()
 export const genderValidation = Yup.string()
   .required("Gender is required")
   .oneOf(["MALE", "FEMALE"]);
+
+export const urlValidation = Yup.string()
+  .url("Invalid URL format")
+  .trim()
+  .nullable();

@@ -32,7 +32,7 @@ model Users {
   resetCode              String? // Short code used to reset the password
   locationPreference     LocationPreference @default(BOTH)
   timePreference         TimePreference     @default(BOTH)
-  notificationPreference Json?
+  notificationPreference Json[]
   createdAt              DateTime           @default(now())
   updatedAt              DateTime           @updatedAt
   skills                 Skills[]

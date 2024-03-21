@@ -6,12 +6,12 @@ import {
   IsEmail,
   IsEnum,
   IsInt,
-  IsNotEmpty,
   IsString,
   Min,
   ValidateNested,
 } from 'class-validator';
 import { EducationInfoDto } from './education-info.dto';
+import { NotificationOptionDto } from './notification-option.dto';
 import { SocialLinkDto } from './social-link.dto';
 
 export class UserDto {
@@ -77,11 +77,12 @@ export class UserDto {
   socialLinks: SocialLinkDto[];
 
   @ApiProperty({
-    description:
-      'A list of key value pairs containing the users notification preference',
+    description: 'An object containing the users notification preference',
   })
-  @IsNotEmpty()
-  notificationPreference: Record<string, boolean>;
+  @IsArray()
+  @ValidateNested({ each: true }) // Validate each element of the array
+  @Type(() => NotificationOptionDto) // Specify the type of each element
+  notificationPreference: NotificationOptionDto[];
 
   @ApiProperty({ description: 'Gender of the user' })
   @IsEnum(Gender)

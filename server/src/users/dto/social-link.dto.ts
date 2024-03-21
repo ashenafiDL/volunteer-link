@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsUrl } from 'class-validator';
+import { IsEnum, IsOptional, IsUrl } from 'class-validator';
 
 export class SocialLinkDto {
   @ApiProperty({
@@ -18,5 +18,6 @@ export class SocialLinkDto {
 
   @ApiProperty({ description: 'URL of the social media profile' })
   @IsUrl()
-  url: string;
+  @IsOptional()
+  url?: string;
 }

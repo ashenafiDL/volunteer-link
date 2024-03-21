@@ -37,7 +37,6 @@ export default function Header() {
   ];
 
   const handleLogout = () => {
-    setIsUserLoaded(false);
     logout();
   };
 

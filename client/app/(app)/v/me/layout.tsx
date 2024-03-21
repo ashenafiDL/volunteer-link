@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SideNav from "../components/SideNav";
 import SocialLinks from "../components/SocialLinks";
 import UserProfile from "../components/UserProfile";
@@ -13,6 +13,19 @@ export default function SidebarLayout({
   children: React.ReactNode;
 }) {
   const { user } = useAuthContext();
+  const [hasSocialLinks, setHasSocialLinks] = useState(false);
+
+  useEffect(() => {
+    const checking = user?.socialLinks?.some(
+      (link: { platform: string; url: string }) => {
+        if (link.url !== null) {
+          return true;
+        }
+      },
+    );
+
+    setHasSocialLinks(checking);
+  }, [user]);
 
   return (
     <div className="layout-container">
@@ -28,9 +41,7 @@ export default function SidebarLayout({
             ownProfile={true}
           />
 
-          {user?.socialLinks?.length > 0 && (
-            <SocialLinks socialLinks={user.socialLinks} />
-          )}
+          {hasSocialLinks && <SocialLinks socialLinks={user.socialLinks} />}
         </div>
 
         <SideNav />

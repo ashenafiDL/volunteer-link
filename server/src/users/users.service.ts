@@ -75,6 +75,15 @@ export class UsersService {
             { option: 'application_status_update', value: true },
             { option: 'badge_and_certificate', value: true },
           ],
+          // Make default social links to null
+          socialLinks: [
+            { platform: 'LinkedIn', url: null },
+            { platform: 'GitHub', url: null },
+            { platform: 'Behance', url: null },
+            { platform: 'Instagram', url: null },
+            { platform: 'Dribbble', url: null },
+            { platform: 'Website', url: null },
+          ],
         },
       });
     } catch (error) {
@@ -197,6 +206,8 @@ export class UsersService {
 
       return this.sanitizeUserData(user);
     } catch (error) {
+      console.log(error);
+
       if (error instanceof ConflictException) {
         throw new ConflictException(
           'Please enter a unique username and email address',

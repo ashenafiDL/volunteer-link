@@ -19,7 +19,6 @@ export default function EditAvatar() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            "Access-Control-Allow-Origin": "*",
           },
         },
       );
