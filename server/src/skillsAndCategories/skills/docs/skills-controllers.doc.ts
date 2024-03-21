@@ -35,6 +35,18 @@ export const ApiFindAllSkillsEndpoint = () => {
   ]);
 };
 
+export const ApiSearchSkillsEndpoint = () => {
+  return applyCustomDecorators([
+    ApiOperation({ summary: 'Search skills by name' }),
+    ApiResponse({
+      status: 200,
+      description:
+        'Return all skills that match the query with project and user counts',
+    }),
+    ApiResponse({ status: 500, description: 'Internal Server Error' }),
+  ]);
+};
+
 export const ApiFindOneSkillEndpoint = () => {
   return applyCustomDecorators([
     ApiOperation({ summary: 'Find a skill by ID' }),

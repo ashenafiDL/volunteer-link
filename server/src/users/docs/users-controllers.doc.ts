@@ -54,6 +54,21 @@ export const ApiUpdateProfileEndpoint = () => {
   ]);
 };
 
+export const ApiRemoveSkillEndpoint = () => {
+  return applyCustomDecorators([
+    ApiOperation({ summary: 'Remove skill from current user (own) profile' }),
+    ApiResponse({ status: 200, description: 'Skill removed successfully' }),
+    ApiResponse({
+      status: 404,
+      description: 'User not found or skill not found',
+    }),
+    ApiResponse({
+      status: 500,
+      description: 'The server is experiencing an error. ',
+    }),
+  ]);
+};
+
 export const ApiDeleteAccountEndpoint = () => {
   return applyCustomDecorators([
     ApiOperation({ summary: 'Delete current user (own) account' }),

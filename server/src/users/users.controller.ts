@@ -12,6 +12,7 @@ import {
   ApiDeleteAccountEndpoint,
   ApiGetMeEndpoint,
   ApiGetUserByUsernameEndpoint,
+  ApiRemoveSkillEndpoint,
   ApiUpdateProfileEndpoint,
 } from './docs/users-controllers.doc';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -49,5 +50,12 @@ export class UserController {
   async delete(@Req() req) {
     const id = req.user.sub;
     return this.userService.deleteUser(id);
+  }
+
+  @Patch('me/skills/remove/:skillId')
+  @ApiRemoveSkillEndpoint()
+  async removeSkill(@Req() req, @Param('skillId') skillId: string) {
+    const userId = req.user.sub;
+    return this.userService.removeSkill(userId, skillId);
   }
 }

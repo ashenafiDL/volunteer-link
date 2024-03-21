@@ -4,10 +4,12 @@ import { useField } from "formik";
 export default function TextInput({
   label,
   props,
+  onChange,
   classes,
 }: {
   label: string;
   classes?: string;
+  onChange?: (e: any) => void;
   props: {
     name: string;
     id?: string;
@@ -36,6 +38,7 @@ export default function TextInput({
           classes,
         )}
         placeholder={props.placeholder}
+        onChange={(e) => onChange?.(e)}
       />
 
       <div className="min-h-[1.25rem] text-sm text-error">

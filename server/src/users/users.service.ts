@@ -253,6 +253,41 @@ export class UsersService {
     }
   }
 
+  async removeSkill(userId: string, skillId: string) {
+    try {
+      // Check if the user exists
+      const user = await this.prisma.users.findUnique({
+        where: { id: userId },
+      });
+
+      if (!user) {
+        throw new NotFoundException();
+      }
+
+      // Remove skill from the user profile
+      await this.prisma.users.update({
+        where: { id: userId },
+        data: {
+          skills: {
+            disconnect: { id: skillId },
+          },
+        },
+      });
+
+      return { message: 'Skill removed successfully' };
+    } catch (error) {
+      console.log(error);
+
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException('A user with specified id was not found');
+      } else {
+        throw new InternalServerErrorException(
+          'Failed to remove skill. Please try again later.',
+        );
+      }
+    }
+  }
+
   // Helper function to remove sensitive information from user data
   sanitizeUserData(user: any) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

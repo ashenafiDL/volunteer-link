@@ -12,7 +12,7 @@ export default function SelectInput({
     name: string;
     id?: string;
     autoComplete?: string;
-    as?: "select" | "checkbox" | "textarea";
+    multiple?: boolean;
   };
   children: React.ReactNode;
   classes?: string;

@@ -14,6 +14,7 @@ import {
   ApiDeleteSkillEndpoint,
   ApiFindAllSkillsEndpoint,
   ApiFindOneSkillEndpoint,
+  ApiSearchSkillsEndpoint,
   ApiUpdateSkillEndpoint,
 } from './docs/skills-controllers.doc';
 import { CreateSkillDto } from './dto/create-skill.dto';
@@ -36,6 +37,13 @@ export class SkillsController {
   @ApiFindAllSkillsEndpoint()
   findAll() {
     return this.skillsService.findAll();
+  }
+
+  @Public()
+  @Get('search/:query')
+  @ApiSearchSkillsEndpoint()
+  search(@Param('query') query: string) {
+    return this.skillsService.search(query);
   }
 
   @Public()

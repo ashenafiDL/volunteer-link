@@ -18,7 +18,9 @@ export default function UserSkillsCard({ skills }: { skills: any }) {
           >
             <div>
               <span className="personal-info-value">{skill.name}</span>
-              <div className="badge">{skill.category.name}</div>
+              <div className="badge badge-primary mx-2">
+                {skill.category.name}
+              </div>
             </div>
             <p className="font-light">{skill.description}</p>
           </div>

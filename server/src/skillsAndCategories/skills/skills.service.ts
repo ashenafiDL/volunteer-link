@@ -73,6 +73,32 @@ export class SkillsService {
     }
   }
 
+  async search(query: string) {
+    try {
+      return await this.prisma.skills.findMany({
+        where: {
+          name: {
+            contains: query,
+            mode: 'insensitive',
+          },
+        },
+        include: {
+          category: true,
+          _count: {
+            select: {
+              projects: true,
+              users: true,
+            },
+          },
+        },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to retrive serch result. Please try again later',
+      );
+    }
+  }
+
   async findOne(id: string) {
     try {
       const skill = await this.prisma.skills.findUnique({
