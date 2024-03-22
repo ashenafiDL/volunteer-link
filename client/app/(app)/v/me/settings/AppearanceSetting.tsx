@@ -11,7 +11,6 @@ export default function AppearanceSetting() {
 
   const [mounted, setMounted] = useState(false);
   const { setTheme, theme } = useTheme();
-  console.log("theme", theme);
 
   const handleChange = (newValue: string) => {
     setTheme(newValue.toLowerCase());

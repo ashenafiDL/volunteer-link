@@ -38,27 +38,26 @@ export default function SocialLinks({
         <p className="mb-4">Social Links</p>
 
         <ul className="space-y-3 pl-4">
-          {socialLinks?.map((link: { platform: string; url: string }) => {
-            return (
-              <>
-                {link.url !== null && (
-                  <li
-                    key={link.platform}
-                    className="cursor-pointer hover:underline"
-                  >
-                    <Link
-                      target="_blank"
-                      href={link.url}
-                      className="flex items-center gap-4"
-                    >
-                      {pickIcon(link.platform)}
-                      <span className="text-lg">{link.url}</span>
-                    </Link>
-                  </li>
-                )}
-              </>
-            );
-          })}
+          {socialLinks?.map(
+            (link: { platform: string; url: string }, index: number) => {
+              return (
+                <>
+                  {link.url !== null && (
+                    <li key={index} className="cursor-pointer hover:underline">
+                      <Link
+                        target="_blank"
+                        href={link.url}
+                        className="flex items-center gap-4"
+                      >
+                        {pickIcon(link.platform)}
+                        <span className="text-lg">{link.url}</span>
+                      </Link>
+                    </li>
+                  )}
+                </>
+              );
+            },
+          )}
         </ul>
       </div>
     </div>

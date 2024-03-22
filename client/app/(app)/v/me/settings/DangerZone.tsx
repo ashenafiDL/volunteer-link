@@ -36,7 +36,11 @@ export default function DangerZone() {
 
           <div
             onClick={() =>
-              document.getElementById("delete_account_modal")?.showModal()
+              (
+                document.getElementById(
+                  "delete_account_modal",
+                ) as HTMLDialogElement
+              ).showModal()
             }
           >
             <button className="btn btn-error">Delete Account</button>
@@ -45,7 +49,7 @@ export default function DangerZone() {
       </div>
 
       {/* Delete account modal */}
-      <dialog id="delete_account_modal" className="modal ">
+      <dialog id="delete_account_modal" className="modal">
         <div className="prose modal-box rounded-md lg:prose-lg">
           <h3>Delete Account</h3>
           <p className="text-text-200">

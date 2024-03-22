@@ -3,7 +3,7 @@ import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import {
   passwordValidation,
   repeatPasswordValidation,
-} from "@/app/lib/forms/verificationSchemas";
+} from "@/app/lib/forms/validationSchemas";
 import { TextInput } from "@/components/formElements";
 import { Form, Formik } from "formik";
 import Link from "next/link";

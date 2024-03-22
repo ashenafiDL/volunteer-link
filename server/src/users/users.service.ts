@@ -7,6 +7,7 @@ import {
 import { Gender, LocationPreference, TimePreference } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { EducationInfoDto } from './dto/education-info.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 @Injectable()
 export class UsersService {
@@ -206,8 +207,6 @@ export class UsersService {
 
       return this.sanitizeUserData(user);
     } catch (error) {
-      console.log(error);
-
       if (error instanceof ConflictException) {
         throw new ConflictException(
           'Please enter a unique username and email address',
@@ -234,6 +233,95 @@ export class UsersService {
       return user;
     } catch (error) {
       throw new InternalServerErrorException('Failed to update user password');
+    }
+  }
+
+  async updateEducation(
+    id: string,
+    educationId: string,
+    educationInfo: EducationInfoDto,
+  ) {
+    try {
+      // Check if the user exists
+      const userExists = await this.prisma.users.findUnique({
+        where: {
+          id: id,
+        },
+      });
+
+      // Check the specified education exists
+      const educationExists = await this.prisma.education.findUnique({
+        where: {
+          id: educationId,
+        },
+      });
+
+      if (!userExists || !educationExists) {
+        throw new NotFoundException();
+      }
+
+      // Update the user's education
+      await this.prisma.education.update({
+        where: {
+          id: educationId,
+        },
+        data: educationInfo,
+      });
+
+      return { message: 'Education updated successfully' };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException('User or education not found');
+      } else {
+        throw new InternalServerErrorException('Failed to update education');
+      }
+    }
+  }
+
+  async deleteEducation(id: string, educationId: string) {
+    try {
+      // Check if user exists
+      const userExists = await this.prisma.users.findUnique({
+        where: {
+          id: id,
+        },
+      });
+
+      // Check if education exists
+      const educationExists = await this.prisma.education.findUnique({
+        where: {
+          id: educationId,
+        },
+      });
+
+      if (!userExists || !educationExists) {
+        throw new NotFoundException();
+      }
+
+      // Disconnect the education info from the user profile
+      await this.prisma.users.update({
+        where: { id: id },
+        data: {
+          education: {
+            disconnect: { id: educationId },
+          },
+        },
+      });
+
+      // Delete the education info record from the database
+      await this.prisma.education.delete({
+        where: {
+          id: educationId,
+        },
+      });
+
+      return { message: 'Education deleted successfully' };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException('User or education not found');
+      } else {
+        throw new InternalServerErrorException('Failed to delete education');
+      }
     }
   }
 
@@ -276,8 +364,6 @@ export class UsersService {
 
       return { message: 'Skill removed successfully' };
     } catch (error) {
-      console.log(error);
-
       if (error instanceof NotFoundException) {
         throw new NotFoundException('A user with specified id was not found');
       } else {

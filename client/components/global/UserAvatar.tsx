@@ -35,7 +35,9 @@ export default function UserAvatar({
       }
     }
 
-    getAvatar();
+    if (email !== undefined) {
+      getAvatar();
+    }
   }, [email]);
 
   const sizeMap = {

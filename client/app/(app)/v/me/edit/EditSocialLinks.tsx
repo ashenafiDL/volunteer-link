@@ -2,7 +2,7 @@
 
 import axiosInstance from "@/app/axiosInstance";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
-import { urlValidation } from "@/app/lib/forms/verificationSchemas";
+import { urlValidation } from "@/app/lib/forms/validationSchemas";
 import SocialLinksInput from "@/components/formElements/SocialLinksInput";
 import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
@@ -22,8 +22,6 @@ export default function EditSocialLinks() {
         platform,
       };
     });
-
-    console.log("links", links);
 
     try {
       const res = await axiosInstance.patch(

@@ -80,3 +80,21 @@ export const ApiDeleteAccountEndpoint = () => {
     }),
   ]);
 };
+
+export const ApiUpdateEducationEndpoint = () => {
+  return applyCustomDecorators([
+    ApiOperation({ summary: 'Update user education information' }),
+    ApiResponse({ status: 200, description: 'Education updated successfully' }),
+    ApiResponse({ status: 404, description: 'User or education not found' }),
+    ApiResponse({ status: 500, description: 'Failed to update education' }),
+  ]);
+};
+
+export const ApiDeleteEducationEndpoint = () => {
+  return applyCustomDecorators([
+    ApiOperation({ summary: 'Delete user education information' }),
+    ApiResponse({ status: 200, description: 'Education deleted successfully' }),
+    ApiResponse({ status: 404, description: 'User or education not found' }),
+    ApiResponse({ status: 500, description: 'Failed to delete education' }),
+  ]);
+};

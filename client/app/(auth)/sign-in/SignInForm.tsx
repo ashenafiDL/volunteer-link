@@ -4,7 +4,7 @@ import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import {
   emailValidation,
   passwordValidation,
-} from "@/app/lib/forms/verificationSchemas";
+} from "@/app/lib/forms/validationSchemas";
 import { TextInput } from "@/components/formElements";
 import axios from "axios";
 import { Form, Formik } from "formik";

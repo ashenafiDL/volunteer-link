@@ -11,7 +11,7 @@ import {
   lastNameValidation,
   locationValidation,
   usernameValidation,
-} from "@/app/lib/forms/verificationSchemas";
+} from "@/app/lib/forms/validationSchemas";
 import { SelectInput, TextInput } from "@/components/formElements";
 import TextAreaInput from "@/components/formElements/TextAreaInput";
 import { Form, Formik } from "formik";
@@ -66,7 +66,7 @@ export default function EditPersonalInfo({
         gender: user.gender || "",
         age: user.age || 0,
         email: user.email || "",
-        location: user?.location?.name || "",
+        locationId: user.location.id || "",
       });
     }
   }, [user]);
@@ -88,7 +88,7 @@ export default function EditPersonalInfo({
                 gender: genderValidation,
                 age: ageValidation,
                 email: emailValidation,
-                location: locationValidation,
+                locationId: locationValidation,
               })}
               onSubmit={async (values) => {
                 handleSubmit(values);
@@ -183,7 +183,7 @@ export default function EditPersonalInfo({
                         }}
                       >
                         <option>--Select your location--</option>
-                        {locations.map((location: any) => {
+                        {locations?.map((location: any) => {
                           return (
                             <option key={location.id} value={location.id}>
                               {location.name}

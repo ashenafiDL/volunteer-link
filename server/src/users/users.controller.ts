@@ -10,11 +10,14 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import {
   ApiDeleteAccountEndpoint,
+  ApiDeleteEducationEndpoint,
   ApiGetMeEndpoint,
   ApiGetUserByUsernameEndpoint,
   ApiRemoveSkillEndpoint,
+  ApiUpdateEducationEndpoint,
   ApiUpdateProfileEndpoint,
 } from './docs/users-controllers.doc';
+import { EducationInfoDto } from './dto/education-info.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 
@@ -43,6 +46,28 @@ export class UserController {
   async update(@Req() req, @Body() updateUserDto: UpdateUserDto) {
     const id = req.user.sub;
     return this.userService.updateUser(id, updateUserDto);
+  }
+
+  @Patch('me/education/update/:educationId')
+  @ApiUpdateEducationEndpoint()
+  async updateEducation(
+    @Req() req,
+    @Param('educationId') educationId: string,
+    @Body() updateEducationInfoDto: EducationInfoDto,
+  ) {
+    const userId = req.user.sub;
+    return this.userService.updateEducation(
+      userId,
+      educationId,
+      updateEducationInfoDto,
+    );
+  }
+
+  @Delete('me/education/remove/:educationId')
+  @ApiDeleteEducationEndpoint()
+  async removeEducation(@Req() req, @Param('educationId') educationId: string) {
+    const userId = req.user.sub;
+    return this.userService.deleteEducation(userId, educationId);
   }
 
   @Delete('me/delete')

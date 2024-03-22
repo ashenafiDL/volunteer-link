@@ -1,4 +1,4 @@
-import { emailValidation } from "@/app/lib/forms/verificationSchemas";
+import { emailValidation } from "@/app/lib/forms/validationSchemas";
 import { TextInput } from "@/components/formElements";
 import axios from "axios";
 import { Form, Formik } from "formik";

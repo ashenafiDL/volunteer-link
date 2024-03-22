@@ -55,3 +55,32 @@ export const urlValidation = Yup.string()
   .url("Invalid URL format")
   .trim()
   .nullable();
+
+// Input field used in `Add Education Info` form - START
+export const fieldNameValidation = Yup.string()
+  .required("Field of study is required")
+  .min(5, "Field of study must be at least 5 characters long");
+
+export const instituteValidation = Yup.string()
+  .required("Institute name is required")
+  .min(5, "Institute name must be at least 5 characters long");
+
+export const startDateValidation = Yup.date()
+  .required("Start date is required")
+  .max(new Date(), "Start date must be less than today");
+
+export const endDateValidation = Yup.date().when(
+  "stillStudying",
+  (stillStudying, schema) =>
+    !stillStudying
+      ? schema
+          .required("End date is required")
+          .min(Yup.ref("startDate"), "End date must be after start date")
+      : schema,
+);
+
+export const descriptionValidation = Yup.string().max(
+  500,
+  "Description must be at most 500 characters",
+);
+// Input field used in `Add Education Info` form - END

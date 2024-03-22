@@ -16,7 +16,6 @@ type Options = {
 
 export default function NotificationSetting() {
   const { user } = useAuthContext();
-  console.log("user", user);
 
   const texts: Texts = {
     task_assigned: {

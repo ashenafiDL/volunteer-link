@@ -14,7 +14,7 @@ import {
   passwordValidation,
   repeatPasswordValidation,
   usernameValidation,
-} from "../../lib/forms/verificationSchemas";
+} from "../../lib/forms/validationSchemas";
 
 export default function SignUpForm({ locations }: { locations: object[] }) {
   const router = useRouter();
@@ -47,10 +47,6 @@ export default function SignUpForm({ locations }: { locations: object[] }) {
             `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
             values,
           );
-
-          if (res.status !== 201) {
-            console.log(res);
-          }
 
           if (res.status === 201) {
             const expiresIn = new Date(Date.now() + 48 * 60 * 60 * 1000); // Expires in 2 day
