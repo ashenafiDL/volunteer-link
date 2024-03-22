@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Providers from "./Providers";
 import "./globals.css";
+import AlertsProvider from "./lib/contexts/AlertContext";
 import AppContext from "./lib/contexts/AppContext";
 
 export const metadata: Metadata = {
@@ -16,10 +17,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-base-200/40" suppressHydrationWarning>
       <body>
-        {/* Theme provider for next-themes */}
-        <Providers>
-          <AppContext>{children}</AppContext>
-        </Providers>
+        <AlertsProvider>
+          {/* Theme provider for next-themes */}
+          <Providers>
+            <AppContext>{children}</AppContext>
+          </Providers>
+        </AlertsProvider>
       </body>
     </html>
   );

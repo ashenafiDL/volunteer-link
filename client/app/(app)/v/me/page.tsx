@@ -46,13 +46,15 @@ export default function Profile() {
       <div>
         {user?.education?.length > 0 && (
           <>
-            <div className="space-y-3 rounded-b-none">
-              <h5 className="card-title">Education</h5>
+            <div className="card space-y-3 rounded-md rounded-b-none">
+              <div className="card-body">
+                <h5 className="card-title">Education</h5>
 
-              {/* Only show three education info */}
-              <UserEducationInfoCard
-                educationInfo={user.education.slice(0, 3)}
-              />
+                {/* Only show three education info */}
+                <UserEducationInfoCard
+                  educationInfo={user.education.slice(0, 3)}
+                />
+              </div>
             </div>
             {user.education.length > 3 && (
               <ShowMoreCard href={"/v/me/education"} />
