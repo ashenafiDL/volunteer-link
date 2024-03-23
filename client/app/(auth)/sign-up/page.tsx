@@ -12,11 +12,11 @@ export default async function SignUp() {
         <h3 className="text-3xl font-medium leading-9">Create an account</h3>
         <p className="font-normal leading-tight">
           By creating an account you agree to our{" "}
-          <span className="text-primary underline">
+          <span className="text-base-content underline">
             <Link href="/tos">terms of service </Link>
           </span>
           and{" "}
-          <span className="text-primary underline">
+          <span className="text-base-content underline">
             <Link href="/privacy">privacy policy</Link>
           </span>
           .
@@ -27,7 +27,7 @@ export default async function SignUp() {
 
       <Link className="self-center" href="/sign-in">
         <span>Already have an account? </span>
-        <span className="text-primary underline">Sign in.</span>
+        <span className="text-base-content underline">Sign in.</span>
       </Link>
     </>
   );

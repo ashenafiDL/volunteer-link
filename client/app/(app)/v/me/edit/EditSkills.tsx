@@ -1,6 +1,7 @@
 "use client";
 
 import axiosInstance from "@/app/axiosInstance";
+import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import { TextInput } from "@/components/formElements";
 import axios from "axios";
@@ -12,6 +13,7 @@ import { useDebouncedCallback } from "use-debounce";
 
 export default function EditSkills() {
   const { user, getUser, setUser } = useAuthContext();
+  const { addAlert, dismissAlert } = useAlertsContext();
   const [skills, setSkills] = useState<any>();
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -35,7 +37,13 @@ export default function EditSkills() {
         setUser(updatedUser);
       }
     } catch (error) {
-      // TODO: handle error
+      const id = addAlert({
+        severity: "error",
+        message: "Failed to add skill. Please try again.",
+      });
+      setTimeout(() => {
+        dismissAlert(id);
+      }, 3000);
     }
   };
 
@@ -51,7 +59,13 @@ export default function EditSkills() {
         setUser(updatedUser);
       }
     } catch (error) {
-      // TODO: handle error
+      const id = addAlert({
+        severity: "error",
+        message: "Failed to remove skill. Please try again.",
+      });
+      setTimeout(() => {
+        dismissAlert(id);
+      }, 3000);
     }
   };
 
@@ -67,7 +81,13 @@ export default function EditSkills() {
           setSkills(res.data);
         }
       } catch (error) {
-        // TODO: handle error
+        const id = addAlert({
+          severity: "error",
+          message: "Failed to retrieve list of skills. Please try again.",
+        });
+        setTimeout(() => {
+          dismissAlert(id);
+        }, 3000);
       }
     };
 
@@ -76,7 +96,7 @@ export default function EditSkills() {
     } else {
       setSkills(null);
     }
-  }, [searchQuery]);
+  }, [addAlert, dismissAlert, searchQuery]);
 
   return (
     <div className="space-y-1">

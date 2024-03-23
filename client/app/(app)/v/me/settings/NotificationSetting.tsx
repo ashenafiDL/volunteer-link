@@ -1,6 +1,7 @@
 "use client";
 
 import axiosInstance from "@/app/axiosInstance";
+import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import Toggle from "@/components/global/Toggle";
 import SettingItemText from "../../components/SettingItemText";
@@ -16,6 +17,7 @@ type Options = {
 
 export default function NotificationSetting() {
   const { user } = useAuthContext();
+  const { addAlert, dismissAlert } = useAlertsContext();
 
   const texts: Texts = {
     task_assigned: {
@@ -64,10 +66,23 @@ export default function NotificationSetting() {
       );
 
       if (res.status === 200) {
-        // TODO: show snackbar here
+        const id = addAlert({
+          severity: "success",
+          message: "Successfully updated your notification settings.",
+        });
+        setTimeout(() => {
+          dismissAlert(id);
+        }, 3000);
       }
     } catch (error) {
-      // TODO: handle error
+      const id = addAlert({
+        severity: "error",
+        message:
+          "Failed to update your notification settings. Please try again.",
+      });
+      setTimeout(() => {
+        dismissAlert(id);
+      }, 3000);
     }
   };
 

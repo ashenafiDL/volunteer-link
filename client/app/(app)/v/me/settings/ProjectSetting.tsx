@@ -1,12 +1,14 @@
 "use client";
 
 import axiosInstance from "@/app/axiosInstance";
+import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import Toggle from "@/components/global/Toggle";
 import SettingItemText from "../../components/SettingItemText";
 
 export default function ProjectSetting() {
   const { user } = useAuthContext();
+  const { addAlert, dismissAlert } = useAlertsContext();
 
   const handleTimePreferenceChange = async (value: string) => {
     try {
@@ -19,9 +21,22 @@ export default function ProjectSetting() {
 
       if (res.status === 200) {
         user.timePreference = value;
+        const id = addAlert({
+          severity: "success",
+          message: "Successfully updated your time preference.",
+        });
+        setTimeout(() => {
+          dismissAlert(id);
+        }, 3000);
       }
     } catch (error) {
-      // TODO: handle error
+      const id = addAlert({
+        severity: "error",
+        message: "Failed to update your time preference. Please try again.",
+      });
+      setTimeout(() => {
+        dismissAlert(id);
+      }, 3000);
     }
   };
 
@@ -36,9 +51,22 @@ export default function ProjectSetting() {
 
       if (res.status === 200) {
         user.timePreference = value;
+        const id = addAlert({
+          severity: "success",
+          message: "Successfully updated your location preference.",
+        });
+        setTimeout(() => {
+          dismissAlert(id);
+        }, 3000);
       }
     } catch (error) {
-      // TODO: handle error
+      const id = addAlert({
+        severity: "error",
+        message: "Failed to update your location preference. Please try again.",
+      });
+      setTimeout(() => {
+        dismissAlert(id);
+      }, 3000);
     }
   };
 

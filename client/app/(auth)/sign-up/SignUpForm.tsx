@@ -1,5 +1,6 @@
 "use client";
 
+import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import { SelectInput, TextInput } from "@/components/formElements";
 import axios from "axios";
@@ -20,6 +21,7 @@ export default function SignUpForm({ locations }: { locations: object[] }) {
   const router = useRouter();
 
   const { setUser, setToken, setIsLoggedIn } = useAuthContext();
+  const { addAlert, dismissAlert } = useAlertsContext();
 
   return (
     <Formik
@@ -59,7 +61,13 @@ export default function SignUpForm({ locations }: { locations: object[] }) {
             router.replace("/");
           }
         } catch (error: any) {
-          // TODO: return the snackbar here
+          const id = addAlert({
+            severity: "error",
+            message: error.response.data.message,
+          });
+          setTimeout(() => {
+            dismissAlert(id);
+          }, 3000);
         }
       }}
     >

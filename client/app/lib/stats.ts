@@ -6,13 +6,10 @@ export async function fetchStats() {
       `${process.env.NEXT_PUBLIC_API_URL}/stats/summary`,
     );
 
-    if (res.status !== 200) {
-      throw new Error("Failed to fetch stats");
+    if (res.status === 200) {
+      return res.data;
     }
-
-    return res.data;
   } catch (error) {
-    // TODO: - return the snackbar here
     return null;
   }
 }

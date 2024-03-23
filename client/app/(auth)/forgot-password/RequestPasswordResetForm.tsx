@@ -1,3 +1,4 @@
+import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { emailValidation } from "@/app/lib/forms/validationSchemas";
 import { TextInput } from "@/components/formElements";
 import axios from "axios";
@@ -12,6 +13,31 @@ export default function RequestPasswordResetForm({
   setEmailSent: (success: boolean) => void;
   setEmail: (email: string) => void;
 }) {
+  const { addAlert, dismissAlert } = useAlertsContext();
+
+  const handleSubmit = async (values: any) => {
+    setEmail(values.email);
+
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/forgotPassword`,
+        values,
+      );
+
+      if (res.status === 201) {
+        setEmailSent(true);
+      }
+    } catch (error: any) {
+      const id = addAlert({
+        severity: "error",
+        message: error.response.data.message,
+      });
+      setTimeout(() => {
+        dismissAlert(id);
+      }, 3000);
+    }
+  };
+
   return (
     <>
       <div className="space-y-2">
@@ -30,18 +56,7 @@ export default function RequestPasswordResetForm({
           email: emailValidation,
         })}
         onSubmit={async (values) => {
-          setEmail(values.email);
-
-          try {
-            await axios.post(
-              `${process.env.NEXT_PUBLIC_API_URL}/auth/forgotPassword`,
-              values,
-            );
-
-            setEmailSent(true);
-          } catch (error: any) {
-            // TODO: show error
-          }
+          handleSubmit(values);
         }}
       >
         {({ isSubmitting }) => (
@@ -55,14 +70,16 @@ export default function RequestPasswordResetForm({
               }}
             />
 
-            <button className="btn btn-primary">Send</button>
+            <button className="btn btn-primary" disabled={isSubmitting}>
+              Send
+            </button>
           </Form>
         )}
       </Formik>
 
       <Link className="self-center" href="/sign-in">
         <span>Did you remember you password? </span>
-        <span className="text-primary underline">Sign in.</span>
+        <span className="text-base-content underline">Sign in.</span>
       </Link>
     </>
   );

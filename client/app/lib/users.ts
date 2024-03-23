@@ -6,13 +6,10 @@ export async function fetchUser(username: string) {
       `${process.env.NEXT_PUBLIC_API_URL}/users/${username}`,
     );
 
-    if (res.status !== 200) {
-      throw new Error("Failed to fetch user");
+    if (res.status === 200) {
+      return res.data;
     }
-
-    return res.data;
   } catch (error) {
-    // TODO: - return the snackbar here
     return null;
   }
 }

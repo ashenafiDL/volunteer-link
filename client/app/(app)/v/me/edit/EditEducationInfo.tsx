@@ -1,6 +1,7 @@
 "use client";
 
 import axiosInstance from "@/app/axiosInstance";
+import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import {
   descriptionValidation,
@@ -19,6 +20,7 @@ import * as Yup from "yup";
 
 export default function EditEducationInfo() {
   const { user, getUser, setUser } = useAuthContext();
+  const { addAlert, dismissAlert } = useAlertsContext();
   const [currentEditing, setCurrentEditing] = useState<any>();
   const [currentDeleting, setCurrentDeleting] = useState<any>();
 
@@ -55,7 +57,13 @@ export default function EditEducationInfo() {
         setUser(updatedUser);
       }
     } catch (error) {
-      // TODO: Handle error
+      const id = addAlert({
+        severity: "error",
+        message: "Failed to add education info. Please try again.",
+      });
+      setTimeout(() => {
+        dismissAlert(id);
+      }, 3000);
     } finally {
       closeModal("add_education_info_modal");
     }
@@ -80,7 +88,13 @@ export default function EditEducationInfo() {
         setUser(updatedUser);
       }
     } catch (error) {
-      // TODO: Handle error
+      const id = addAlert({
+        severity: "error",
+        message: "Failed to update education info. Please try again.",
+      });
+      setTimeout(() => {
+        dismissAlert(id);
+      }, 3000);
     } finally {
       closeModal("edit_education_info_modal");
     }
@@ -97,7 +111,13 @@ export default function EditEducationInfo() {
         setUser(updatedUser);
       }
     } catch (error) {
-      // TODO: Handle error
+      const id = addAlert({
+        severity: "error",
+        message: "Failed to delete education info. Please try again.",
+      });
+      setTimeout(() => {
+        dismissAlert(id);
+      }, 3000);
     }
   };
 

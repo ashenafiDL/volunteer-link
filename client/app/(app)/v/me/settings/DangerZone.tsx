@@ -1,11 +1,13 @@
 "use client";
 
 import axiosInstance from "@/app/axiosInstance";
+import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import SettingItemText from "../../components/SettingItemText";
 
 export default function DangerZone() {
   const { logout, setIsLoggedIn, setToken, setUser } = useAuthContext();
+  const { addAlert, dismissAlert } = useAlertsContext();
 
   const handleDelete = async () => {
     try {
@@ -20,7 +22,13 @@ export default function DangerZone() {
         setIsLoggedIn(false);
       }
     } catch (error) {
-      // TODO: - return the snackbar here
+      const id = addAlert({
+        severity: "error",
+        message: "Failed to delete account. Please try again.",
+      });
+      setTimeout(() => {
+        dismissAlert(id);
+      }, 3000);
     }
   };
 

@@ -24,13 +24,13 @@ export default function LandingPage() {
         <WhyVolunteer />
 
         {/* Join us section */}
-        <div className="prose lg:prose-lg container min-w-full text-center">
+        <div className="container prose min-w-full text-center lg:prose-lg">
           <h1>Ready to make a difference?</h1>
           <p className="mb-8">
             Get involved today and help us build a better community.
           </p>
           <Link href="/sign-up">
-            <button className="btn">Join Us</button>
+            <button className="btn btn-primary">Join Us</button>
           </Link>
         </div>
 

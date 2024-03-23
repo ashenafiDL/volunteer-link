@@ -1,12 +1,14 @@
 "use client";
 
 import axiosInstance from "@/app/axiosInstance";
+import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import UserAvatar from "@/components/global/UserAvatar";
 import "../../components/styles.css";
 
 export default function EditAvatar() {
   const { user, getUser, setUser } = useAuthContext();
+  const { addAlert, dismissAlert } = useAlertsContext();
 
   const handleChange = async (e: any) => {
     try {
@@ -28,7 +30,13 @@ export default function EditAvatar() {
         setUser(updatedUser);
       }
     } catch (e) {
-      // TODO: show snackbar here
+      const id = addAlert({
+        severity: "error",
+        message: "Failed to update profile picture. Please try again.",
+      });
+      setTimeout(() => {
+        dismissAlert(id);
+      }, 3000);
     }
   };
 
@@ -43,7 +51,13 @@ export default function EditAvatar() {
         setUser(updatedUser);
       }
     } catch (e) {
-      // TODO: show snackbar here
+      const id = addAlert({
+        severity: "error",
+        message: "Failed to remove profile picture. Please try again.",
+      });
+      setTimeout(() => {
+        dismissAlert(id);
+      }, 3000);
     }
   };
 

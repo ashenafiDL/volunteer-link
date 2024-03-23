@@ -1,4 +1,5 @@
 import axiosInstance from "@/app/axiosInstance";
+import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import {
   passwordValidation,
@@ -21,6 +22,7 @@ export default function ResetPasswordForm({
 }) {
   const router = useRouter();
   const { setIsLoggedIn, setToken, setUser } = useAuthContext();
+  const { addAlert, dismissAlert } = useAlertsContext();
 
   return (
     <>
@@ -49,16 +51,23 @@ export default function ResetPasswordForm({
               },
             );
 
-            setIsLoggedIn(true);
-            setToken(res.data.token);
-            setUser(res.data);
+            if (res.status === 201) {
+              setIsLoggedIn(true);
 
-            setEmailSent(false);
-            setEmail("");
-
-            router.replace("/");
+              setToken(res.data.token);
+              setUser(res.data);
+              setEmailSent(false);
+              setEmail("");
+              router.replace("/");
+            }
           } catch (error: any) {
-            // TODO: - return the snackbar here
+            const id = addAlert({
+              severity: "error",
+              message: error.response.data.message,
+            });
+            setTimeout(() => {
+              dismissAlert(id);
+            }, 3000);
           }
         }}
       >
@@ -91,7 +100,7 @@ export default function ResetPasswordForm({
 
       <Link className="self-center" href="/sign-in">
         <span>Did you remember you password? </span>
-        <span className="text-primary underline">Sign in.</span>
+        <span className="text-base-content underline">Sign in.</span>
       </Link>
     </>
   );

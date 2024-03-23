@@ -94,7 +94,7 @@ export class SkillsService {
       });
     } catch (error) {
       throw new InternalServerErrorException(
-        'Failed to retrive serch result. Please try again later',
+        'Failed to retrieve search result. Please try again later',
       );
     }
   }

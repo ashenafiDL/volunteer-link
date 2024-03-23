@@ -1,6 +1,7 @@
 "use client";
 
 import axiosInstance from "@/app/axiosInstance";
+import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import { urlValidation } from "@/app/lib/forms/validationSchemas";
 import SocialLinksInput from "@/components/formElements/SocialLinksInput";
@@ -10,6 +11,7 @@ import * as Yup from "yup";
 
 export default function EditSocialLinks() {
   const { user, getUser, setUser } = useAuthContext();
+  const { addAlert, dismissAlert } = useAlertsContext();
   const [initialValues, setInitialValues] = useState<any>({});
   const [isUserLoaded, setIsUserLoaded] = useState(false);
 
@@ -36,7 +38,13 @@ export default function EditSocialLinks() {
         setUser(updatedUser);
       }
     } catch (error) {
-      // TODO: handle error
+      const id = addAlert({
+        severity: "error",
+        message: "Failed to update social links. Please try again.",
+      });
+      setTimeout(() => {
+        dismissAlert(id);
+      }, 3000);
     }
   };
 

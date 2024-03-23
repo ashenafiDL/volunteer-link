@@ -1,3 +1,4 @@
+import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import axios from "axios";
 import Link from "next/link";
 import { ChangeEvent, KeyboardEvent, useEffect, useRef } from "react";
@@ -9,6 +10,7 @@ export default function VerifyResetCodeForm({
   email: string | null;
   setIsValidCode: (isValidCode: boolean) => void;
 }) {
+  const { addAlert, dismissAlert } = useAlertsContext();
   const inputs = useRef<HTMLInputElement[]>([]);
 
   useEffect(() => {
@@ -61,7 +63,13 @@ export default function VerifyResetCodeForm({
         document.cookie = `token=${res.data.token}; expires=${expiresIn.toUTCString()}; Secure; path=/`;
       }
     } catch (error: any) {
-      // TODO: handle error
+      const id = addAlert({
+        severity: "error",
+        message: error.response.data.message,
+      });
+      setTimeout(() => {
+        dismissAlert(id);
+      }, 3000);
     }
   };
 
@@ -100,7 +108,7 @@ export default function VerifyResetCodeForm({
 
       <Link className="self-center" href="/sign-in">
         <span>Did you remember you password? </span>
-        <span className="text-primary underline">Sign in.</span>
+        <span className="text-base-content underline">Sign in.</span>
       </Link>
     </>
   );
