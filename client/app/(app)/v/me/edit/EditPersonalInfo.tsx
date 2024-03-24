@@ -66,7 +66,7 @@ export default function EditPersonalInfo({
         gender: user.gender || "",
         age: user.age || 0,
         email: user.email || "",
-        locationId: user.location.id || "",
+        locationId: user?.location?.id || "",
       });
     }
   }, [user]);

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { StrictMode } from "react";
 import Providers from "./Providers";
 import "./globals.css";
 import AlertsProvider from "./lib/contexts/AlertContext";
@@ -15,15 +16,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="bg-base-200/40" suppressHydrationWarning>
-      <body>
-        <AlertsProvider>
-          {/* Theme provider for next-themes */}
-          <Providers>
-            <AppContext>{children}</AppContext>
-          </Providers>
-        </AlertsProvider>
-      </body>
-    </html>
+    <StrictMode>
+      <html lang="en" className="bg-base-200/40" suppressHydrationWarning>
+        <body>
+          <AlertsProvider>
+            {/* Theme provider for next-themes */}
+            <Providers>
+              <AppContext>{children}</AppContext>
+            </Providers>
+          </AlertsProvider>
+        </body>
+      </html>
+    </StrictMode>
   );
 }

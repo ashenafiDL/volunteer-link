@@ -10,7 +10,7 @@ export default function Header() {
 
   return (
     <div className="bg-accent text-accent-content">
-      <nav className="container relative flex items-center justify-between py-2">
+      <nav className="container relative flex items-center justify-between py-1">
         {/* Logo icon */}
         <Link href="/">
           <BiDonateBlood size={40} />
