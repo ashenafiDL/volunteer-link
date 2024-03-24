@@ -26,7 +26,7 @@ export default function ResetPasswordForm({
 
   return (
     <>
-      <div className="space-y-2">
+      <div className="mb-3 space-y-2">
         <h3 className="text-3xl font-medium leading-9">
           Enter your new password
         </h3>

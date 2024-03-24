@@ -8,7 +8,7 @@ export default async function SignUp() {
 
   return (
     <>
-      <div className="space-y-2">
+      <div className="mb-3 space-y-2">
         <h3 className="text-3xl font-medium leading-9">Create an account</h3>
         <p className="font-normal leading-tight">
           By creating an account you agree to our{" "}

@@ -75,7 +75,7 @@ export default function VerifyResetCodeForm({
 
   return (
     <>
-      <div className="space-y-2">
+      <div className="mb-3 space-y-2">
         <h3 className="text-3xl font-medium leading-9">Check your inbox.</h3>
         <p className="font-normal leading-tight">
           Enter the six digit password reset code sent to {email}.
@@ -86,6 +86,7 @@ export default function VerifyResetCodeForm({
         <div className="flex gap-4 [&>input]:w-[calc(100%/6)] [&>input]:text-center [&>input]:text-xl">
           {Array.from({ length: 6 }, (_, index) => (
             <input
+              className="bg-base-100 text-base-content focus:border-primary focus:ring-primary"
               key={index}
               ref={(ref) => (inputs.current[index] = ref as HTMLInputElement)}
               type="text"
