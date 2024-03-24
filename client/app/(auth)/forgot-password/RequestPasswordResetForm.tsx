@@ -30,7 +30,9 @@ export default function RequestPasswordResetForm({
     } catch (error: any) {
       const id = addAlert({
         severity: "error",
-        message: error.response.data.message,
+        message:
+          error?.response?.data?.message ||
+          "Failed to send password reset code. Please try again.",
       });
       setTimeout(() => {
         dismissAlert(id);

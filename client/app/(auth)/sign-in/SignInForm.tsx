@@ -44,7 +44,9 @@ export default function SignInForm() {
         } catch (error: any) {
           const id = addAlert({
             severity: "error",
-            message: error.response.data.message,
+            message:
+              error?.response?.data?.message ||
+              "Failed to sign in. Please try again.",
           });
           setTimeout(() => {
             dismissAlert(id);

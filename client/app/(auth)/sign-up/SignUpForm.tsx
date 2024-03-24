@@ -63,7 +63,9 @@ export default function SignUpForm({ locations }: { locations: object[] }) {
         } catch (error: any) {
           const id = addAlert({
             severity: "error",
-            message: error.response.data.message,
+            message:
+              error?.response?.data?.message ||
+              "Failed to sign up. Please try again.",
           });
           setTimeout(() => {
             dismissAlert(id);

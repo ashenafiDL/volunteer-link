@@ -63,7 +63,9 @@ export default function ResetPasswordForm({
           } catch (error: any) {
             const id = addAlert({
               severity: "error",
-              message: error.response.data.message,
+              message:
+                error?.response?.data?.message ||
+                "Failed to reset password. Please try again.",
             });
             setTimeout(() => {
               dismissAlert(id);

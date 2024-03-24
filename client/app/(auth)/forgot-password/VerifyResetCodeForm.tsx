@@ -65,7 +65,9 @@ export default function VerifyResetCodeForm({
     } catch (error: any) {
       const id = addAlert({
         severity: "error",
-        message: error.response.data.message,
+        message:
+          error?.response?.data?.message ||
+          "Failed to verify password reset code. Please try again.",
       });
       setTimeout(() => {
         dismissAlert(id);

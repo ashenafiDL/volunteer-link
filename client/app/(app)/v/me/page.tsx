@@ -17,7 +17,7 @@ export default function Profile() {
         firstName={user.firstName}
         lastName={user.lastName}
         gender={user.gender}
-        locationName={user.location != undefined && user.location.name}
+        locationName={user?.location?.name || "N/A"}
         age={user.age}
         email={user.email}
       />
@@ -27,7 +27,7 @@ export default function Profile() {
 
       {/* Skills card */}
       <div>
-        {user?.skills?.length > 0 && (
+        {user.skills && user.skills.length > 0 && (
           <>
             <div className="card rounded-md rounded-b-none">
               <div className="card-body">
@@ -44,7 +44,7 @@ export default function Profile() {
 
       {/* Education information card */}
       <div>
-        {user?.education?.length > 0 && (
+        {user.education && user.education.length > 0 && (
           <>
             <div className="card space-y-3 rounded-md rounded-b-none">
               <div className="card-body">
