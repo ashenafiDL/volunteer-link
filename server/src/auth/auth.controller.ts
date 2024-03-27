@@ -8,12 +8,13 @@ import {
   ApiResetPasswordEndpoint,
   ApiSignInEndpoint,
   ApiVerifyResetCodeEndpoint,
+  ApiVerifyVerificationCodeEndpoint,
 } from './docs/auth-controllers.doc';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { SignInDto } from './dto/sign-in.dto';
-import { VerifyResetCodeDto } from './dto/verify-reset-code.dto';
+import { VerifyCodeDto } from './dto/verify-code.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -25,6 +26,13 @@ export class AuthController {
   @ApiRegisterEndpoint()
   register(@Body() createUserDto: CreateUserDto) {
     return this.authService.register(createUserDto);
+  }
+
+  @Public()
+  @Post('verifyEmail')
+  @ApiVerifyVerificationCodeEndpoint()
+  verifyEmail(@Body() verifyCodeDto: VerifyCodeDto) {
+    return this.authService.verifyEmail(verifyCodeDto);
   }
 
   @Public()
@@ -44,8 +52,8 @@ export class AuthController {
   @Public()
   @Post('verifyResetCode')
   @ApiVerifyResetCodeEndpoint()
-  verifyResetCode(@Body() verifyResetCodeDto: VerifyResetCodeDto) {
-    return this.authService.verifyResetCode(verifyResetCodeDto);
+  verifyResetCode(@Body() verifyCodeDto: VerifyCodeDto) {
+    return this.authService.verifyResetCode(verifyCodeDto);
   }
 
   @Post('resetPassword')

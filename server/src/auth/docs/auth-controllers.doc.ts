@@ -90,3 +90,23 @@ export const ApiResetPasswordEndpoint = () => {
     }),
   ]);
 };
+
+export const ApiVerifyVerificationCodeEndpoint = () => {
+  return applyCustomDecorators([
+    ApiOperation({ summary: 'Verify email verification code' }),
+    ApiResponse({
+      status: 200,
+      description: 'Email verification code verified successfully.',
+    }),
+    ApiResponse({ status: 404, description: 'Not Found - User not found.' }),
+    ApiResponse({
+      status: 406,
+      description: 'Not Acceptable - Verification code incorrect.',
+    }),
+    ApiResponse({
+      status: 500,
+      description:
+        'Internal Server Error - Failed to verify reset code. Please try again later.',
+    }),
+  ]);
+};

@@ -1,34 +1,21 @@
-import { fetchLocations } from "@/app/lib/locations";
-import Link from "next/link";
-import { Suspense } from "react";
-import SignUpForm from "./SignUpForm";
+"use client";
 
-export default async function SignUp() {
-  const locations = await fetchLocations();
+import { useState } from "react";
+import SignUpFormContainer from "./SignUpFormContainer";
+import VerifyEmail from "./VerifyEmail";
+
+export default function SignUp() {
+  const [email, setEmail] = useState<string | null>(null);
+  const [emailSent, setEmailSent] = useState(false);
 
   return (
     <>
-      <div className="mb-3 space-y-2">
-        <h3 className="text-3xl font-medium leading-9">Create an account</h3>
-        <p className="font-normal leading-tight">
-          By creating an account you agree to our{" "}
-          <span className="text-base-content underline">
-            <Link href="/tos">terms of service </Link>
-          </span>
-          and{" "}
-          <span className="text-base-content underline">
-            <Link href="/privacy">privacy policy</Link>
-          </span>
-          .
-        </p>
-      </div>
-
-      <SignUpForm locations={locations} />
-
-      <Link className="self-center" href="/sign-in">
-        <span>Already have an account? </span>
-        <span className="text-base-content underline">Sign in.</span>
-      </Link>
+      {/* email not sent */}
+      {!emailSent ? (
+        <SignUpFormContainer setEmail={setEmail} setEmailSent={setEmailSent} />
+      ) : (
+        <VerifyEmail email={email} />
+      )}
     </>
   );
 }

@@ -94,4 +94,39 @@ export class EmailService {
       );
     }
   }
+
+  async sendEmailVerificationCode(
+    recipient: string,
+    fullName: string,
+    code: string,
+  ) {
+    try {
+      const templatePath = join(
+        process.cwd(),
+        'templates',
+        'verifyYourEmail.hbs',
+      );
+      const template = fs.readFileSync(templatePath, 'utf8');
+
+      const compiledTemplate = Handlebars.compile(template);
+      const html = compiledTemplate({
+        name: fullName,
+        code: code,
+      });
+
+      await this.mailerService.sendMail({
+        to: recipient,
+        subject: `Your verification code - ${code}`,
+        html: html,
+      });
+
+      return {
+        message: 'Email with email verification code sent',
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to send email verification code. Please try again later.',
+      );
+    }
+  }
 }

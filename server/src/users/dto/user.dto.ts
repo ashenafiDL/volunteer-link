@@ -68,6 +68,12 @@ export class UserDto {
   resetCode: string;
 
   @ApiProperty({
+    description: "6 digit code sent to the user's email to verify email",
+  })
+  @IsString()
+  verificationCode: string;
+
+  @ApiProperty({
     description: 'A list of key value pairs containing the users social links',
     type: [SocialLinkDto],
   })

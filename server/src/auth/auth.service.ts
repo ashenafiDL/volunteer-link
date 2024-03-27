@@ -16,7 +16,7 @@ import { UsersService } from 'src/users/users.service';
 import { jwtConstants } from './constants';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
-import { VerifyResetCodeDto } from './dto/verify-reset-code.dto';
+import { VerifyCodeDto } from './dto/verify-code.dto';
 
 @Injectable()
 export class AuthService {
@@ -33,12 +33,16 @@ export class AuthService {
 
       const fullName = `${newUser.firstName} ${newUser.lastName}`;
 
-      this.emailService.sendAccountCreatedConfirmation(newUser.email, fullName);
+      const verificationCode = await this.generateEmailVerificationCode(
+        newUser.id,
+        newUser.email,
+      );
 
-      return this.generateTokenAndUpdateUser({
-        sub: newUser.id,
-        email: newUser.email,
-      });
+      return this.emailService.sendEmailVerificationCode(
+        newUser.email,
+        fullName,
+        verificationCode,
+      );
     } catch (error) {
       if (
         error instanceof NotFoundException ||
@@ -48,6 +52,59 @@ export class AuthService {
       } else {
         throw new InternalServerErrorException(
           'Failed to create user. Please try again later.',
+        );
+      }
+    }
+  }
+
+  async verifyEmail(verifyCodeDto: VerifyCodeDto) {
+    try {
+      const user = await this.usersService.findOne(verifyCodeDto.email);
+
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      const isMatch = await bcrypt.compare(
+        verifyCodeDto.code,
+        user.verificationCode,
+      );
+
+      if (isMatch) {
+        const tokenValid = await this.validateToken(user.token);
+        if (tokenValid.isValid) {
+          // Change the status of email verification to true
+          await this.prisma.users.update({
+            where: { id: user.id },
+            data: {
+              emailVerified: true,
+            },
+          });
+
+          this.emailService.sendAccountCreatedConfirmation(
+            user.email,
+            `${user.firstName} ${user.lastName}`,
+          );
+
+          return this.generateTokenAndUpdateUser({
+            sub: user.id,
+            email: user.email,
+          });
+        } else {
+          throw new Error();
+        }
+      } else {
+        throw new NotAcceptableException('verification code incorrect');
+      }
+    } catch (error) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof NotAcceptableException
+      ) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException(
+          'Failed to verify reset code. Please try again later.',
         );
       }
     }
@@ -113,18 +170,15 @@ export class AuthService {
     }
   }
 
-  async verifyResetCode(verifyResetCodeDto: VerifyResetCodeDto) {
+  async verifyResetCode(verifyCodeDto: VerifyCodeDto) {
     try {
-      const user = await this.usersService.findOne(verifyResetCodeDto.email);
+      const user = await this.usersService.findOne(verifyCodeDto.email);
 
       if (!user) {
         throw new NotFoundException('User not found');
       }
 
-      const isMatch = await bcrypt.compare(
-        verifyResetCodeDto.resetCode,
-        user.resetCode,
-      );
+      const isMatch = await bcrypt.compare(verifyCodeDto.code, user.resetCode);
 
       if (isMatch) {
         return this.validateToken(user.token);
@@ -234,6 +288,37 @@ export class AuthService {
     } catch (error) {
       throw new InternalServerErrorException(
         'Failed to generate reset code. Please try again later.',
+      );
+    }
+  }
+
+  // A helper function to generate a email verification code
+  async generateEmailVerificationCode(userId: string, email: string) {
+    try {
+      const verificationCode = randomBytes(3).toString('hex');
+
+      const payload = {
+        sub: userId,
+        verificationCode: verificationCode,
+        email: email,
+      };
+
+      const token = await this.jwtService.signAsync(payload, {
+        expiresIn: '15m',
+        secret: jwtConstants.secret,
+      });
+
+      const hashedVerificationCode = await bcrypt.hash(verificationCode, 10);
+
+      await this.usersService.updateUser(userId, {
+        verificationCode: hashedVerificationCode,
+        token: token,
+      });
+
+      return verificationCode;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to generate email verification code. Please try again later.',
       );
     }
   }

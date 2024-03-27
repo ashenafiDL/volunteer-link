@@ -1,19 +1,17 @@
 "use client";
 
 import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
+import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import axios from "axios";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, KeyboardEvent, useEffect, useRef } from "react";
 
-export default function VerifyResetCodeForm({
-  email,
-  setIsValidCode,
-}: {
-  email: string | null;
-  setIsValidCode: (isValidCode: boolean) => void;
-}) {
+export default function VerifyEmail({ email }: { email: string | null }) {
+  const { setUser, setIsLoggedIn, setToken } = useAuthContext();
   const { addAlert, dismissAlert } = useAlertsContext();
   const inputs = useRef<HTMLInputElement[]>([]);
+
+  const router = useRouter();
 
   useEffect(() => {
     inputs.current[0].focus(); // Focus on the first input initially
@@ -52,7 +50,7 @@ export default function VerifyResetCodeForm({
 
     try {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/verifyResetCode`,
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/verifyEmail`,
         {
           code: code,
           email: email,
@@ -60,16 +58,23 @@ export default function VerifyResetCodeForm({
       );
 
       if (res.status === 201) {
-        setIsValidCode(true);
+        // Set the token inside the cookie
         const expiresIn = new Date(Date.now() + 48 * 60 * 60 * 1000); // Expires in 2 day
         document.cookie = `token=${res.data.token}; expires=${expiresIn.toUTCString()}; Secure; path=/`;
+
+        // Set user and token
+        setToken(res.data.token);
+        setUser(res.data);
+        setIsLoggedIn(true);
+
+        router.replace("/");
       }
     } catch (error: any) {
       const id = addAlert({
         severity: "error",
         message:
           error?.response?.data?.message ||
-          "Failed to verify password reset code. Please try again.",
+          "Failed to verify email. Please try again.",
       });
       setTimeout(() => {
         dismissAlert(id);
@@ -82,7 +87,7 @@ export default function VerifyResetCodeForm({
       <div className="mb-3 space-y-2">
         <h3 className="text-3xl font-medium leading-9">Check your inbox.</h3>
         <p className="font-normal leading-tight">
-          Enter the six digit password reset code sent to {email}.
+          Enter the six digit email verification code sent to {email}.
         </p>
       </div>
 
@@ -107,11 +112,6 @@ export default function VerifyResetCodeForm({
 
         <button className="btn btn-primary">Verify</button>
       </form>
-
-      <Link className="self-center" href="/sign-in">
-        <span>Did you remember you password? </span>
-        <span className="text-base-content underline">Sign in.</span>
-      </Link>
     </>
   );
 }

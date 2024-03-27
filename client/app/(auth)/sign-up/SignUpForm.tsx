@@ -1,11 +1,9 @@
 "use client";
 
 import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
-import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import { SelectInput, TextInput } from "@/components/formElements";
 import axios from "axios";
 import { Form, Formik } from "formik";
-import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 import {
   emailValidation,
@@ -17,10 +15,15 @@ import {
   usernameValidation,
 } from "../../lib/forms/validationSchemas";
 
-export default function SignUpForm({ locations }: { locations: object[] }) {
-  const router = useRouter();
-
-  const { setUser, setToken, setIsLoggedIn } = useAuthContext();
+export default function SignUpForm({
+  locations,
+  setEmail,
+  setEmailSent,
+}: {
+  locations: object[];
+  setEmail: (email: string) => void;
+  setEmailSent: (success: boolean) => void;
+}) {
   const { addAlert, dismissAlert } = useAlertsContext();
 
   return (
@@ -51,14 +54,8 @@ export default function SignUpForm({ locations }: { locations: object[] }) {
           );
 
           if (res.status === 201) {
-            const expiresIn = new Date(Date.now() + 48 * 60 * 60 * 1000); // Expires in 2 day
-            document.cookie = `token=${res.data.token}; expires=${expiresIn.toUTCString()}; Secure; path=/`;
-
-            setToken(res.data.token);
-            setUser(res.data);
-            setIsLoggedIn(true);
-
-            router.replace("/");
+            setEmail(values.email);
+            setEmailSent(true);
           }
         } catch (error: any) {
           const id = addAlert({

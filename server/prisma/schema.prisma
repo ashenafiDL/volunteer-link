@@ -15,6 +15,7 @@ model Users {
   age                    Int?
   username               String             @unique
   email                  String             @unique
+  emailVerified          Boolean            @default(false)
   bio                    String?
   socialLinks            Json[]
   education              Education[]
