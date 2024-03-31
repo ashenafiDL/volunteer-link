@@ -38,11 +38,16 @@ export class AuthService {
         newUser.email,
       );
 
-      return this.emailService.sendEmailVerificationCode(
-        newUser.email,
-        fullName,
-        verificationCode,
-      );
+      // Try sending the email verification code. If it fails, delete the user
+      try {
+        return this.emailService.sendEmailVerificationCode(
+          newUser.email,
+          fullName,
+          verificationCode,
+        );
+      } catch (error) {
+        this.prisma.users.delete({ where: { id: newUser.id } });
+      }
     } catch (error) {
       if (
         error instanceof NotFoundException ||

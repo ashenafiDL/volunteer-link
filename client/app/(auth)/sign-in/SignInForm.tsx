@@ -2,6 +2,7 @@
 
 import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
+import { useIsClient } from "@/app/lib/contexts/useIsClient";
 import {
   emailValidation,
   passwordValidation,
@@ -18,6 +19,7 @@ export default function SignInForm() {
 
   const { setUser, setToken, setIsLoggedIn } = useAuthContext();
   const { addAlert, dismissAlert } = useAlertsContext();
+  const isClient = useIsClient();
 
   return (
     <Formik
@@ -34,8 +36,9 @@ export default function SignInForm() {
           );
 
           const expiresIn = new Date(Date.now() + 48 * 60 * 60 * 1000); // Expires in 2 day
-          document.cookie = `token=${res.data.token}; expires=${expiresIn.toUTCString()}; Secure; path=/`;
-
+          if (isClient) {
+            document.cookie = `token=${res.data.token}; expires=${expiresIn.toUTCString()}; Secure; path=/`;
+          }
           setToken(res.data.token);
           setUser(res.data);
           setIsLoggedIn(true);

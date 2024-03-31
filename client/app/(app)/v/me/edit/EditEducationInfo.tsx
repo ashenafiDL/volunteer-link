@@ -3,6 +3,7 @@
 import axiosInstance from "@/app/axiosInstance";
 import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
+import { useIsClient } from "@/app/lib/contexts/useIsClient";
 import {
   descriptionValidation,
   endDateValidation,
@@ -23,17 +24,18 @@ export default function EditEducationInfo() {
   const { addAlert, dismissAlert } = useAlertsContext();
   const [currentEditing, setCurrentEditing] = useState<any>();
   const [currentDeleting, setCurrentDeleting] = useState<any>();
+  const isClient = useIsClient();
 
   const formatDate = (date: string) => {
     return format(date, "yyy-MM-dd");
   };
 
   const showModal = (id: string) => {
-    (document.getElementById(id) as HTMLDialogElement).showModal();
+    isClient && (document.getElementById(id) as HTMLDialogElement).showModal();
   };
 
   const closeModal = (id: string) => {
-    (document.getElementById(id) as HTMLDialogElement).close();
+    isClient && (document.getElementById(id) as HTMLDialogElement).close();
   };
 
   const handleSave = async (values: any) => {

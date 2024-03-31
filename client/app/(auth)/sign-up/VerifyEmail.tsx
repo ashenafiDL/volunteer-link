@@ -2,6 +2,7 @@
 
 import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
+import { useIsClient } from "@/app/lib/contexts/useIsClient";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, KeyboardEvent, useEffect, useRef } from "react";
@@ -10,6 +11,7 @@ export default function VerifyEmail({ email }: { email: string | null }) {
   const { setUser, setIsLoggedIn, setToken } = useAuthContext();
   const { addAlert, dismissAlert } = useAlertsContext();
   const inputs = useRef<HTMLInputElement[]>([]);
+  const isClient = useIsClient();
 
   const router = useRouter();
 
@@ -60,8 +62,9 @@ export default function VerifyEmail({ email }: { email: string | null }) {
       if (res.status === 201) {
         // Set the token inside the cookie
         const expiresIn = new Date(Date.now() + 48 * 60 * 60 * 1000); // Expires in 2 day
-        document.cookie = `token=${res.data.token}; expires=${expiresIn.toUTCString()}; Secure; path=/`;
-
+        if (isClient) {
+          document.cookie = `token=${res.data.token}; expires=${expiresIn.toUTCString()}; Secure; path=/`;
+        }
         // Set user and token
         setToken(res.data.token);
         setUser(res.data);

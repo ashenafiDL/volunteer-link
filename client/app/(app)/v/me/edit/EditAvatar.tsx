@@ -3,12 +3,14 @@
 import axiosInstance from "@/app/axiosInstance";
 import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
+import { useIsClient } from "@/app/lib/contexts/useIsClient";
 import UserAvatar from "@/components/global/UserAvatar";
 import "../../components/styles.css";
 
 export default function EditAvatar() {
   const { user, getUser, setUser } = useAuthContext();
   const { addAlert, dismissAlert } = useAlertsContext();
+  const isClient = useIsClient();
 
   const handleChange = async (e: any) => {
     try {
@@ -84,7 +86,9 @@ export default function EditAvatar() {
             ></input>
             <button
               className="btn btn-primary"
-              onClick={() => document.getElementById("fileInput")?.click()}
+              onClick={() =>
+                isClient && document.getElementById("fileInput")?.click()
+              }
             >
               Update profile picture
             </button>

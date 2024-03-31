@@ -1,6 +1,7 @@
 "use client";
 
 import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
+import { useIsClient } from "@/app/lib/contexts/useIsClient";
 import axios from "axios";
 import Link from "next/link";
 import { ChangeEvent, KeyboardEvent, useEffect, useRef } from "react";
@@ -14,6 +15,7 @@ export default function VerifyResetCodeForm({
 }) {
   const { addAlert, dismissAlert } = useAlertsContext();
   const inputs = useRef<HTMLInputElement[]>([]);
+  const isClient = useIsClient();
 
   useEffect(() => {
     inputs.current[0].focus(); // Focus on the first input initially
@@ -62,7 +64,9 @@ export default function VerifyResetCodeForm({
       if (res.status === 201) {
         setIsValidCode(true);
         const expiresIn = new Date(Date.now() + 48 * 60 * 60 * 1000); // Expires in 2 day
-        document.cookie = `token=${res.data.token}; expires=${expiresIn.toUTCString()}; Secure; path=/`;
+        if (isClient) {
+          document.cookie = `token=${res.data.token}; expires=${expiresIn.toUTCString()}; Secure; path=/`;
+        }
       }
     } catch (error: any) {
       const id = addAlert({

@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
+import { useIsClient } from "@/app/lib/contexts/useIsClient";
 import UserAvatar from "@/components/global/UserAvatar";
 import clsx from "clsx";
 import Link from "next/link";
@@ -19,6 +20,7 @@ export default function Header() {
   const { user, logout } = useAuthContext();
   const [dropdownHidden, setDropdownHidden] = useState<boolean>(true);
   const popupRef = useRef<HTMLDivElement>(null);
+  const isClient = useIsClient();
 
   // Menu items of the dropdown
   const menuItems = [
@@ -55,12 +57,16 @@ export default function Header() {
       }
     }
 
-    document.body.addEventListener("click", handleClickOutside);
+    if (!isClient) {
+      document.body.addEventListener("click", handleClickOutside);
+    }
 
     return () => {
-      document.body.removeEventListener("click", handleClickOutside);
+      if (!isClient) {
+        document.body.removeEventListener("click", handleClickOutside);
+      }
     };
-  }, []);
+  }, [isClient]);
 
   return (
     <div className="sticky top-0 z-10 bg-primary py-2">
