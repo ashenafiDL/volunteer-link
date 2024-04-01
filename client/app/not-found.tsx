@@ -13,12 +13,12 @@ export default function PageNotFound() {
     <div className="h-screen">
       <Header />
 
-      <main className="min-h flex flex-col items-center justify-center gap-12">
-        <div>
+      <main className="min-h flex flex-col items-center justify-center gap-12 py-24">
+        <div className="flex justify-center">
           <Image
             src={PageNotFoundImage}
             alt="Page not found illustration"
-            style={{ width: "90%", height: "auto" }}
+            style={{ width: "60%", height: "auto" }}
           />
         </div>
 
