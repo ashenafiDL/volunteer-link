@@ -9,12 +9,12 @@ import { UpdateLocationDto } from './dto/update-location.dto';
 
 @Injectable()
 export class LocationsService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(private prisma: PrismaService) {}
 
   async create(name: string, code: string) {
     try {
       // Check if a location with the given name already exists
-      const existingLocation = await this.prismaService.locations.findFirst({
+      const existingLocation = await this.prisma.locations.findFirst({
         where: {
           OR: [{ name: name, code: code }],
         },
@@ -24,7 +24,7 @@ export class LocationsService {
         throw new ConflictException('Location already exists');
       }
 
-      const location = await this.prismaService.locations.create({
+      const location = await this.prisma.locations.create({
         data: { name: name, code: code },
       });
 
@@ -42,7 +42,7 @@ export class LocationsService {
 
   async findAll() {
     try {
-      return await this.prismaService.locations.findMany();
+      return await this.prisma.locations.findMany();
     } catch (error) {
       throw new InternalServerErrorException(
         'Failed to find all locations. Please try again later',
@@ -52,7 +52,7 @@ export class LocationsService {
 
   async findOneById(id: string) {
     try {
-      const location = await this.prismaService.locations.findUnique({
+      const location = await this.prisma.locations.findUnique({
         where: { id },
       });
 
@@ -72,7 +72,7 @@ export class LocationsService {
 
   async findOneByName(name: string) {
     try {
-      const location = await this.prismaService.locations.findUnique({
+      const location = await this.prisma.locations.findUnique({
         where: { name },
       });
 
@@ -92,7 +92,7 @@ export class LocationsService {
 
   async findOneByShortCode(code: string) {
     try {
-      const location = await this.prismaService.locations.findUnique({
+      const location = await this.prisma.locations.findUnique({
         where: { code },
       });
 
@@ -112,7 +112,7 @@ export class LocationsService {
 
   async update(id: string, updateLocationDto: UpdateLocationDto) {
     try {
-      const existingLocation = await this.prismaService.locations.findUnique({
+      const existingLocation = await this.prisma.locations.findUnique({
         where: { id },
       });
 
@@ -122,7 +122,7 @@ export class LocationsService {
         );
       }
 
-      return await this.prismaService.locations.update({
+      return await this.prisma.locations.update({
         where: { id },
         data: updateLocationDto,
       });
@@ -139,7 +139,7 @@ export class LocationsService {
 
   async remove(id: string) {
     try {
-      const location = await this.prismaService.locations.delete({
+      const location = await this.prisma.locations.delete({
         where: { id },
       });
 

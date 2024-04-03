@@ -6,6 +6,7 @@ import { EmailModule } from './email/email.module';
 import { FilesModule } from './files/files.module';
 import { LocationsModule } from './locations/locations.module';
 import { StatsModule } from './misc/stats/stats.module';
+import { OrganizationsModule } from './organizations/organizations.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { PrismaService } from './prisma/prisma.service';
 import { SkillCategoriesModule } from './skillsAndCategories/skill-categories/skill-categories.module';
@@ -24,6 +25,7 @@ import { UsersService } from './users/users.service';
     SkillsModule,
     SkillCategoriesModule,
     StatsModule,
+    OrganizationsModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService, UsersService],

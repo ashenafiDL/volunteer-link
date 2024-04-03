@@ -98,14 +98,17 @@ model Projects {
 model Organizations {
   id           String     @id @default(uuid())
   name         String
-  mission      String
-  websiteUrl   String?
+  mission      String?
+  websiteUrl   String?    @unique
   location     Locations  @relation(fields: [locationId], references: [id])
   locationId   String
-  contactEmail String
-  contactPhone String
-  logo         Files?     @relation(fields: [logoId], references: [id])
-  logoId       String
+  contactEmail String     @unique
+  contactPhone String     @unique
+  foundingDate DateTime
+  logo         Files?     @relation("logo", fields: [logoId], references: [id])
+  logoId       String?    @unique
+  permit       Files?     @relation("permit", fields: [permitId], references: [id])
+  permitId     String?    @unique
   verified     Boolean    @default(false)
   projects     Projects[]
 }
@@ -143,15 +146,16 @@ model Donations {
 }
 
 model Files {
-  id            String          @id @default(uuid())
-  filename      String
-  fileType      String
-  filePath      String
-  size          Decimal
-  createdAt     DateTime        @default(now())
-  User          Users[]
-  Organizations Organizations[]
-  Badges        Badges[]
+  id                 String         @id @default(uuid())
+  filename           String
+  fileType           String
+  filePath           String
+  size               Decimal
+  createdAt          DateTime       @default(now())
+  User               Users[]
+  Badges             Badges[]
+  organizationLogo   Organizations? @relation("logo")
+  organizarionPermit Organizations? @relation("permit")
 }
 
 model Messages {
