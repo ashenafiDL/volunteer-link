@@ -110,3 +110,14 @@ export const ApiVerifyVerificationCodeEndpoint = () => {
     }),
   ]);
 };
+
+export const ApiUpdatePasswordEndpoint = () => {
+  return applyCustomDecorators([
+    ApiOperation({ summary: 'Update user password' }),
+    ApiResponse({ status: 200, description: 'Password updated successfully' }),
+    ApiResponse({ status: 400, description: 'Bad request' }),
+    ApiResponse({ status: 401, description: 'Unauthorized' }),
+    ApiResponse({ status: 404, description: 'User not found' }),
+    ApiResponse({ status: 500, description: 'Internal server error' }),
+  ]);
+};

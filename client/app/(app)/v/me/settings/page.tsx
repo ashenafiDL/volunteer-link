@@ -1,5 +1,6 @@
 import "../../components/styles.css";
 import AppearanceSetting from "./AppearanceSetting";
+import ChangePassword from "./ChangePassword";
 import DangerZone from "./DangerZone";
 import NotificationSetting from "./NotificationSetting";
 import ProjectSetting from "./ProjectSetting";
@@ -12,6 +13,8 @@ export default function Settings() {
       <ProjectSetting />
 
       <NotificationSetting />
+
+      <ChangePassword />
 
       <DangerZone />
     </div>

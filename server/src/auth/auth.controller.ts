@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Req } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { Public } from './decorators/public.decorator';
@@ -7,6 +7,7 @@ import {
   ApiRegisterEndpoint,
   ApiResetPasswordEndpoint,
   ApiSignInEndpoint,
+  ApiUpdatePasswordEndpoint,
   ApiVerifyResetCodeEndpoint,
   ApiVerifyVerificationCodeEndpoint,
 } from './docs/auth-controllers.doc';
@@ -14,6 +15,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { SignInDto } from './dto/sign-in.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 import { VerifyCodeDto } from './dto/verify-code.dto';
 
 @ApiTags('Authentication')
@@ -54,6 +56,16 @@ export class AuthController {
   @ApiVerifyResetCodeEndpoint()
   verifyResetCode(@Body() verifyCodeDto: VerifyCodeDto) {
     return this.authService.verifyResetCode(verifyCodeDto);
+  }
+
+  @Post('updatePassword')
+  @ApiUpdatePasswordEndpoint()
+  updatePassword(
+    @Req() req: Request,
+    @Body() updatePasswordDto: UpdatePasswordDto,
+  ) {
+    const id = req['user'].sub;
+    return this.authService.updatePassword(id, updatePasswordDto);
   }
 
   @Post('resetPassword')

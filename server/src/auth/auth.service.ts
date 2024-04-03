@@ -16,6 +16,7 @@ import { UsersService } from 'src/users/users.service';
 import { jwtConstants } from './constants';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 import { VerifyCodeDto } from './dto/verify-code.dto';
 
 @Injectable()
@@ -199,6 +200,58 @@ export class AuthService {
       } else {
         throw new InternalServerErrorException(
           'Failed to verify reset code. Please try again later.',
+        );
+      }
+    }
+  }
+
+  async updatePassword(id: string, updatePasswordDto: UpdatePasswordDto) {
+    try {
+      // Check if the user exists
+      const user = await this.prisma.users.findUnique({
+        where: { id },
+      });
+      if (!user) {
+        throw new NotFoundException();
+      }
+
+      // Check if current password matches
+      const passwordsMatch = await bcrypt.compare(
+        updatePasswordDto.currentPassword,
+        user.password,
+      );
+      if (!passwordsMatch) {
+        throw new UnauthorizedException();
+      }
+
+      const hashedPassword = await bcrypt.hash(updatePasswordDto.password, 10);
+
+      const updatedUser = await this.usersService.updatePassword(
+        user.id,
+        hashedPassword,
+      );
+
+      const fullName = `${updatedUser.firstName} ${updatedUser.lastName}`;
+
+      this.emailService.sendPasswordChangeConfirmation(
+        updatedUser.email,
+        fullName,
+      );
+
+      return this.generateTokenAndUpdateUser({
+        sub: updatedUser.id,
+        email: updatedUser.email,
+      });
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(
+          "A user with the specified id doesn't exist",
+        );
+      } else if (error instanceof UnauthorizedException) {
+        throw new UnauthorizedException('The password is incorrect');
+      } else {
+        throw new InternalServerErrorException(
+          'Failed to check password. Please try again later.',
         );
       }
     }
