@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDateString,
   IsEmail,
+  IsOptional,
   IsPhoneNumber,
   IsString,
   IsUrl,
@@ -13,10 +14,12 @@ export class CreateOrganizationDto {
   name: string;
 
   @IsString()
+  @IsOptional()
   @ApiProperty({ description: 'The mission statement of the organization' })
-  mission: string;
+  mission?: string;
 
   @IsUrl()
+  @IsOptional()
   @ApiProperty({ description: "The URL of the organization's website" })
   websiteUrl: string;
 
@@ -27,10 +30,11 @@ export class CreateOrganizationDto {
   locationId: string;
 
   @IsEmail()
+  @IsOptional()
   @ApiProperty({
     description: "The email address of the organization's contact",
   })
-  contactEmail: string;
+  contactEmail?: string;
 
   @IsPhoneNumber()
   @ApiProperty({
@@ -39,6 +43,7 @@ export class CreateOrganizationDto {
   contactPhone: string;
 
   @IsDateString()
+  @IsOptional()
   @ApiProperty({ description: 'The founding date of the organization' })
-  foundingDate: Date;
+  foundingDate?: Date;
 }

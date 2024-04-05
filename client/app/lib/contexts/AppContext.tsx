@@ -8,12 +8,16 @@ import { deleteCookie, getCookie } from "../cookies";
 interface AuthContextType {
   token: string;
   setToken: (token: string) => void;
-  user: any; // Use the any type for user
+  user: any;
   setUser: (user: any) => void;
+  org: any;
+  setOrg: (user: any) => void;
   getUser: () => void;
   logout: () => void;
   isLoggedIn: boolean;
   setIsLoggedIn: (isLoggedIn: boolean) => void;
+  viewingOrg: boolean;
+  setViewingOrg: (viewingOrg: boolean) => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -21,10 +25,14 @@ export const AuthContext = createContext<AuthContextType>({
   setToken: (token: string) => {},
   user: {},
   setUser: (user: any) => {},
+  org: {},
+  setOrg: (org: any) => {},
   getUser: () => {},
   logout: () => {},
   isLoggedIn: false,
   setIsLoggedIn: (isLoggedIn: boolean) => {},
+  viewingOrg: false,
+  setViewingOrg: (isLoggedIn: boolean) => {},
 });
 
 export default function AppContext({
@@ -35,7 +43,9 @@ export default function AppContext({
   const router = useRouter();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [viewingOrg, setViewingOrg] = useState(false);
   const [user, setUser] = useState<any>({});
+  const [org, setOrg] = useState<any>({});
   const [token, setToken] = useState<string>(() => {
     const newToken = getCookie("token");
     return newToken ? newToken : "";
@@ -47,6 +57,7 @@ export default function AppContext({
     setToken("");
     deleteCookie("token");
     setUser({});
+    setOrg({});
   };
 
   useEffect(() => {
@@ -71,6 +82,7 @@ export default function AppContext({
 
       if (response.status === 200) {
         setUser(response.data);
+        setOrg(response.data.organization);
         return response.data;
       }
     } catch (error) {
@@ -86,9 +98,13 @@ export default function AppContext({
         logout,
         user,
         setUser,
+        org,
+        setOrg,
         getUser,
         isLoggedIn,
         setIsLoggedIn,
+        viewingOrg,
+        setViewingOrg,
       }}
     >
       {children}

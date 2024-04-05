@@ -1,28 +1,23 @@
 import clsx from "clsx";
 import { useField } from "formik";
 
-export default function TextInput({
+export default function FileInput({
   label,
-  props,
+  required,
   onChange,
   classes,
-  required,
+  name,
+  id,
 }: {
   label: string;
-  classes?: string;
   required?: boolean;
+  classes?: string;
   onChange?: (e: any) => void;
-  props: {
-    name: string;
-    id?: string;
-    type: string;
-    autoComplete?: string;
-    maxLength?: number;
-    placeholder?: string;
-  };
+  name: string;
+  id?: string;
 }) {
   // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
-  const [field, meta] = useField(props.name);
+  const [field, meta] = useField(name);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Call the provided onChange function if it exists
@@ -34,30 +29,20 @@ export default function TextInput({
   };
 
   return (
-    <div
-      className={clsx(
-        "flex gap-2",
-        props.type === "checkbox"
-          ? "flex-row-reverse items-baseline justify-end"
-          : "flex-grow flex-col items-start justify-start",
-      )}
-    >
-      <label className="space-x-2 font-medium" htmlFor={props.id || props.name}>
+    <div className="flex flex-col gap-2">
+      <label className="space-x-2 font-medium" htmlFor={id || name}>
         <span>{label}</span>
         {required && <span className="text-error">*</span>}
       </label>
       <input
         {...field}
-        {...props}
+        type="file"
+        accept="image/*"
         className={clsx(
-          meta.error && meta.touched
-            ? "border-error focus:border-error focus:ring-error"
-            : "focus:border-primary focus:ring-primary",
-          props.type === "checkbox" ? "checkbox h-6 w-6" : "w-full",
-          "-mb-2 bg-base-100",
+          meta.error && meta.touched && "file-input-error",
+          "file-input file-input-bordered -mb-2 w-full max-w-xs bg-base-100",
           classes,
         )}
-        placeholder={props.placeholder}
         onChange={handleChange}
       />
 

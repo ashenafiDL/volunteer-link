@@ -15,6 +15,13 @@ export const emailValidation = Yup.string()
   .email("Invalid email address")
   .required("Email address is required");
 
+export const phoneValidation = Yup.string()
+  .matches(
+    /^\+(?:[0-9] ?){6,14}[0-9]$/,
+    "Invalid phone number format. Please include country code.",
+  )
+  .required("Phone number is required");
+
 export const usernameValidation = Yup.string()
   .min(5, "Username must be at least 6 characters long")
   .max(20, "Username must not be more than 20 characters long")
@@ -84,3 +91,24 @@ export const descriptionValidation = Yup.string().max(
   "Description must be at most 500 characters",
 );
 // Input field used in `Add Education Info` form - END
+
+// Input field used in `Create organization` form - START
+export const orgNameValidation = Yup.string()
+  .min(5, "Organization name must be at least five characters long")
+  .max(50, "Organization name must not be more than 50 characters long")
+  .required("Organization name is required");
+
+export const missionTextValidation = Yup.string().max(
+  500,
+  "Mission statement must not exceed 500 characters",
+);
+
+export const foundingDateValidation = Yup.date()
+  .required("Founding date is required")
+  .max(new Date(), "Founding date must be less than today")
+  .optional();
+
+export const contactEmailValidation = Yup.string().email(
+  "Invalid email address",
+);
+// Input field used in `Create organization` form - END

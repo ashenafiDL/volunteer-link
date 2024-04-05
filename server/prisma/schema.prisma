@@ -26,6 +26,8 @@ model Users {
   locationId             String
   profilePicture         Files?             @relation(fields: [profilePictureId], references: [id])
   profilePictureId       String?
+  organization           Organizations?     @relation(fields: [organizationId], references: [id])
+  organizationId         String?            @unique
   lastLoggedInAt         DateTime           @default(now())
   verified               Boolean            @default(false)
   token                  String? // JWT token used during signin
@@ -99,17 +101,18 @@ model Organizations {
   id           String     @id @default(uuid())
   name         String
   mission      String?
-  websiteUrl   String?    @unique
+  websiteUrl   String?
   location     Locations  @relation(fields: [locationId], references: [id])
   locationId   String
-  contactEmail String     @unique
-  contactPhone String     @unique
-  foundingDate DateTime
+  contactEmail String?
+  contactPhone String
+  foundingDate DateTime?
   logo         Files?     @relation("logo", fields: [logoId], references: [id])
   logoId       String?    @unique
   permit       Files?     @relation("permit", fields: [permitId], references: [id])
   permitId     String?    @unique
   verified     Boolean    @default(false)
+  owner        Users?
   projects     Projects[]
 }
 

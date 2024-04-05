@@ -11,10 +11,7 @@ import { CreateOrganizationDto } from './dto/create-organization.dto';
 export class OrganizationsService {
   constructor(private prisma: PrismaService) {}
 
-  async create(
-    createOrganizationDto: CreateOrganizationDto,
-    permit: Express.Multer.File,
-  ) {
+  async create(ownerId: string, createOrganizationDto: CreateOrganizationDto) {
     try {
       // Check if the name/contactEmail/contactPhone/websiteURL is unique
       const checkConflict = await this.prisma.organizations.findFirst({
@@ -43,27 +40,35 @@ export class OrganizationsService {
         );
       }
 
-      // Create a new record in the files table for permit
-      const newPermitRecord = await this.prisma.files.create({
-        data: {
-          filename: permit.filename,
-          filePath: `./uploads/permits/${permit.filename}`,
-          fileType: permit.mimetype,
-          size: permit.size,
-        },
-      });
-
       // Create the organization
       const newOrganization = await this.prisma.organizations.create({
         data: {
-          ...createOrganizationDto,
-          permitId: newPermitRecord.id,
           verified: false,
+          ...createOrganizationDto,
+        },
+        include: {
+          location: true,
+          logo: true,
+          owner: true,
+          permit: true,
+          projects: true,
+        },
+      });
+
+      // Connect the organization with the user
+      const user = await this.prisma.users.update({
+        where: {
+          id: ownerId,
+        },
+        data: {
+          organizationId: newOrganization.id,
         },
       });
 
       return newOrganization;
     } catch (error) {
+      console.log(error);
+
       if (
         error instanceof ConflictException ||
         error instanceof NotFoundException

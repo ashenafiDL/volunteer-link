@@ -14,10 +14,11 @@ import {
   BiLogOut,
   BiUserCircle,
 } from "react-icons/bi";
+import { GrOrganization } from "react-icons/gr";
 import { SlBell } from "react-icons/sl";
 
 export default function Header() {
-  const { user, logout } = useAuthContext();
+  const { user, logout, org } = useAuthContext();
   const [dropdownHidden, setDropdownHidden] = useState<boolean>(true);
   const popupRef = useRef<HTMLDivElement>(null);
   const isClient = useIsClient();
@@ -31,6 +32,16 @@ export default function Header() {
     },
     { label: "Tasks", icon: <BiListCheck size={24} />, href: "#" },
     { label: "Applications", icon: <BiFile size={24} />, href: "#" },
+    {
+      label: "Create Organization",
+      icon: <GrOrganization size={20} />,
+      href: "/o/create-organization",
+    },
+    {
+      label: "Switch to Organization Profile",
+      icon: <GrOrganization size={20} />,
+      href: "#",
+    },
     {
       label: "Settings",
       icon: <AiOutlineSetting size={24} />,
@@ -104,20 +115,36 @@ export default function Header() {
               ref={popupRef}
               className={clsx(
                 dropdownHidden ? "hidden" : "block",
-                "absolute right-0 mt-3 w-52 overflow-clip rounded-md bg-base-100 shadow-md lg:left-1/2 lg:-translate-x-1/2",
+                "absolute right-0 mt-3 w-64 overflow-clip rounded-md bg-base-100 shadow-md lg:left-1/2 lg:-translate-x-1/2",
               )}
             >
-              {menuItems.map((item) => (
-                <Link
-                  key={item.label}
-                  onClick={handleMenuItemClick}
-                  className="flex items-center gap-4 px-4 py-2 text-lg transition-colors duration-300 hover:bg-base-200"
-                  href={item.href}
-                >
-                  {item.icon}
-                  <span>{item.label}</span>
-                </Link>
-              ))}
+              {menuItems.map((item) => {
+                if (item.label === "Create Organization" && org) {
+                  return null;
+                }
+                if (
+                  item.label === "Switch to Organization Profile" &&
+                  org === null
+                ) {
+                  return null;
+                }
+                return (
+                  <Link
+                    key={item.label}
+                    onClick={handleMenuItemClick}
+                    className="flex items-center gap-4 px-4 py-2 text-lg transition-colors duration-300 hover:bg-base-200"
+                    href={
+                      org !== null &&
+                      item.label === "Switch to Organization Profile"
+                        ? `/o/${org.name}`
+                        : item.href
+                    }
+                  >
+                    <div>{item.icon}</div>
+                    <span>{item.label}</span>
+                  </Link>
+                );
+              })}
 
               <hr className="border-neutral-content" />
 

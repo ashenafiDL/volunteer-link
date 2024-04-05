@@ -3,11 +3,13 @@ import { useField } from "formik";
 
 export default function SelectInput({
   label,
+  required,
   props,
   children,
   classes,
 }: {
   label: string;
+  required?: boolean;
   props: {
     name: string;
     id?: string;
@@ -21,8 +23,9 @@ export default function SelectInput({
 
   return (
     <div className="flex w-full flex-col items-start justify-start gap-2">
-      <label className="font-medium" htmlFor={props.id || props.name}>
-        {label}
+      <label className="space-x-2 font-medium" htmlFor={props.id || props.name}>
+        <span>{label}</span>
+        {required && <span className="text-error">*</span>}
       </label>
 
       <select

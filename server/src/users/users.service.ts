@@ -139,6 +139,7 @@ export class UsersService {
           reports: true,
           reviews: true,
           tasks: true,
+          organization: true,
         },
       });
 
@@ -158,6 +159,35 @@ export class UsersService {
       const user = await this.prisma.users.findUnique({
         where: {
           id: id,
+        },
+        include: {
+          role: true,
+          location: true,
+          profilePicture: true,
+          applications: true,
+          badges: true,
+          certificates: true,
+          skills: {
+            include: {
+              category: true,
+            },
+          },
+          education: true,
+          contributions: true,
+          donations: true,
+          messages: true,
+          reports: true,
+          reviews: true,
+          tasks: true,
+          organization: {
+            include: {
+              location: true,
+              logo: true,
+              owner: true,
+              permit: true,
+              projects: true,
+            },
+          },
         },
       });
 
