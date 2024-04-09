@@ -56,7 +56,7 @@ export class OrganizationsService {
       });
 
       // Connect the organization with the user
-      const user = await this.prisma.users.update({
+      await this.prisma.users.update({
         where: {
           id: ownerId,
         },
@@ -77,6 +77,50 @@ export class OrganizationsService {
       } else {
         throw new InternalServerErrorException(
           'Failed to create organization. Please try again later.',
+        );
+      }
+    }
+  }
+
+  async getOrg(identifier: string) {
+    try {
+      const org = await this.prisma.organizations.findFirst({
+        where: {
+          OR: [{ id: identifier }, { name: identifier }],
+        },
+        include: {
+          location: true,
+          logo: true,
+          owner: true,
+          permit: true,
+          projects: true,
+          _count: {
+            select: {
+              projects: {
+                where: {
+                  status: 'DONE',
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!org) {
+        throw new NotFoundException(
+          'Organization with the specified id/name not found',
+        );
+      }
+
+      return org;
+    } catch (error) {
+      console.log(error);
+
+      if (error instanceof NotFoundException) {
+        return error;
+      } else {
+        throw new InternalServerErrorException(
+          'Failed to get organization. Please try again.',
         );
       }
     }

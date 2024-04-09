@@ -23,6 +23,8 @@ export default function Header() {
   const popupRef = useRef<HTMLDivElement>(null);
   const isClient = useIsClient();
 
+  console.log("org", org);
+
   // Menu items of the dropdown
   const menuItems = [
     {
@@ -32,16 +34,6 @@ export default function Header() {
     },
     { label: "Tasks", icon: <BiListCheck size={24} />, href: "#" },
     { label: "Applications", icon: <BiFile size={24} />, href: "#" },
-    {
-      label: "Create Organization",
-      icon: <GrOrganization size={20} />,
-      href: "/o/create-organization",
-    },
-    {
-      label: "Switch to Organization Profile",
-      icon: <GrOrganization size={20} />,
-      href: "#",
-    },
     {
       label: "Settings",
       icon: <AiOutlineSetting size={24} />,
@@ -119,32 +111,44 @@ export default function Header() {
               )}
             >
               {menuItems.map((item) => {
-                if (item.label === "Create Organization" && org) {
-                  return null;
-                }
-                if (
-                  item.label === "Switch to Organization Profile" &&
-                  org === null
-                ) {
-                  return null;
-                }
                 return (
                   <Link
                     key={item.label}
                     onClick={handleMenuItemClick}
                     className="flex items-center gap-4 px-4 py-2 text-lg transition-colors duration-300 hover:bg-base-200"
-                    href={
-                      org !== null &&
-                      item.label === "Switch to Organization Profile"
-                        ? `/o/${org.name}`
-                        : item.href
-                    }
+                    href={item.href}
                   >
                     <div>{item.icon}</div>
                     <span>{item.label}</span>
                   </Link>
                 );
               })}
+
+              <hr className="border-neutral-content" />
+
+              {org.name ? (
+                <Link
+                  onClick={handleMenuItemClick}
+                  className="flex items-center gap-4 px-4 py-2 text-lg transition-colors duration-300 hover:bg-base-200"
+                  href="/o/my-org"
+                >
+                  <div>
+                    <GrOrganization size={20} />
+                  </div>
+                  <span>Switch to Organization Profile</span>
+                </Link>
+              ) : (
+                <Link
+                  onClick={handleMenuItemClick}
+                  className="flex items-center gap-4 px-4 py-2 text-lg transition-colors duration-300 hover:bg-base-200"
+                  href="/o/create-organization"
+                >
+                  <div>
+                    <GrOrganization size={20} />
+                  </div>
+                  <span>Create Organization</span>
+                </Link>
+              )}
 
               <hr className="border-neutral-content" />
 

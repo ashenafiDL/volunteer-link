@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { OrganizationsService } from './organizations.service';
 
@@ -13,5 +13,10 @@ export class OrganizationsController {
   ) {
     const ownerId = req['user'].sub;
     return this.organizationsService.create(ownerId, createOrganizationDto);
+  }
+
+  @Get(':identifier')
+  getOrg(@Param('identifier') identifier) {
+    return this.organizationsService.getOrg(identifier);
   }
 }

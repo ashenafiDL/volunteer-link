@@ -20,7 +20,7 @@ import { useState } from "react";
 import * as Yup from "yup";
 
 export default function CreateOrgForm({ locations }: { locations: any }) {
-  const { setOrg } = useAuthContext();
+  const { setOrg, getOrg } = useAuthContext();
   const { addAlert, dismissAlert } = useAlertsContext();
   const [values, setValues] = useState<any>();
   const router = useRouter();
@@ -47,7 +47,8 @@ export default function CreateOrgForm({ locations }: { locations: any }) {
       );
 
       if (res.status === 201) {
-        setOrg(res.data);
+        const response = await getOrg(res.data.id);
+        setOrg(response.id);
         router.replace("/o/create-organization/success");
       }
     } catch (error: any) {
@@ -55,7 +56,9 @@ export default function CreateOrgForm({ locations }: { locations: any }) {
 
       const id = addAlert({
         severity: "error",
-        message: error.response.data.message,
+        message:
+          error.response.data.message ||
+          "Failed to create organization. Please try again.",
       });
       setTimeout(() => {
         dismissAlert(id);

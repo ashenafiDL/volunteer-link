@@ -5,22 +5,22 @@ import clsx from "clsx";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-export default function UserAvatar({
-  email,
+export default function LogoAvatar({
+  id,
   name,
   size,
 }: {
-  email: string;
+  id: string;
   name: string;
   size: "xs" | "sm" | "base" | "lg" | "xl";
 }) {
-  const [avatar, setAvatar] = useState<string | null>(null);
+  const [logo, setLogo] = useState<string | null>(null);
 
   useEffect(() => {
     async function getAvatar() {
       try {
         const response = await axiosInstance.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/files/getProfilePicture/${email}`,
+          `${process.env.NEXT_PUBLIC_API_URL}/files/getLogo/${id}`,
           {
             responseType: "blob",
           },
@@ -28,17 +28,17 @@ export default function UserAvatar({
 
         if (response.status === 200) {
           const url = URL.createObjectURL(response.data);
-          setAvatar(url);
+          setLogo(url);
         }
       } catch (e) {
-        setAvatar(null);
+        setLogo(null);
       }
     }
 
-    if (email !== undefined) {
+    if (id !== undefined) {
       getAvatar();
     }
-  }, [email]);
+  }, [id]);
 
   const sizeMap = {
     xs: 6,
@@ -54,7 +54,7 @@ export default function UserAvatar({
     <div className="avatar placeholder">
       <div
         className={clsx(
-          "rounded-full bg-neutral text-neutral-content",
+          "rounded-md bg-neutral text-neutral-content",
           size === "xs" && "w-6",
           size === "sm" && "w-8",
           size === "base" && "w-10",
@@ -69,11 +69,11 @@ export default function UserAvatar({
 
   return (
     <>
-      {avatar ? (
+      {logo ? (
         <div className="avatar">
           <div
             className={clsx(
-              "rounded-full",
+              "rounded-md",
               size === "xs" && "w-6",
               size === "sm" && "w-8",
               size === "base" && "w-10",
@@ -82,11 +82,11 @@ export default function UserAvatar({
             )}
           >
             <Image
-              src={avatar}
+              src={logo}
               width={getSize()}
               height={getSize()}
               alt={name}
-              className="h-full w-full rounded-full"
+              className="h-full w-full rounded-md"
             />
           </div>
         </div>

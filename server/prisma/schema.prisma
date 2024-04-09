@@ -101,6 +101,7 @@ model Organizations {
   id           String     @id @default(uuid())
   name         String
   mission      String?
+  aboutUs      String?
   websiteUrl   String?
   location     Locations  @relation(fields: [locationId], references: [id])
   locationId   String

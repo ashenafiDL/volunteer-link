@@ -83,6 +83,20 @@ export class FilesController {
     }
   }
 
+  @Public()
+  @ApiGetProfilePictureEndpoint()
+  @Get('getProfilePicture/:email')
+  async serveLogo(@Param('id') id: string, @Res() res: any) {
+    try {
+      const filepath = await this.filesService.findLogoPath(id);
+      res.sendFile(`${process.cwd()}/${filepath}`);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error while fetching profile picture. Please try again.',
+      );
+    }
+  }
+
   @Delete('deleteProfilePicture')
   @ApiDeleteProfilePictureEndpoint()
   deleteAvatar(@Req() req) {

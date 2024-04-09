@@ -92,6 +92,39 @@ export class FilesService {
     }
   }
 
+  async findLogoPath(id: string): Promise<string> {
+    try {
+      const org = await this.prisma.organizations.findUnique({
+        where: {
+          id,
+          logo: {
+            NOT: null,
+          },
+        },
+      });
+
+      if (!org) {
+        throw new NotFoundException();
+      }
+
+      const file = await this.prisma.files.findUnique({
+        where: { id: org.logoId },
+      });
+
+      return file.filePath;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(
+          'Organization with specified ID cannot be found',
+        );
+      } else {
+        throw new InternalServerErrorException(
+          'Error while fetching profile picture. Please try again',
+        );
+      }
+    }
+  }
+
   async deleteProfilePicture(id: string) {
     // Check if the user exists and has profile picture
     const user = await this.prisma.users.findUnique({

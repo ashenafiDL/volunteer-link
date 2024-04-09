@@ -28,7 +28,7 @@ export default function SuccessfullyCreated() {
 
       <div className="flex flex-col items-center justify-start gap-6">
         {org && (
-          <Link href={`/o/${org.name}`}>
+          <Link href="/o/my-org">
             <button className="btn btn-primary">
               Switch to Organization Profile
             </button>
