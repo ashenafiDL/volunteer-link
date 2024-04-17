@@ -38,7 +38,7 @@ export default function TextInput({
       className={clsx(
         "flex gap-2",
         props.type === "checkbox"
-          ? "flex-row-reverse items-baseline justify-end"
+          ? "flex-row-reverse items-center justify-end"
           : "flex-grow flex-col items-start justify-start",
       )}
     >

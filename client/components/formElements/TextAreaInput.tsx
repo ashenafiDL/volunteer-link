@@ -3,10 +3,12 @@ import { useField } from "formik";
 
 export default function TextAreaInput({
   label,
+  required,
   props,
   classes,
 }: {
   label: string;
+  required?: boolean;
   classes?: string;
   props: {
     name: string;
@@ -21,8 +23,9 @@ export default function TextAreaInput({
 
   return (
     <div className="flex flex-grow flex-col items-start justify-start gap-2">
-      <label className="font-medium" htmlFor={props.id || props.name}>
-        {label}
+      <label className="space-x-2 font-medium" htmlFor={props.id || props.name}>
+        <span>{label}</span>
+        {required && <span className="text-error">*</span>}
       </label>
       <textarea
         {...field}

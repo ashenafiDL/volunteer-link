@@ -81,12 +81,12 @@ model Projects {
   organizationId String
   title          String
   description    String
-  goals          String[]
-  location       Locations          @relation(fields: [locationId], references: [id])
-  locationId     String
-  timeComitment  DateTime
+  location       Locations?         @relation(fields: [locationId], references: [id])
+  locationId     String?
+  startDate      DateTime
+  endDate        DateTime
+  timeCommitment TimePreference
   status         ProjectStatus      @default(NOT_STARTED)
-  openPositions  Int                @default(1)
   createdAt      DateTime           @default(now())
   updatedAt      DateTime           @updatedAt
   skillsRequired SkillsToProjects[]

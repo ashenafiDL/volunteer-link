@@ -112,3 +112,21 @@ export const contactEmailValidation = Yup.string().email(
   "Invalid email address",
 );
 // Input field used in `Create organization` form - END
+
+// Input field used in `Add Project Info` form - START
+export const projectTitleValidation = Yup.string()
+  .max(100, "Project title must not exceed 100 characters")
+  .required("Project title is required.");
+
+export const projectDescriptionValidation = Yup.string()
+  .max(500, "Project description must not exceed 500 characters")
+  .required("Project description is required.");
+
+export const projectStartDateValidation = Yup.date()
+  .required("Start date is required")
+  .min(new Date(), "Start date must be greater than today");
+
+export const projectEndDateValidation = Yup.date()
+  .required("End date is required")
+  .min(Yup.ref("startDate"), "End date must be after start date");
+// Input field used in `Add Project Info` form - END
