@@ -74,4 +74,34 @@ export class ProjectsService {
       }
     }
   }
+
+  async getLatestProjects(days: number) {
+    try {
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - days);
+
+      const projects = await this.prisma.projects.findMany({
+        where: {
+          createdAt: {
+            gte: cutoffDate,
+          },
+        },
+        include: {
+          location: true,
+          organization: true,
+          applications: true,
+          contributions: true,
+          donations: true,
+          messages: true,
+          skillsRequired: true,
+          tasks: true,
+        },
+      });
+      return projects;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to retrieve projects. Please try again.',
+      );
+    }
+  }
 }

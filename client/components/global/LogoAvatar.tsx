@@ -55,11 +55,11 @@ export default function LogoAvatar({
       <div
         className={clsx(
           "rounded-md bg-neutral text-neutral-content",
-          size === "xs" && "w-6",
-          size === "sm" && "w-8",
-          size === "base" && "w-10",
-          size === "lg" && "w-20",
-          size === "xl" && "w-32",
+          size === "xs" && "size-6",
+          size === "sm" && "size-8",
+          size === "base" && "size-12",
+          size === "lg" && "size-20",
+          size === "xl" && "size-32",
         )}
       >
         <span className="text-xl">{name && name.charAt(0).toUpperCase()}</span>
@@ -74,11 +74,11 @@ export default function LogoAvatar({
           <div
             className={clsx(
               "rounded-md",
-              size === "xs" && "w-6",
-              size === "sm" && "w-8",
-              size === "base" && "w-10",
-              size === "lg" && "w-20",
-              size === "xl" && "w-32",
+              size === "xs" && "size-6",
+              size === "sm" && "size-8",
+              size === "base" && "size-12",
+              size === "lg" && "size-20",
+              size === "xl" && "size-32",
             )}
           >
             <Image
