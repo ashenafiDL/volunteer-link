@@ -9,10 +9,12 @@ export default function UserAvatar({
   email,
   name,
   size,
+  classes,
 }: {
   email: string;
   name: string;
-  size: "xs" | "sm" | "base" | "lg" | "xl";
+  size: "xxs" | "xs" | "sm" | "base" | "lg" | "xl";
+  classes?: string;
 }) {
   const [avatar, setAvatar] = useState<string | null>(null);
 
@@ -41,6 +43,7 @@ export default function UserAvatar({
   }, [email]);
 
   const sizeMap = {
+    xxs: 4,
     xs: 6,
     sm: 8,
     base: 10,
@@ -51,10 +54,11 @@ export default function UserAvatar({
   const getSize = () => sizeMap[size];
 
   const renderFallback = () => (
-    <div className="avatar placeholder">
+    <div className={clsx("avatar placeholder", classes)}>
       <div
         className={clsx(
           "rounded-full bg-neutral text-neutral-content",
+          size === "xxs" && "w-4",
           size === "xs" && "w-6",
           size === "sm" && "w-8",
           size === "base" && "w-10",
@@ -62,7 +66,9 @@ export default function UserAvatar({
           size === "xl" && "w-32",
         )}
       >
-        <span className="text-xl">{name && name.charAt(0).toUpperCase()}</span>
+        <span className={clsx("text-xl", size === "xxs" && "text-xs")}>
+          {name && name.charAt(0).toUpperCase()}
+        </span>
       </div>
     </div>
   );
@@ -70,7 +76,7 @@ export default function UserAvatar({
   return (
     <>
       {avatar ? (
-        <div className="avatar">
+        <div className={clsx("avatar", classes)}>
           <div
             className={clsx(
               "rounded-full",

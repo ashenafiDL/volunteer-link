@@ -21,4 +21,16 @@ export class ProjectsController {
 
     return this.projectsService.getLatestProjects(days);
   }
+
+  @Public()
+  @Get('in-progress/:organizationId')
+  getInProgressProjects(@Param('organizationId') organizationId: string) {
+    return this.projectsService.getInProgressProjects(organizationId);
+  }
+
+  @Public()
+  @Get('finished/:organizationId')
+  getFinishedProjects(@Param('organizationId') organizationId: string) {
+    return this.projectsService.getFinishedProjects(organizationId);
+  }
 }

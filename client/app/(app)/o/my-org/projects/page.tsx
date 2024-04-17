@@ -18,12 +18,15 @@ import { differenceInDays } from "date-fns";
 import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
+import ProjectList from "../../components/ProjectList";
 
 // Project duration more than 90 days is considered long term
 const SHORT_TERM_THRESHOLD = 90; // in days
 
 export default function Projects() {
   const [locations, setLocations] = useState<any>();
+  const [inProgressProjects, setInProgressProjects] = useState<any>();
+  const [finishedProjects, setFinishedProjects] = useState<any>();
   const isClient = useIsClient();
   const { addAlert, dismissAlert } = useAlertsContext();
   const { org, getOrg } = useAuthContext();
@@ -83,28 +86,82 @@ export default function Projects() {
 
   // Fetch locations on page load
   useEffect(() => {
+    const fetchInProgressProjects = async () => {
+      try {
+        const res = await axiosInstance.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/projects/in-progress/${org.id}`,
+        );
+
+        if (res.status === 200) {
+          setInProgressProjects(res.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const fetchFinishedProjects = async () => {
+      try {
+        const res = await axiosInstance.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/projects/finished/${org.id}`,
+        );
+
+        if (res.status === 200) {
+          setFinishedProjects(res.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     fetchLocations().then((data) => {
       setLocations(data);
     });
-  }, []);
+    fetchInProgressProjects();
+    fetchFinishedProjects();
+  }, [org]);
 
   return (
-    <div>
-      <div className="flex w-full flex-row items-center justify-between text-2xl">
-        <h3>Projects</h3>
-        <button
-          className="btn btn-primary"
-          onClick={() =>
-            isClient &&
-            (
-              document.getElementById(
-                "create_new_project_modal",
-              ) as HTMLDialogElement
-            ).showModal()
-          }
-        >
-          Create new project
-        </button>
+    <>
+      <div>
+        <div className="mb-6 flex w-full flex-row items-center justify-between text-2xl">
+          <h3>Projects</h3>
+          <button
+            className="btn btn-primary"
+            onClick={() =>
+              isClient &&
+              (
+                document.getElementById(
+                  "create_new_project_modal",
+                ) as HTMLDialogElement
+              ).showModal()
+            }
+          >
+            Create new project
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <h3>In Progress Projects</h3>
+            <div className="divider"></div>
+            {inProgressProjects && inProgressProjects.length > 0 ? (
+              <ProjectList projects={inProgressProjects} isDone={false} />
+            ) : (
+              <p className="py-4 text-center italic">No projects in progress</p>
+            )}
+          </div>
+
+          <div className="space-y-1">
+            <h3>Finished Projects</h3>
+            <div className="divider"></div>
+            {finishedProjects && finishedProjects.length > 0 ? (
+              <ProjectList projects={finishedProjects} isDone />
+            ) : (
+              <p className="py-4 text-center italic">No projects finished</p>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Create new project dialog */}
@@ -203,6 +260,6 @@ export default function Projects() {
           </Formik>
         </div>
       </dialog>
-    </div>
+    </>
   );
 }
