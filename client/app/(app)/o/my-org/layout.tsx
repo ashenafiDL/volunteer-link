@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
+import "@/app/styles.css";
 import LogoAvatar from "@/components/global/LogoAvatar";
 import clsx from "clsx";
 import { format } from "date-fns";
@@ -8,7 +9,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { GoProject } from "react-icons/go";
-import "../../v/components/styles.css";
 
 export default function OrgProfileSidebar({
   children,
@@ -18,8 +18,6 @@ export default function OrgProfileSidebar({
   const [active, setActive] = useState(false);
   const { org } = useAuthContext();
   const pathname = usePathname();
-
-  console.log("path", pathname);
 
   useEffect(() => {
     if (pathname === "/o/my-org/projects") {

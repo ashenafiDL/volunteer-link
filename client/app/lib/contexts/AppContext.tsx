@@ -104,9 +104,7 @@ export default function AppContext({
         setOrg(res.data);
         return res.data;
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   return (

@@ -1,11 +1,11 @@
 "use client";
 
 import { fetchUser } from "@/app/lib/users";
+import "@/app/styles.css";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import SocialLinks from "../components/SocialLinks";
 import UserProfile from "../components/UserProfile";
-import "../components/styles.css";
 
 export default function OtherUserProfileLayout({
   children,

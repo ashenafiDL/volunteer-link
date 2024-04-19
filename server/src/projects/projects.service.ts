@@ -176,4 +176,87 @@ export class ProjectsService {
       }
     }
   }
+
+  async getFilteredProjects(queryParams: any) {
+    const { time, location, status, query } = queryParams;
+
+    try {
+      let whereClause = {};
+
+      if (query && query.length > 0) {
+        whereClause = {
+          OR: [
+            {
+              organization: {
+                name: {
+                  contains: query,
+                  mode: 'insensitive',
+                },
+              },
+            },
+            {
+              title: {
+                contains: query,
+                mode: 'insensitive',
+              },
+            },
+            {
+              description: {
+                contains: query,
+                mode: 'insensitive',
+              },
+            },
+          ],
+        };
+      }
+      const projects = await this.prisma.projects.findMany({
+        where: whereClause,
+        include: {
+          applications: true,
+          contributions: true,
+          donations: true,
+          location: true,
+          messages: true,
+          organization: true,
+          skillsRequired: true,
+          tasks: true,
+        },
+      });
+
+      let filteredProjects = projects;
+
+      // Filter projects by time preference
+      if (time && time !== 'BOTH') {
+        filteredProjects = projects.filter(
+          (project) => project.timeCommitment === time,
+        );
+      }
+
+      // Filter project by project status
+      if (status) {
+        filteredProjects = filteredProjects.filter(
+          (project) => project.status === status,
+        );
+      }
+
+      // Filter projects by location
+      if (location) {
+        if (location === 'REMOTE') {
+          filteredProjects = filteredProjects.filter(
+            (project) => project.locationId === null,
+          );
+        } else {
+          filteredProjects = filteredProjects.filter(
+            (project) => project.locationId === location,
+          );
+        }
+      }
+
+      return filteredProjects;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to retrieve filtered projects. Please try again.',
+      );
+    }
+  }
 }

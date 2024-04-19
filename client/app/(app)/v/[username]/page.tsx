@@ -1,6 +1,7 @@
 "use client";
 
 import { fetchUser } from "@/app/lib/users";
+import "@/app/styles.css";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import PersonalInfoCard from "../components/PersonalInfoCard";
@@ -8,7 +9,6 @@ import ShowMoreCard from "../components/ShowMoreCard";
 import UserBioCard from "../components/UserBioCard";
 import UserEducationInfoCard from "../components/UserEducationInfoCard";
 import UserSkillsCard from "../components/UserSkillsCard";
-import "../components/styles.css";
 
 export default function Profile() {
   const pathname = usePathname();

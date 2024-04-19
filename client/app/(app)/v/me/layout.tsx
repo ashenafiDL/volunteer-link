@@ -1,11 +1,11 @@
 "use client";
 
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
+import "@/app/styles.css";
 import React, { useEffect, useState } from "react";
 import SideNav from "../components/SideNav";
 import SocialLinks from "../components/SocialLinks";
 import UserProfile from "../components/UserProfile";
-import "../components/styles.css";
 
 export default function SidebarLayout({
   children,

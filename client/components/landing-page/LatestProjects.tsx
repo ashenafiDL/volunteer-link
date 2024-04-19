@@ -35,8 +35,6 @@ export default function LatestProjects() {
     },
   };
 
-  console.log("latestProjects", latestProjects);
-
   // Fetch latest projects on page load
   useEffect(() => {
     const fetchLatestProjects = async () => {
@@ -48,9 +46,7 @@ export default function LatestProjects() {
         if (res.status === 200) {
           setLatestProjects(res.data);
         }
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
 
     fetchLatestProjects();

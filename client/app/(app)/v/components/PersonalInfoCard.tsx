@@ -1,4 +1,4 @@
-import "./styles.css";
+import "@/app/styles.css";
 
 export default function PersonalInfoCard({
   firstName,

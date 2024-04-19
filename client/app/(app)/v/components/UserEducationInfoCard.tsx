@@ -1,6 +1,6 @@
+import "@/app/styles.css";
 import clsx from "clsx";
 import { format } from "date-fns";
-import "../components/styles.css";
 
 export default function UserEducationInfoCard({
   educationInfo,

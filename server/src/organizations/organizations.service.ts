@@ -67,8 +67,6 @@ export class OrganizationsService {
 
       return newOrganization;
     } catch (error) {
-      console.log(error);
-
       if (
         error instanceof ConflictException ||
         error instanceof NotFoundException
@@ -114,8 +112,6 @@ export class OrganizationsService {
 
       return org;
     } catch (error) {
-      console.log(error);
-
       if (error instanceof NotFoundException) {
         return error;
       } else {

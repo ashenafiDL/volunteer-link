@@ -95,9 +95,7 @@ export default function Projects() {
         if (res.status === 200) {
           setInProgressProjects(res.data);
         }
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
 
     const fetchFinishedProjects = async () => {
@@ -109,9 +107,7 @@ export default function Projects() {
         if (res.status === 200) {
           setFinishedProjects(res.data);
         }
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
 
     fetchLocations().then((data) => {

@@ -1,12 +1,12 @@
 "use client";
 
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
+import "@/app/styles.css";
 import PersonalInfoCard from "../components/PersonalInfoCard";
 import ShowMoreCard from "../components/ShowMoreCard";
 import UserBioCard from "../components/UserBioCard";
 import UserEducationInfoCard from "../components/UserEducationInfoCard";
 import UserSkillsCard from "../components/UserSkillsCard";
-import "../components/styles.css";
 
 export default function Profile() {
   const { user } = useAuthContext();

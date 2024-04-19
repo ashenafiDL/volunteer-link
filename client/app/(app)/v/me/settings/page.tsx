@@ -1,4 +1,4 @@
-import "../../components/styles.css";
+import "@/app/styles.css";
 import AppearanceSetting from "./AppearanceSetting";
 import ChangePassword from "./ChangePassword";
 import DangerZone from "./DangerZone";

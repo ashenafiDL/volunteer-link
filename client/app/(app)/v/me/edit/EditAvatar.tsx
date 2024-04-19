@@ -4,8 +4,8 @@ import axiosInstance from "@/app/axiosInstance";
 import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import { useIsClient } from "@/app/lib/contexts/useIsClient";
+import "@/app/styles.css";
 import UserAvatar from "@/components/global/UserAvatar";
-import "../../components/styles.css";
 
 export default function EditAvatar() {
   const { user, getUser, setUser } = useAuthContext();

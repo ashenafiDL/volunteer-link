@@ -38,8 +38,6 @@ export default function CreateOrgForm({ locations }: { locations: any }) {
       ).toISOString();
     }
 
-    console.log("locationId", filteredValues.locationId);
-
     try {
       const res = await axiosInstance.post(
         `${process.env.NEXT_PUBLIC_API_URL}/organizations`,
@@ -52,8 +50,6 @@ export default function CreateOrgForm({ locations }: { locations: any }) {
         router.replace("/o/create-organization/success");
       }
     } catch (error: any) {
-      console.log(error);
-
       const id = addAlert({
         severity: "error",
         message:

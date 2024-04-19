@@ -15,15 +15,12 @@ import {
   BiUserCircle,
 } from "react-icons/bi";
 import { GrOrganization } from "react-icons/gr";
-import { SlBell } from "react-icons/sl";
 
 export default function Header() {
   const { user, logout, org } = useAuthContext();
   const [dropdownHidden, setDropdownHidden] = useState<boolean>(true);
   const popupRef = useRef<HTMLDivElement>(null);
   const isClient = useIsClient();
-
-  console.log("org", org);
 
   // Menu items of the dropdown
   const menuItems = [
@@ -85,8 +82,6 @@ export default function Header() {
 
         {/* Notification + search + user avatar */}
         <div className="flex items-center gap-4">
-          <SlBell className="text-primary-content" size={24} />
-
           {/* User avatar */}
           <div className="relative">
             <div
