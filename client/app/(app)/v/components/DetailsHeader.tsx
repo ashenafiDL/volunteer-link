@@ -9,11 +9,11 @@ export default function DetailsHeader({
   text: string;
 }) {
   return (
-    <div className="mb-3 flex items-center gap-4">
-      <Link href={href}>
+    <Link href={href}>
+      <div className="mb-3 flex items-center gap-4">
         <GoArrowLeft size={28} />
-      </Link>
-      <span className="text-xl">{text}</span>
-    </div>
+        <span className="text-xl">{text}</span>
+      </div>
+    </Link>
   );
 }

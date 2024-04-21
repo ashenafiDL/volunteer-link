@@ -25,3 +25,12 @@
 .setting-item {
   @apply flex flex-row items-center justify-between;
 }
+
+/* Project details page */
+.section-container {
+  @apply flex flex-col gap-1;
+}
+
+.section-title {
+  @apply text-sm;
+}

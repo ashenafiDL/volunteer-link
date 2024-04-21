@@ -259,4 +259,38 @@ export class ProjectsService {
       );
     }
   }
+
+  async findOneById(id: string) {
+    try {
+      const project = await this.prisma.projects.findUnique({
+        where: { id },
+        include: {
+          applications: true,
+          contributions: true,
+          donations: true,
+          location: true,
+          messages: true,
+          organization: true,
+          skillsRequired: true,
+          tasks: true,
+        },
+      });
+
+      if (!project) {
+        throw new NotFoundException(
+          'Project with the specified ID was not found.',
+        );
+      }
+
+      return project;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        return error;
+      } else {
+        throw new InternalServerErrorException(
+          'Failed to retrieve project. Please try again.',
+        );
+      }
+    }
+  }
 }

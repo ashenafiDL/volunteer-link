@@ -39,4 +39,10 @@ export class ProjectsController {
   getFilteredProjects(@Query() queryParams: any) {
     return this.projectsService.getFilteredProjects(queryParams);
   }
+
+  @Public()
+  @Get(':id')
+  getProjectById(@Param('id') id: string) {
+    return this.projectsService.findOneById(id);
+  }
 }

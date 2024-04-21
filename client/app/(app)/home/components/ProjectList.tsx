@@ -1,26 +1,8 @@
+import formatDuration from "@/app/lib/formatDuration";
 import LogoAvatar from "@/components/global/LogoAvatar";
-import {
-  differenceInDays,
-  differenceInMonths,
-  differenceInYears,
-} from "date-fns";
 import Link from "next/link";
 
 export default function ProjectList({ projects }: { projects: any[] }) {
-  const formatDuration = (startDate: any, endDate: any) => {
-    const daysDifference = differenceInDays(endDate, startDate);
-    const monthsDifference = differenceInMonths(endDate, startDate);
-    const yearsDifference = differenceInYears(endDate, startDate);
-
-    if (daysDifference < 30) {
-      return `${daysDifference} day${daysDifference !== 1 ? "s" : ""}`;
-    } else if (monthsDifference < 12) {
-      return `${monthsDifference} month${monthsDifference !== 1 ? "s" : ""}`;
-    } else {
-      return `${yearsDifference} year${yearsDifference !== 1 ? "s" : ""}`;
-    }
-  };
-
   return (
     <div className="space-y-3">
       {projects.map((project, index) => (
