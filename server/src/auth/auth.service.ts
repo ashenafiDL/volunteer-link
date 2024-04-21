@@ -54,7 +54,7 @@ export class AuthService {
         error instanceof NotFoundException ||
         error instanceof ConflictException
       ) {
-        throw error;
+        return error;
       } else {
         throw new InternalServerErrorException(
           'Failed to create user. Please try again later.',

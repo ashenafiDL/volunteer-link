@@ -1,5 +1,7 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common';
+import { Public } from 'src/auth/decorators/public.decorator';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
+import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { OrganizationsService } from './organizations.service';
 
 @Controller('organizations')
@@ -15,8 +17,14 @@ export class OrganizationsController {
     return this.organizationsService.create(ownerId, createOrganizationDto);
   }
 
+  @Public()
   @Get(':identifier')
   getOrg(@Param('identifier') identifier) {
     return this.organizationsService.getOrg(identifier);
+  }
+
+  @Patch(':id')
+  updateById(@Param('id') id, @Body() updateOrgDto: UpdateOrganizationDto) {
+    return this.organizationsService.updateById(id, updateOrgDto);
   }
 }

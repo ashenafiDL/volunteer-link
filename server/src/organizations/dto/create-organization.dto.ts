@@ -18,6 +18,11 @@ export class CreateOrganizationDto {
   @ApiProperty({ description: 'The mission statement of the organization' })
   mission?: string;
 
+  @IsString()
+  @IsOptional()
+  @ApiProperty({ description: 'Short description of the organization' })
+  aboutUs?: string;
+
   @IsUrl()
   @IsOptional()
   @ApiProperty({ description: "The URL of the organization's website" })

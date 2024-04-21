@@ -83,24 +83,111 @@ export class FilesController {
     }
   }
 
+  @Delete('deleteProfilePicture')
+  @ApiDeleteProfilePictureEndpoint()
+  deleteAvatar(@Req() req) {
+    const id = req.user['sub'];
+    return this.filesService.deleteProfilePicture(id);
+  }
+
+  // For organization logo and permit
+  @Post('logo/update/:id')
+  @UseInterceptors(
+    FileInterceptor('logo', {
+      storage: diskStorage({
+        destination: './uploads/logos',
+        filename: (req, file, callback) => {
+          callback(
+            null,
+            `$${new Date().toISOString()}.${file.originalname
+              .split('.')
+              .pop()}`,
+          );
+        },
+      }),
+    }),
+  )
+  uploadLogo(
+    @Param('id') id: string,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: 'jpeg|jpg|png',
+        })
+        .addMaxSizeValidator({
+          maxSize: 2000000, // 2MB
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    file: Express.Multer.File,
+  ) {
+    return this.filesService.changeLogo(id, file);
+  }
+
   @Public()
-  @ApiGetProfilePictureEndpoint()
-  @Get('getProfilePicture/:email')
+  @Get('getLogo/:id')
   async serveLogo(@Param('id') id: string, @Res() res: any) {
     try {
       const filepath = await this.filesService.findLogoPath(id);
       res.sendFile(`${process.cwd()}/${filepath}`);
     } catch (error) {
       throw new InternalServerErrorException(
-        'Error while fetching profile picture. Please try again.',
+        'Error while fetching logo. Please try again.',
       );
     }
   }
 
-  @Delete('deleteProfilePicture')
-  @ApiDeleteProfilePictureEndpoint()
-  deleteAvatar(@Req() req) {
-    const id = req.user['sub'];
-    return this.filesService.deleteProfilePicture(id);
+  @Delete('deleteLogo/:id')
+  deleteLogo(@Param('id') id: string) {
+    return this.filesService.deleteLogo(id);
+  }
+
+  @Post('uploadPermit/:id')
+  @UseInterceptors(
+    FileInterceptor('permit', {
+      storage: diskStorage({
+        destination: './uploads/permits',
+        filename: (req, file, callback) => {
+          callback(
+            null,
+            `$${new Date().toISOString()}.${file.originalname
+              .split('.')
+              .pop()}`,
+          );
+        },
+      }),
+    }),
+  )
+  uploadPermit(
+    @Param('id') id: string,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: 'pdf',
+        })
+        .addMaxSizeValidator({
+          maxSize: 10000000, // 10MB
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    file: Express.Multer.File,
+  ) {
+    return this.filesService.uploadPermit(id, file);
+  }
+
+  @Get('getPermit/:id')
+  async servePermit(@Param('id') id: string, @Res() res: any) {
+    try {
+      const filepath = await this.filesService.findPermitPath(id);
+      res.sendFile(`${process.cwd()}/${filepath}`);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error while fetching permit. Please try again.',
+      );
+    }
   }
 }

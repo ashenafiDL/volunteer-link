@@ -32,23 +32,34 @@ export default function OrgProfileSidebar({
       {/* Sidebar */}
       <div className="space-y-3">
         <div className="layout-left-child">
-          <Link href="/o/my-org">
-            <div className="card rounded-md">
-              <div className="card-body">
-                <LogoAvatar id={org.id} name={org.name} size="xl" />
-                <h2 className="text-3xl font-medium">{org.name}</h2>
-                <div className="flex flex-row">
-                  <span>{org?.location?.name}</span>
-                  {org.foundingDate && (
-                    <>
-                      <div className="divider divider-horizontal"></div>
-                      <span>{`Since ${format(org.foundingDate, "MMMM yyyy")}`}</span>
-                    </>
-                  )}
-                </div>
+          <div className="card rounded-md">
+            <div className="card-body">
+              <div
+                className={clsx(
+                  "badge",
+                  org?.verified ? "badge-success" : "badge-error",
+                )}
+              >
+                {org?.verified ? "Verified" : "Not Verified"}
               </div>
+              <LogoAvatar id={org.id} name={org.name} size="xl" />
+              <Link href="/o/my-org">
+                <h2 className="text-3xl font-medium">{org.name}</h2>
+              </Link>
+              <div className="flex flex-row">
+                <span>{org?.location?.name}</span>
+                {org.foundingDate && (
+                  <>
+                    <div className="divider divider-horizontal"></div>
+                    <span>{`Since ${format(org.foundingDate, "MMMM, yyyy")}`}</span>
+                  </>
+                )}
+              </div>
+              <Link href="/o/my-org/edit" className="mt-3 w-full">
+                <button className="btn btn-primary">Edit Profile</button>
+              </Link>
             </div>
-          </Link>
+          </div>
 
           <div className="flex flex-row lg:flex-col">
             <Link href="/o/my-org/projects">

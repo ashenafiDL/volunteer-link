@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
+import { UpdateOrganizationDto } from './dto/update-organization.dto';
 
 @Injectable()
 export class OrganizationsService {
@@ -117,6 +118,43 @@ export class OrganizationsService {
       } else {
         throw new InternalServerErrorException(
           'Failed to get organization. Please try again.',
+        );
+      }
+    }
+  }
+
+  async updateById(id: string, updateOrgDto: UpdateOrganizationDto) {
+    try {
+      // Check if organization with the specified ID exists
+      const org = await this.prisma.organizations.findUnique({
+        where: { id },
+      });
+      if (!org) {
+        throw new NotFoundException(
+          'Organization with the specified ID was not found',
+        );
+      }
+
+      // Update the organization
+      const updatedOrg = await this.prisma.organizations.update({
+        where: { id },
+        data: updateOrgDto,
+        include: {
+          location: true,
+          logo: true,
+          owner: true,
+          permit: true,
+          projects: true,
+        },
+      });
+
+      return updatedOrg;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        return error;
+      } else {
+        throw new InternalServerErrorException(
+          'Failed to update organization. Please try again.',
         );
       }
     }

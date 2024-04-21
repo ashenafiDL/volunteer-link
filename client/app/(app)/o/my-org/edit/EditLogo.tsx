@@ -4,19 +4,18 @@ import axiosInstance from "@/app/axiosInstance";
 import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import { useIsClient } from "@/app/lib/contexts/useIsClient";
-import "@/app/styles.css";
-import UserAvatar from "@/components/global/UserAvatar";
+import LogoAvatar from "@/components/global/LogoAvatar";
 
-export default function EditAvatar() {
-  const { user, getUser, setUser } = useAuthContext();
+export default function EditLogo() {
+  const { org, getOrg, setOrg } = useAuthContext();
   const { addAlert, dismissAlert } = useAlertsContext();
   const isClient = useIsClient();
 
-  const handleChange = async (e: any) => {
+  const handleLogoUpload = async (e: any) => {
     try {
       const res = await axiosInstance.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/files/profilePic/update`,
-        { file: e.target.files[0], email: user?.email },
+        `${process.env.NEXT_PUBLIC_API_URL}/files/logo/update/${org?.id}`,
+        { logo: e.target.files[0] },
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -25,13 +24,14 @@ export default function EditAvatar() {
       );
 
       if (res.status === 201) {
-        const updatedUser = getUser();
-        setUser(updatedUser);
+        await getOrg(org.id);
       }
-    } catch (e) {
+    } catch (error: any) {
       const id = addAlert({
         severity: "error",
-        message: "Failed to update profile picture. Please try again.",
+        message:
+          error?.response?.data?.message ||
+          "Failed to update profile picture. Please try again.",
       });
       setTimeout(() => {
         dismissAlert(id);
@@ -42,17 +42,18 @@ export default function EditAvatar() {
   const handleDelete = async () => {
     try {
       const res = await axiosInstance.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/files/deleteProfilePicture`,
+        `${process.env.NEXT_PUBLIC_API_URL}/files/deleteLogo/${org?.id}`,
       );
 
       if (res.status === 200) {
-        const updatedUser = getUser();
-        setUser(updatedUser);
+        await getOrg(org.id);
       }
-    } catch (e) {
+    } catch (error: any) {
       const id = addAlert({
         severity: "error",
-        message: "Failed to remove profile picture. Please try again.",
+        message:
+          error?.response?.data?.message ||
+          "Failed to remove profile picture. Please try again.",
       });
       setTimeout(() => {
         dismissAlert(id);
@@ -62,15 +63,11 @@ export default function EditAvatar() {
 
   return (
     <div className="space-y-1">
-      <p>Profile Picture</p>
       <div className="card rounded-md">
         <div className="card-body">
+          <p className="card-title">Profile Picture</p>
           <div>
-            <UserAvatar
-              email={user && user.email}
-              name={user && user.firstName}
-              size="xl"
-            />
+            <LogoAvatar id={org.id} name={org.name} size="xl" />
           </div>
 
           <div className="mt-4 flex gap-6">
@@ -79,7 +76,7 @@ export default function EditAvatar() {
               accept="image/*"
               type="file"
               hidden
-              onChange={handleChange}
+              onChange={handleLogoUpload}
             ></input>
             <button
               className="btn btn-primary"
@@ -87,16 +84,16 @@ export default function EditAvatar() {
                 isClient && document.getElementById("fileInput")?.click()
               }
             >
-              Update profile picture
+              Update logo
             </button>
 
             <div>
               <button
                 className="btn btn-error"
-                disabled={user?.profilePictureId === null}
+                disabled={org.logoId === null}
                 onClick={handleDelete}
               >
-                Remove profile picture
+                Remove logo
               </button>
             </div>
           </div>

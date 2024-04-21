@@ -1,6 +1,7 @@
 "use client";
 
 import axiosInstance from "@/app/axiosInstance";
+import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import clsx from "clsx";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -14,6 +15,7 @@ export default function LogoAvatar({
   name: string;
   size: "xs" | "sm" | "base" | "lg" | "xl";
 }) {
+  const { org } = useAuthContext();
   const [logo, setLogo] = useState<string | null>(null);
 
   useEffect(() => {
@@ -38,7 +40,7 @@ export default function LogoAvatar({
     if (id !== undefined) {
       getAvatar();
     }
-  }, [id]);
+  }, [id, org.logoId]);
 
   const sizeMap = {
     xs: 6,

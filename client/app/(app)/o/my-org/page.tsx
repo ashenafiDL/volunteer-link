@@ -14,12 +14,13 @@ export default function OrgProfile() {
           <div className="space-y-2">
             <LogoAvatar id={org.id} name={org.name} size="xl" />
             <h2 className="text-3xl font-medium">{org.name}</h2>
+
             <div className="flex flex-row">
               <span>{org?.location?.name}</span>
               {org.foundingDate && (
                 <>
                   <div className="divider divider-horizontal"></div>
-                  <span>{`Since ${format(org.foundingDate, "MMMM yyyy")}`}</span>
+                  <span>{`Since ${format(org.foundingDate, "MMMM, yyyy")}`}</span>
                 </>
               )}
             </div>
