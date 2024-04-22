@@ -24,8 +24,10 @@ model Users {
   roleId                 String
   location               Locations          @relation(fields: [locationId], references: [id])
   locationId             String
-  profilePicture         Files?             @relation(fields: [profilePictureId], references: [id])
-  profilePictureId       String?
+  profilePicture         Files?             @relation("profilePic", fields: [profilePictureId], references: [id])
+  profilePictureId       String?            @unique
+  cv                     Files?             @relation("cv", fields: [cvId], references: [id])
+  cvId                   String?            @unique
   organization           Organizations?     @relation(fields: [organizationId], references: [id])
   organizationId         String?            @unique
   lastLoggedInAt         DateTime           @default(now())
@@ -156,10 +158,11 @@ model Files {
   filePath           String
   size               Decimal
   createdAt          DateTime       @default(now())
-  User               Users[]
   Badges             Badges[]
   organizationLogo   Organizations? @relation("logo")
   organizarionPermit Organizations? @relation("permit")
+  userCv             Users?         @relation("cv")
+  userProfilePics    Users?         @relation("profilePic")
 }
 
 model Messages {

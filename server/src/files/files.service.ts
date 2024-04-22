@@ -67,7 +67,7 @@ export class FilesService {
   async findProfilePicturePath(email: string): Promise<string> {
     try {
       const user = await this.prisma.users.findUnique({
-        where: { email, profilePictureId: { not: null } },
+        where: { email, profilePicture: { isNot: null } },
       });
 
       if (!user) {
@@ -95,7 +95,7 @@ export class FilesService {
   async deleteProfilePicture(id: string) {
     // Check if the user exists and has profile picture
     const user = await this.prisma.users.findUnique({
-      where: { id, profilePictureId: { not: null } },
+      where: { id, profilePicture: { isNot: null } },
     });
 
     if (!user) {
@@ -347,6 +347,89 @@ export class FilesService {
       } else {
         throw new InternalServerErrorException(
           'Error while fetching profile picture. Please try again',
+        );
+      }
+    }
+  }
+
+  async uploadCV(id: string, file: Express.Multer.File) {
+    try {
+      // Check if the user exists
+      const user = await this.prisma.users.findUnique({
+        where: { id },
+      });
+      if (!user) {
+        throw new NotFoundException("User with specified ID doesn't exist");
+      }
+
+      // If the user has a CV already uploaded, delete the existing one
+      if (user.cvId) {
+        const existingFile = await this.prisma.files.delete({
+          where: { id: user.cvId },
+        });
+
+        try {
+          await fs.remove(`${existingFile.filePath}`);
+        } catch (error) {
+          throw new InternalServerErrorException('Failed to delete CV');
+        }
+      }
+
+      // Create a new record in the files table
+      const newFile = await this.prisma.files.create({
+        data: {
+          filename: file.filename,
+          filePath: `./uploads/CVs/${file.filename}`,
+          fileType: file.mimetype,
+          size: file.size,
+        },
+      });
+
+      // Update the user with the created file
+      await this.prisma.users.update({
+        where: { id },
+        data: {
+          cvId: newFile.id,
+        },
+      });
+
+      return { massage: 'CV uploaded successfully' };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        return error;
+      } else {
+        throw new InternalServerErrorException(
+          'Failed to upload permit. Please try again later.',
+        );
+      }
+    }
+  }
+
+  async findCVPath(id: string) {
+    try {
+      const user = await this.prisma.users.findUnique({
+        where: {
+          id,
+          cv: {
+            isNot: null,
+          },
+        },
+      });
+      if (!user) {
+        throw new NotFoundException("User with specified ID doesn't exist");
+      }
+
+      const file = await this.prisma.files.findUnique({
+        where: { id: user.cvId },
+      });
+
+      return file.filePath;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        return error;
+      } else {
+        throw new InternalServerErrorException(
+          'Error while fetching CV. Please try again',
         );
       }
     }

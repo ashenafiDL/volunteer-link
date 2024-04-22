@@ -70,7 +70,7 @@ export default function EditLegalInfo() {
     if (org.id !== undefined) {
       getPermit();
     }
-  }, [org.id]);
+  }, [org.id, org.permitId]);
 
   return (
     <div className="card rounded-md">

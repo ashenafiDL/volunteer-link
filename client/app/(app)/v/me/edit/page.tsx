@@ -1,6 +1,7 @@
 import { fetchLocations } from "@/app/lib/locations";
 import DetailsHeader from "../../components/DetailsHeader";
 import EditAvatar from "./EditAvatar";
+import EditCV from "./EditCV";
 import EditEducationInfo from "./EditEducationInfo";
 import EditPersonalInfo from "./EditPersonalInfo";
 import EditSkills from "./EditSkills";
@@ -17,6 +18,8 @@ export default async function EditProfile() {
         <EditAvatar />
 
         <EditPersonalInfo locations={locations} />
+
+        <EditCV />
 
         <EditSocialLinks />
 

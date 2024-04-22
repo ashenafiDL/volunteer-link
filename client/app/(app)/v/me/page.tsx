@@ -2,6 +2,7 @@
 
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import "@/app/styles.css";
+import CVCard from "../components/CVCard";
 import PersonalInfoCard from "../components/PersonalInfoCard";
 import ShowMoreCard from "../components/ShowMoreCard";
 import UserBioCard from "../components/UserBioCard";
@@ -24,6 +25,9 @@ export default function Profile() {
 
       {/* Bio card */}
       {user.bio && <UserBioCard bio={user.bio} />}
+
+      {/* CV Card */}
+      {user.cvId && <CVCard id={user.id} />}
 
       {/* Skills card */}
       <div>

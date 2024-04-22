@@ -190,4 +190,52 @@ export class FilesController {
       );
     }
   }
+
+  @Post('uploadCV/:id')
+  @UseInterceptors(
+    FileInterceptor('cv', {
+      storage: diskStorage({
+        destination: './uploads/CVs',
+        filename: (req, file, callback) => {
+          callback(
+            null,
+            `$${new Date().toISOString()}.${file.originalname
+              .split('.')
+              .pop()}`,
+          );
+        },
+      }),
+    }),
+  )
+  uploadCV(
+    @Param('id') id: string,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: 'pdf',
+        })
+        .addMaxSizeValidator({
+          maxSize: 10000000, // 10MB
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    file: Express.Multer.File,
+  ) {
+    return this.filesService.uploadCV(id, file);
+  }
+
+  @Public()
+  @Get('getCV/:id')
+  async serveCV(@Param('id') id: string, @Res() res: any) {
+    try {
+      const filepath = await this.filesService.findCVPath(id);
+      res.sendFile(`${process.cwd()}/${filepath}`);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error while fetching CV. Please try again.',
+      );
+    }
+  }
 }
