@@ -2,7 +2,7 @@
 
 import { fetchUser } from "@/app/lib/users";
 import "@/app/styles.css";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import PersonalInfoCard from "../components/PersonalInfoCard";
 import ShowMoreCard from "../components/ShowMoreCard";
@@ -14,15 +14,16 @@ export default function Profile() {
   const pathname = usePathname();
   const username = pathname.split("/")[2];
   const [user, setUser] = useState<any>();
+  const router = useRouter();
 
   useEffect(() => {
-    async function getUserData() {
+    const getUserData = async () => {
       const res = await fetchUser(username);
 
       if (res) {
         setUser(res);
       }
-    }
+    };
 
     getUserData();
   }, [username]);
@@ -47,11 +48,13 @@ export default function Profile() {
           <div>
             {user.skills && user.skills.length > 0 && (
               <>
-                <div className="card space-y-3 rounded-b-none">
-                  <h5 className="card-title">Skills</h5>
+                <div className="card space-y-3 rounded-md rounded-b-none">
+                  <div className="card-body">
+                    <h5 className="card-title">Skills</h5>
 
-                  {/* Only show three skills */}
-                  <UserSkillsCard skills={user.skills.slice(0, 3)} />
+                    {/* Only show three skills */}
+                    <UserSkillsCard skills={user.skills.slice(0, 3)} />
+                  </div>
                 </div>
                 {user.skills.length > 3 && (
                   <ShowMoreCard href={`/v/${user.username}/skills`} />

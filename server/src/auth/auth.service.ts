@@ -133,6 +133,15 @@ export class AuthService {
         sub: user.id,
         email: user.email,
       };
+      3;
+
+      // Make the user active if it was deactivated
+      await this.prisma.users.update({
+        where: { email },
+        data: {
+          isActive: true,
+        },
+      });
 
       return this.generateTokenAndUpdateUser(payload);
     } catch (error) {
@@ -274,10 +283,18 @@ export class AuthService {
 
       const fullName = `${updatedUser.firstName} ${updatedUser.lastName}`;
 
-      this.emailService.sendPasswordChangeConfirmation(
+      await this.emailService.sendPasswordChangeConfirmation(
         updatedUser.email,
         fullName,
       );
+
+      // Reactivate the user account, if it was deactivated
+      await this.prisma.users.update({
+        where: { email },
+        data: {
+          isActive: true,
+        },
+      });
 
       return this.generateTokenAndUpdateUser({
         sub: updatedUser.id,

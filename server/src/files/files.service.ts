@@ -67,7 +67,7 @@ export class FilesService {
   async findProfilePicturePath(email: string): Promise<string> {
     try {
       const user = await this.prisma.users.findUnique({
-        where: { email, profilePicture: { isNot: null } },
+        where: { email, profilePicture: { isNot: null }, isActive: true },
       });
 
       if (!user) {
@@ -413,6 +413,7 @@ export class FilesService {
           cv: {
             isNot: null,
           },
+          isActive: true,
         },
       });
       if (!user) {

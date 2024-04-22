@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Patch,
   Req,
@@ -38,6 +39,11 @@ export class UserController {
   @ApiGetUserByUsernameEndpoint()
   async getUserByUsername(@Param('username') username: string) {
     const user = await this.userService.findOne(username);
+    if (!user.isActive) {
+      throw new NotFoundException(
+        'User with the specified username was not found.',
+      );
+    }
     return this.userService.sanitizeUserData(user);
   }
 
@@ -68,6 +74,12 @@ export class UserController {
   async removeEducation(@Req() req, @Param('educationId') educationId: string) {
     const userId = req.user.sub;
     return this.userService.deleteEducation(userId, educationId);
+  }
+
+  @Patch('deactivateAccount')
+  async deactivateAccount(@Req() req) {
+    const id = req.user.sub;
+    return this.userService.deactivateAccount(id);
   }
 
   @Delete('me/delete')

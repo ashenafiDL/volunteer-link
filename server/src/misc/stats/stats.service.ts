@@ -13,11 +13,18 @@ export class StatsService {
       // Number of users that are active in the last 30 days
       const cutoffDate = new Date();
       cutoffDate.setDate(cutoffDate.getDate() - 30);
-      const activeUserCount = await this.prisma.users.count({
+      const monthlyActiveUserCount = await this.prisma.users.count({
         where: {
           lastLoggedInAt: {
             gte: cutoffDate,
           },
+        },
+      });
+
+      // Deactivated accounts
+      const deactivatedAccountsCount = await this.prisma.users.count({
+        where: {
+          isActive: false,
         },
       });
 
@@ -30,7 +37,8 @@ export class StatsService {
       const response = {
         users: {
           total: totalUserCount,
-          active: activeUserCount,
+          active: monthlyActiveUserCount,
+          deactivatedAccounts: deactivatedAccountsCount,
         },
         projects: {
           total: totalProjectCount,

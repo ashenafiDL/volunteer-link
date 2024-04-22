@@ -40,6 +40,7 @@ model Users {
   notificationPreference Json[]
   createdAt              DateTime           @default(now())
   updatedAt              DateTime           @updatedAt
+  isActive               Boolean            @default(true)
   skills                 Skills[]
   badges                 UsersToBadges[]
   applications           Applications[]

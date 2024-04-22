@@ -370,6 +370,49 @@ export class UsersService {
     }
   }
 
+  async deactivateAccount(id: string) {
+    try {
+      // Check if user exists
+      const user = await this.prisma.users.findUnique({
+        where: {
+          id: id,
+        },
+      });
+      if (!user) {
+        throw new NotFoundException("User doesn't exist");
+      }
+
+      // Check if active
+      const isActive = await this.isActive(id);
+      if (!isActive) {
+        throw new ConflictException('Account already deactivated');
+      }
+
+      // Deactivate account
+      await this.prisma.users.update({
+        where: {
+          id: id,
+        },
+        data: {
+          isActive: false,
+        },
+      });
+
+      return {
+        message: 'Account deactivated successfully',
+      };
+    } catch (error) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof ConflictException
+      ) {
+        return error;
+      } else {
+        throw new InternalServerErrorException('Failed to deactivate account');
+      }
+    }
+  }
+
   async deleteUser(id: string) {
     try {
       await this.prisma.users.delete({
@@ -416,6 +459,23 @@ export class UsersService {
           'Failed to remove skill. Please try again later.',
         );
       }
+    }
+  }
+
+  async isActive(id?: string, username?: string, email?: string) {
+    try {
+      const user = await this.prisma.users.findFirst({
+        where: {
+          OR: [{ id: id }, { username: username }, { email: email }],
+        },
+      });
+
+      if (!user) return false;
+      else return user.isActive;
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to check if user is active. Please try again later.',
+      );
     }
   }
 
