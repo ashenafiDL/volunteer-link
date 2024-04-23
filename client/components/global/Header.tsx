@@ -7,13 +7,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineSetting } from "react-icons/ai";
-import {
-  BiDonateBlood,
-  BiFile,
-  BiListCheck,
-  BiLogOut,
-  BiUserCircle,
-} from "react-icons/bi";
+import { BiDonateBlood, BiFile, BiLogOut, BiUserCircle } from "react-icons/bi";
 import { GrOrganization } from "react-icons/gr";
 
 export default function Header() {
@@ -29,8 +23,12 @@ export default function Header() {
       icon: <BiUserCircle size={24} />,
       href: "/v/me",
     },
-    { label: "Tasks", icon: <BiListCheck size={24} />, href: "#" },
-    { label: "Applications", icon: <BiFile size={24} />, href: "#" },
+    // { label: "Tasks", icon: <BiListCheck size={24} />, href: "#" },
+    {
+      label: "Applications",
+      icon: <BiFile size={24} />,
+      href: "/v/me/applications",
+    },
     {
       label: "Settings",
       icon: <AiOutlineSetting size={24} />,

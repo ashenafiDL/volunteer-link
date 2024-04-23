@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLayoutEffect, useState } from "react";
 import { AiOutlineSetting } from "react-icons/ai";
-import { BiUser } from "react-icons/bi";
+import { BiFile, BiUser } from "react-icons/bi";
 
 export default function SideNav() {
   const [activeNavItem, setActiveNavItem] = useState<number | null>(null);
@@ -15,8 +15,14 @@ export default function SideNav() {
     {
       icon: <BiUser size={28} />,
       title: "Profile",
-      subtitle: "Email, location, skills, contributions, badges, applications",
+      subtitle: "Email, location, skills, contributions, badges.",
       href: "/v/me",
+    },
+    {
+      icon: <BiFile size={28} />,
+      title: "Applications",
+      subtitle: "All your pending, accepted, and rejected applications",
+      href: "/v/me/applications",
     },
     {
       icon: <AiOutlineSetting size={28} />,
