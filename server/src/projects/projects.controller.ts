@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { Public } from 'src/auth/decorators/public.decorator';
+import { ApplyToProjectDto } from './dto/apply.dto';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { ProjectsService } from './projects.service';
 
@@ -44,5 +45,19 @@ export class ProjectsController {
   @Get(':id')
   getProjectById(@Param('id') id: string) {
     return this.projectsService.findOneById(id);
+  }
+
+  @Post(':projectId/apply')
+  apply(
+    @Req() req,
+    @Param('projectId') projectId: string,
+    @Body() applyToProjectDto: ApplyToProjectDto,
+  ) {
+    const userId = req.user.sub;
+    return this.projectsService.apply(
+      projectId,
+      userId,
+      applyToProjectDto.message,
+    );
   }
 }

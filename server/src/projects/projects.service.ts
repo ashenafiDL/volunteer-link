@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -289,6 +290,66 @@ export class ProjectsService {
       } else {
         throw new InternalServerErrorException(
           'Failed to retrieve project. Please try again.',
+        );
+      }
+    }
+  }
+
+  async apply(projectId: string, userId: string, message: string) {
+    try {
+      // Check if user exists
+      const user = await this.prisma.users.findUnique({
+        where: { id: userId },
+      });
+      if (!user) {
+        throw new NotFoundException("User doesn't exist");
+      }
+
+      // Check if project exists
+      const project = await this.prisma.projects.findUnique({
+        where: { id: projectId },
+      });
+      if (!project) {
+        throw new NotFoundException("Project doesn't exist");
+      }
+
+      // Check if the user has already applied
+      const existingApplication = await this.prisma.applications.findFirst({
+        where: {
+          AND: [{ userId: userId }, { projectId: projectId }],
+        },
+      });
+      if (existingApplication) {
+        throw new ConflictException('You have already applied to this project');
+      }
+
+      // Update project
+      await this.prisma.projects.update({
+        where: {
+          id: projectId,
+        },
+        data: {
+          applications: {
+            create: {
+              userId: userId,
+              message: message,
+            },
+          },
+        },
+      });
+
+      return {
+        message: 'Applied successfully',
+      };
+    } catch (error) {
+      if (
+        error instanceof NotFoundException ||
+        error instanceof ConflictException
+      ) {
+        return error;
+      } else {
+        throw new InternalServerErrorException(
+          'Failed to apply. Please try again.',
         );
       }
     }
