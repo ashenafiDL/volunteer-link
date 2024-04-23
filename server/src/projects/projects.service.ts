@@ -121,7 +121,10 @@ export class ProjectsService {
       // Retrieve in progress projects projects
       const projects = await this.prisma.projects.findMany({
         where: {
-          OR: [{ status: 'NOT_STARTED' }, { status: 'IN_PROGRESS' }],
+          AND: [
+            { organizationId: organizationId },
+            { status: { not: 'DONE' } },
+          ],
         },
         include: {
           location: true,
@@ -162,7 +165,7 @@ export class ProjectsService {
       // Retrieve finished projects projects
       const projects = await this.prisma.projects.findMany({
         where: {
-          status: 'DONE',
+          AND: [{ organizationId: organizationId }, { status: 'DONE' }],
         },
       });
 
