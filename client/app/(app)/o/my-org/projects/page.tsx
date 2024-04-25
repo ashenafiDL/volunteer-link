@@ -142,7 +142,7 @@ export default function Projects() {
             <h3>In Progress Projects</h3>
             <div className="divider"></div>
             {inProgressProjects && inProgressProjects.length > 0 ? (
-              <ProjectList projects={inProgressProjects} isDone={false} />
+              <ProjectList projects={inProgressProjects} isDone={false} own />
             ) : (
               <p className="py-4 text-center italic">No projects in progress</p>
             )}
@@ -152,7 +152,7 @@ export default function Projects() {
             <h3>Finished Projects</h3>
             <div className="divider"></div>
             {finishedProjects && finishedProjects.length > 0 ? (
-              <ProjectList projects={finishedProjects} isDone />
+              <ProjectList projects={finishedProjects} isDone own />
             ) : (
               <p className="py-4 text-center italic">No projects finished</p>
             )}

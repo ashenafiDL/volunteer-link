@@ -77,6 +77,7 @@ export default function EditEducationInfo() {
     } else {
       values.endDate = new Date(values.endDate).toISOString();
     }
+    format(values.startDate, "yyyy-MM-dd:hh:mm:ss");
     values.startDate = new Date(values.startDate).toISOString();
 
     try {
