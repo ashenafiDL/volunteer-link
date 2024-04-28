@@ -1,7 +1,6 @@
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { Module } from '@nestjs/common';
-import { google } from 'googleapis';
 import { join } from 'path';
 import { EmailService } from './email.service';
 
@@ -12,31 +11,33 @@ import { EmailService } from './email.service';
         const clientId = process.env.CLIENT_ID;
         const clientSecret = process.env.CLIENT_SECRET;
         const refreshToken = process.env.REFRESH_TOKEN;
-        const redirectUri = process.env.REDIRECT_URI;
+        // const redirectUri = process.env.REDIRECT_URI;
         const senderEmail = process.env.SENDER_EMAIL;
 
-        const oAuth2Client = new google.auth.OAuth2(
-          clientId,
-          clientSecret,
-          redirectUri,
-        );
+        // const oAuth2Client = new google.auth.OAuth2(
+        //   clientId,
+        //   clientSecret,
+        //   redirectUri,
+        // );
 
-        let accessToken;
+        // let accessToken;
 
-        await new Promise((resolve, reject) => {
-          oAuth2Client.getAccessToken((err, token) => {
-            if (err) {
-              reject('Failed to create access token');
-            }
-            resolve(token);
-          });
-        })
-          .then((result) => {
-            accessToken = result;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        // await new Promise((resolve, reject) => {
+        //   oAuth2Client.getAccessToken((err, token) => {
+        //     if (err) {
+        //       console.log(err);
+
+        //       reject('Failed to create access token');
+        //     }
+        //     resolve(token);
+        //   });
+        // })
+        //   .then((result) => {
+        //     accessToken = result;
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //   });
 
         return {
           transport: {
@@ -47,7 +48,7 @@ import { EmailService } from './email.service';
               clientId: clientId,
               clientSecret: clientSecret,
               refreshToken: refreshToken,
-              accessToken: accessToken,
+              accessToken: process.env.ACCESS_TOKEN,
             },
           },
           defaults: {

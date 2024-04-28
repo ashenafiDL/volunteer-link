@@ -13,7 +13,7 @@ import { randomBytes } from 'crypto';
 import { EmailService } from 'src/email/email.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UsersService } from 'src/users/users.service';
-import { jwtConstants } from './constants';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
@@ -133,7 +133,6 @@ export class AuthService {
         sub: user.id,
         email: user.email,
       };
-      3;
 
       // Make the user active if it was deactivated
       await this.prisma.users.update({
@@ -349,7 +348,7 @@ export class AuthService {
 
       const token = await this.jwtService.signAsync(payload, {
         expiresIn: '15m',
-        secret: jwtConstants.secret,
+        secret: process.env.JWT_SECRET,
       });
 
       const hashedResetCode = await bcrypt.hash(resetCode, 10);
@@ -380,7 +379,7 @@ export class AuthService {
 
       const token = await this.jwtService.signAsync(payload, {
         expiresIn: '15m',
-        secret: jwtConstants.secret,
+        secret: process.env.JWT_SECRET,
       });
 
       const hashedVerificationCode = await bcrypt.hash(verificationCode, 10);
@@ -403,7 +402,7 @@ export class AuthService {
     try {
       // decode the token.
       const decodedToken = await this.jwtService.verify(token, {
-        secret: jwtConstants.secret,
+        secret: process.env.JWT_SECRET,
       });
 
       // convert milliseconds to seconds.
