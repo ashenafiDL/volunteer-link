@@ -261,12 +261,11 @@ model UsersToBadges {
 }
 
 model SkillsToProjects {
-  skill       Skills   @relation(fields: [skillId], references: [id])
-  skillId     String
-  project     Projects @relation(fields: [projectId], references: [id])
-  projectId   String
-  description String
-  vaccancies  Int      @default(1)
+  skill     Skills   @relation(fields: [skillId], references: [id])
+  skillId   String
+  project   Projects @relation(fields: [projectId], references: [id])
+  projectId String
+  vacancies Int      @default(1)
 
   @@id([skillId, projectId])
 }

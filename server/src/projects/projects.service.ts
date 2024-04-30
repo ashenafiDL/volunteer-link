@@ -5,7 +5,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { AddSkillToProjectDto } from './dto/add-skill-to-project.dto';
 import { CreateProjectDto } from './dto/create-project.dto';
+import { UpdateProjectDto } from './dto/update-project.dto';
 
 @Injectable()
 export class ProjectsService {
@@ -275,7 +277,11 @@ export class ProjectsService {
           location: true,
           messages: true,
           organization: true,
-          skillsRequired: true,
+          skillsRequired: {
+            include: {
+              skill: true,
+            },
+          },
           tasks: true,
         },
       });
@@ -354,6 +360,132 @@ export class ProjectsService {
         throw new InternalServerErrorException(
           'Failed to apply. Please try again.',
         );
+      }
+    }
+  }
+
+  async update(projectId: string, updateProjectDto: UpdateProjectDto) {
+    try {
+      // Check if project exists
+      const project = await this.prisma.projects.findUnique({
+        where: {
+          id: projectId,
+        },
+      });
+      if (!project) {
+        throw new NotFoundException('Project not found');
+      }
+
+      // Update the project
+      await this.prisma.projects.update({
+        where: {
+          id: projectId,
+        },
+        data: updateProjectDto,
+      });
+
+      return {
+        message: 'Project successfully updated',
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        return error;
+      } else {
+        throw new InternalServerErrorException(
+          'Failed to update project. Please try again',
+        );
+      }
+    }
+  }
+
+  async addSkillsToProject(
+    projectId: string,
+    addSkillToProjectDto: AddSkillToProjectDto,
+  ) {
+    try {
+      // Check if project exists
+      const project = await this.prisma.projects.findUnique({
+        where: {
+          id: projectId,
+        },
+      });
+      if (!project) {
+        throw new NotFoundException(
+          'Project with the specified ID is not found',
+        );
+      }
+
+      // Check if skill exist
+      const skills = await this.prisma.skills.findUnique({
+        where: {
+          id: addSkillToProjectDto.skillId,
+        },
+      });
+      if (!skills) {
+        throw new NotFoundException('Skill with the specified ID is not found');
+      }
+
+      // Update the project
+      await this.prisma.skillsToProjects.upsert({
+        where: {
+          skillId_projectId: {
+            skillId: addSkillToProjectDto.skillId,
+            projectId: projectId,
+          },
+        },
+        update: {
+          projectId: projectId,
+          skillId: addSkillToProjectDto.skillId,
+          vacancies: addSkillToProjectDto.vacancies,
+        },
+        create: {
+          projectId: projectId,
+          skillId: addSkillToProjectDto.skillId,
+          vacancies: addSkillToProjectDto.vacancies,
+        },
+      });
+
+      return { message: 'Skills added/updated successfully' };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        return error;
+      } else {
+        throw new InternalServerErrorException('Failed to add/update skills');
+      }
+    }
+  }
+
+  async removeSkill(projectId: string, skillId: string) {
+    try {
+      // Check if the skill exists
+      const skill = await this.prisma.skillsToProjects.findUnique({
+        where: {
+          skillId_projectId: {
+            projectId: projectId,
+            skillId: skillId,
+          },
+        },
+      });
+      if (!skill) {
+        throw new NotFoundException('Skill not found');
+      }
+
+      // Remove the skill
+      await this.prisma.skillsToProjects.delete({
+        where: {
+          skillId_projectId: {
+            projectId: projectId,
+            skillId: skillId,
+          },
+        },
+      });
+
+      return { message: 'Skill removed successfully' };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        return error;
+      } else {
+        throw new InternalServerErrorException('Failed to remove skill');
       }
     }
   }

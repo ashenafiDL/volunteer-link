@@ -1,7 +1,19 @@
-import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Req,
+} from '@nestjs/common';
 import { Public } from 'src/auth/decorators/public.decorator';
+import { AddSkillToProjectDto } from './dto/add-skill-to-project.dto';
 import { ApplyToProjectDto } from './dto/apply.dto';
 import { CreateProjectDto } from './dto/create-project.dto';
+import { UpdateProjectDto } from './dto/update-project.dto';
 import { ProjectsService } from './projects.service';
 
 @Controller('projects')
@@ -59,5 +71,32 @@ export class ProjectsController {
       userId,
       applyToProjectDto.message,
     );
+  }
+
+  @Patch(':projectId/edit')
+  update(
+    @Param('projectId') projectId: string,
+    @Body() updateProjectDto: UpdateProjectDto,
+  ) {
+    return this.projectsService.update(projectId, updateProjectDto);
+  }
+
+  @Post(':projectId/skills')
+  addSkills(
+    @Param('projectId') projectId: string,
+    @Body() addSkillToProject: AddSkillToProjectDto,
+  ) {
+    return this.projectsService.addSkillsToProject(
+      projectId,
+      addSkillToProject,
+    );
+  }
+
+  @Delete(':projectId/skills/:skillId')
+  removeSkill(
+    @Param('projectId') projectId: string,
+    @Param('skillId') skillId: string,
+  ) {
+    return this.projectsService.removeSkill(projectId, skillId);
   }
 }

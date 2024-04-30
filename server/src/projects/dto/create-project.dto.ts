@@ -1,12 +1,5 @@
-import { TimePreference } from '@prisma/client';
-import {
-  IsDateString,
-  IsEnum,
-  IsInt,
-  IsOptional,
-  IsString,
-  Min,
-} from 'class-validator';
+import { ProjectStatus, TimePreference } from '@prisma/client';
+import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
 
 export class CreateProjectDto {
   @IsString()
@@ -31,7 +24,7 @@ export class CreateProjectDto {
   @IsEnum(TimePreference)
   timeCommitment: TimePreference;
 
-  @IsInt()
-  @Min(1)
-  openPositions?: number = 1;
+  @IsEnum(ProjectStatus)
+  @IsOptional()
+  status?: ProjectStatus;
 }

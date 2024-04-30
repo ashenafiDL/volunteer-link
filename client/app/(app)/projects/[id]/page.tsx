@@ -2,6 +2,7 @@
 
 import axiosInstance from "@/app/axiosInstance";
 import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
+import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import { useIsClient } from "@/app/lib/contexts/useIsClient";
 import formatDuration from "@/app/lib/formatDuration";
 import "@/app/styles.css";
@@ -11,6 +12,7 @@ import axios from "axios";
 import clsx from "clsx";
 import { format } from "date-fns";
 import { Form, Formik } from "formik";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BiCalendar } from "react-icons/bi";
@@ -18,8 +20,10 @@ import { GoArrowLeft } from "react-icons/go";
 import * as Yup from "yup";
 
 export default function ProjectPage() {
+  const { org } = useAuthContext();
   const [applied, setApplied] = useState(false);
   const [project, setProject] = useState<any>();
+  const [isOwner, setIsOwner] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const { addAlert, dismissAlert } = useAlertsContext();
@@ -86,6 +90,20 @@ export default function ProjectPage() {
   }, [pathname, project]);
 
   useEffect(() => {
+    const checkOwner = () => {
+      const res = org.projects.some((item: any) => {
+        return item.id === project.id;
+      });
+
+      setIsOwner(res);
+    };
+
+    if (org?.projects && project) {
+      checkOwner();
+    }
+  }, [org, project]);
+
+  useEffect(() => {
     const fetchProject = async (id: string) => {
       try {
         const res = await axios.get(
@@ -126,16 +144,22 @@ export default function ProjectPage() {
                 </div>
                 <h1 className="text-2xl font-bold">{project?.title}</h1>
               </div>
-              <button
-                className={clsx("btn btn-primary", applied && "btn-disabled")}
-                onClick={() => {
-                  if (!applied) {
-                    showModal("apply_to_projects_modal");
-                  }
-                }}
-              >
-                {applied ? "You have already applied." : "Apply"}
-              </button>
+              {isOwner ? (
+                <Link href={`/projects/${project.id}/edit`}>
+                  <button className="btn btn-primary">Edit Project</button>
+                </Link>
+              ) : (
+                <button
+                  className={clsx("btn btn-primary", applied && "btn-disabled")}
+                  onClick={() => {
+                    if (!applied) {
+                      showModal("apply_to_projects_modal");
+                    }
+                  }}
+                >
+                  {applied ? "You have already applied." : "Apply"}
+                </button>
+              )}
             </div>
           </div>
 
@@ -223,6 +247,41 @@ export default function ProjectPage() {
                         </span>
                       </div>
                     </div>
+                  </div>
+                </div>
+
+                <div className="section-container">
+                  <div className="flex flex-col gap-4">
+                    <p className="section-title">Required Skills</p>
+
+                    {project && project.skillsRequired?.length > 0 && (
+                      <>
+                        {project.skillsRequired?.map(
+                          (skill: any, index: number) => {
+                            return (
+                              <div
+                                key={index}
+                                className="flex flex-row items-start gap-2"
+                              >
+                                <div className="flex flex-col">
+                                  <div className="flex flex-row items-center gap-2">
+                                    <p className="line-clamp-1 flex-grow-0 text-lg font-medium">
+                                      {skill.skill.name}
+                                    </p>
+                                    <p className="badge badge-primary flex-grow-0">
+                                      {`${skill.vacancies} open positions`}
+                                    </p>
+                                  </div>
+                                  <p className="line-clamp-2 text-sm">
+                                    {skill.skill.description}
+                                  </p>
+                                </div>
+                              </div>
+                            );
+                          },
+                        )}
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
