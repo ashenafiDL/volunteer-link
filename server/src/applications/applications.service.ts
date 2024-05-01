@@ -63,4 +63,49 @@ export class ApplicationsService {
       );
     }
   }
+
+  async getApplicationsByProjectId(projectId: string) {
+    try {
+      const pendingApplications = await this.prisma.applications.findMany({
+        where: {
+          AND: [{ projectId: projectId }, { status: 'PENDING' }],
+        },
+        include: {
+          user: {
+            include: {
+              location: true,
+            },
+          },
+        },
+      });
+
+      const acceptedApplications = await this.prisma.applications.findMany({
+        where: {
+          AND: [{ projectId: projectId }, { status: 'ACCEPTED' }],
+        },
+        include: {
+          user: true,
+        },
+      });
+
+      const rejectedApplications = await this.prisma.applications.findMany({
+        where: {
+          AND: [{ projectId: projectId }, { status: 'REJECTED' }],
+        },
+        include: {
+          user: true,
+        },
+      });
+
+      return {
+        pending: pendingApplications,
+        accepted: acceptedApplications,
+        rejected: rejectedApplications,
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to retrieve applications. Please try again.',
+      );
+    }
+  }
 }

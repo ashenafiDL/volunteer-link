@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.card {
+.card,
+.collapse {
   @apply border border-neutral/15 bg-base-100;
 }

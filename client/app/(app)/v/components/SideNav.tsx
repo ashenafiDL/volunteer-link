@@ -20,7 +20,7 @@ export default function SideNav() {
     },
     {
       icon: <BiFile size={28} />,
-      title: "Applications",
+      title: "My Applications",
       subtitle: "All your pending, accepted, and rejected applications",
       href: "/v/me/applications",
     },

@@ -25,7 +25,7 @@ export default function Header() {
     },
     // { label: "Tasks", icon: <BiListCheck size={24} />, href: "#" },
     {
-      label: "Applications",
+      label: "My Applications",
       icon: <BiFile size={24} />,
       href: "/v/me/applications",
     },

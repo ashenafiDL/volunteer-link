@@ -16,4 +16,9 @@ export class ApplicationsController {
     const userId = req.user.sub;
     return this.applicationsService.getMyApplications(userId);
   }
+
+  @Get(':projectId')
+  getApplicationsByProjectId(@Param('projectId') projectId: string) {
+    return this.applicationsService.getApplicationsByProjectId(projectId);
+  }
 }

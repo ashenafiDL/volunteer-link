@@ -14,7 +14,6 @@ import { fetchLocations } from "@/app/lib/locations";
 import "@/app/styles.css";
 import { SelectInput, TextInput } from "@/components/formElements";
 import TextAreaInput from "@/components/formElements/TextAreaInput";
-import LogoAvatar from "@/components/global/LogoAvatar";
 import axios from "axios";
 import { differenceInDays, format } from "date-fns";
 import { Form, Formik } from "formik";
@@ -186,187 +185,161 @@ export default function EditProjects() {
 
   return (
     <>
-      <div>
-        <div className="layout-container">
-          <div className="layout-left-child card rounded-md">
-            <div className="card-body flex flex-col gap-1">
-              <div className="flex flex-row items-center gap-2">
-                <LogoAvatar
-                  id={project?.organization?.id}
-                  name={project?.organization?.name}
-                  size="sm"
-                />
-                <p>{project?.organization?.name}</p>
-              </div>
-              <h1 className="text-2xl font-bold">{project?.title}</h1>
-            </div>
-          </div>
+      <div className="space-y-3">
+        <DetailsHeader href={`/projects/${project?.id}`} text="Edit Project" />
 
-          <div className="layout-right-child">
-            <DetailsHeader
-              href={`/projects/${project?.id}`}
-              text="Edit Project"
-            />
-
-            <div className="card rounded-md">
-              <div className="card-body">
-                {project && (
-                  <Formik
-                    initialValues={{
-                      title: project?.title,
-                      description: project?.description,
-                      locationId: project?.locationId,
-                      startDate: format(project?.startDate, "yyyy-MM-dd"),
-                      endDate: format(project?.endDate, "yyyy-MM-dd"),
-                      status: project?.status,
+        <div className="card rounded-md">
+          <div className="card-body">
+            {project && (
+              <Formik
+                initialValues={{
+                  title: project?.title,
+                  description: project?.description,
+                  locationId: project?.locationId,
+                  startDate: format(project?.startDate, "yyyy-MM-dd"),
+                  endDate: format(project?.endDate, "yyyy-MM-dd"),
+                  status: project?.status,
+                }}
+                validationSchema={Yup.object({
+                  title: projectTitleValidation,
+                  description: projectDescriptionValidation,
+                  locationId: locationValidation,
+                  startDate: projectStartDateValidation,
+                  endDate: projectEndDateValidation,
+                  status: Yup.string().required(),
+                })}
+                onSubmit={async (values) => {
+                  handleSubmit(values);
+                }}
+              >
+                <Form className="flex flex-col gap-4">
+                  <TextInput
+                    label="Project title"
+                    props={{
+                      name: "title",
+                      type: "text",
                     }}
-                    validationSchema={Yup.object({
-                      title: projectTitleValidation,
-                      description: projectDescriptionValidation,
-                      locationId: locationValidation,
-                      startDate: projectStartDateValidation,
-                      endDate: projectEndDateValidation,
-                      status: Yup.string().required(),
-                    })}
-                    onSubmit={async (values) => {
-                      handleSubmit(values);
+                  />
+
+                  <TextAreaInput
+                    label="Description"
+                    props={{
+                      name: "description",
+                      rows: 5,
+                      maxLength: 500,
                     }}
-                  >
-                    <Form className="flex flex-col gap-4">
-                      <TextInput
-                        label="Project title"
+                  />
+
+                  <div className="flex flex-row gap-3">
+                    <TextInput
+                      label="Start Date"
+                      required
+                      props={{
+                        name: "startDate",
+                        type: "date",
+                      }}
+                    />
+
+                    <TextInput
+                      label="End Date"
+                      required
+                      props={{
+                        name: "endDate",
+                        type: "date",
+                      }}
+                    />
+
+                    <div>
+                      <SelectInput
+                        label="Project status"
                         props={{
-                          name: "title",
-                          type: "text",
+                          name: "status",
                         }}
-                      />
+                      >
+                        <option>--Change status--</option>
+                        <option value="NOT_STARTED">Not Started</option>
+                        <option value="IN_PROGRESS">In Progress</option>
+                        <option value="DONE">Done</option>
+                      </SelectInput>
+                    </div>
+                  </div>
 
-                      <TextAreaInput
-                        label="Description"
-                        props={{
-                          name: "description",
-                          rows: 5,
-                          maxLength: 500,
-                        }}
-                      />
-
-                      <div className="flex flex-row gap-3">
-                        <TextInput
-                          label="Start Date"
-                          required
-                          props={{
-                            name: "startDate",
-                            type: "date",
-                          }}
-                        />
-
-                        <TextInput
-                          label="End Date"
-                          required
-                          props={{
-                            name: "endDate",
-                            type: "date",
-                          }}
-                        />
-
-                        <div>
-                          <SelectInput
-                            label="Project status"
-                            props={{
-                              name: "status",
-                            }}
-                          >
-                            <option>--Change status--</option>
-                            <option value="NOT_STARTED">Not Started</option>
-                            <option value="IN_PROGRESS">In Progress</option>
-                            <option value="DONE">Done</option>
-                          </SelectInput>
-                        </div>
-                      </div>
-
-                      <div className="w-1/2">
-                        <SelectInput
-                          label="Location"
-                          props={{
-                            name: "locationId",
-                          }}
-                        >
-                          <option>--Select your location--</option>
-                          {locations.map((location: any) => {
-                            return (
-                              <option key={location.id} value={location.id}>
-                                {location.name}
-                              </option>
-                            );
-                          })}
-                        </SelectInput>
-                      </div>
-
-                      <div className="space-x-2">
-                        <button type="submit" className="btn btn-primary">
-                          Save
-                        </button>
-                        <button type="reset" className="btn btn-outline">
-                          Cancel
-                        </button>
-                      </div>
-                    </Form>
-                  </Formik>
-                )}
-              </div>
-            </div>
-
-            <div className="card rounded-md">
-              <div className="card-body">
-                <div className="card-title">Required Skills</div>
-
-                {project && project.skillsRequired?.length > 0 && (
-                  <>
-                    {project.skillsRequired?.map(
-                      (skill: any, index: number) => {
+                  <div className="w-1/2">
+                    <SelectInput
+                      label="Location"
+                      props={{
+                        name: "locationId",
+                      }}
+                    >
+                      <option>--Select your location--</option>
+                      {locations.map((location: any) => {
                         return (
-                          <div
-                            key={index}
-                            className="flex flex-row justify-between"
-                          >
-                            <div className="flex flex-row items-center gap-2">
-                              <p className="badge badge-primary badge-lg flex-grow-0">
-                                {skill.vacancies}
-                              </p>
-                              <p className="line-clamp-1 text-lg">
-                                {skill.skill.name}
-                              </p>
-                            </div>
-
-                            <div
-                              className="cursor-pointer"
-                              onClick={() => {
-                                handleDelete(skill.skillId);
-                              }}
-                            >
-                              <BiX />
-                            </div>
-                          </div>
+                          <option key={location.id} value={location.id}>
+                            {location.name}
+                          </option>
                         );
-                      },
-                    )}
-                  </>
-                )}
+                      })}
+                    </SelectInput>
+                  </div>
 
-                <button
-                  className="btn btn-primary mt-4 w-fit"
-                  onClick={() => {
-                    (
-                      document.getElementById(
-                        "add_skill_dialog",
-                      ) as HTMLDialogElement
-                    ).showModal();
-                  }}
-                >
-                  Add Skill
-                </button>
-              </div>
-            </div>
+                  <div className="space-x-2">
+                    <button type="submit" className="btn btn-primary">
+                      Save
+                    </button>
+                    <button type="reset" className="btn btn-outline">
+                      Cancel
+                    </button>
+                  </div>
+                </Form>
+              </Formik>
+            )}
+          </div>
+        </div>
+
+        <div className="card rounded-md">
+          <div className="card-body">
+            <div className="card-title">Required Skills</div>
+
+            {project && project.skillsRequired?.length > 0 && (
+              <>
+                {project.skillsRequired?.map((skill: any, index: number) => {
+                  return (
+                    <div key={index} className="flex flex-row justify-between">
+                      <div className="flex flex-row items-center gap-2">
+                        <p className="badge badge-primary badge-lg flex-grow-0">
+                          {skill.vacancies}
+                        </p>
+                        <p className="line-clamp-1 text-lg">
+                          {skill.skill.name}
+                        </p>
+                      </div>
+
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => {
+                          handleDelete(skill.skillId);
+                        }}
+                      >
+                        <BiX />
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            )}
+
+            <button
+              className="btn btn-primary mt-4 w-fit"
+              onClick={() => {
+                (
+                  document.getElementById(
+                    "add_skill_dialog",
+                  ) as HTMLDialogElement
+                ).showModal();
+              }}
+            >
+              Add Skill
+            </button>
           </div>
         </div>
       </div>

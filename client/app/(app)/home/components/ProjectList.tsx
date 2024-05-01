@@ -3,6 +3,16 @@ import LogoAvatar from "@/components/global/LogoAvatar";
 import Link from "next/link";
 
 export default function ProjectList({ projects }: { projects: any[] }) {
+  const calculateOpenPositions = (skillsRequired: any) => {
+    let initialValue = 0;
+
+    let sum = skillsRequired.reduce((totalValue: any, currentSkill: any) => {
+      return totalValue + currentSkill.vacancies;
+    }, initialValue);
+
+    return sum;
+  };
+
   return (
     <div className="space-y-3">
       {projects.map((project, index) => (
@@ -56,6 +66,13 @@ export default function ProjectList({ projects }: { projects: any[] }) {
                   <div className="py-2">
                     {project.status.split("_").join(" ")}
                   </div>
+                </div>
+
+                <div className="badge badge-primary flex flex-row gap-2 py-2 pl-0">
+                  <div className="badge badge-accent">
+                    {calculateOpenPositions(project.skillsRequired)}
+                  </div>
+                  <div className="py-2">Open positions</div>
                 </div>
               </div>
             </div>
