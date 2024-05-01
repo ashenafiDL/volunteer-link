@@ -1,9 +1,13 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { EmailService } from 'src/email/email.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class ApplicationsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private emailService: EmailService,
+  ) {}
 
   async checkApplication(userId: string, projectId: string) {
     try {
@@ -105,6 +109,122 @@ export class ApplicationsService {
     } catch (error) {
       throw new InternalServerErrorException(
         'Failed to retrieve applications. Please try again.',
+      );
+    }
+  }
+
+  async acceptApplication(applicationId: string) {
+    try {
+      const updateApplication = await this.prisma.applications.update({
+        where: {
+          id: applicationId,
+        },
+        data: {
+          status: 'ACCEPTED',
+        },
+        include: {
+          project: {
+            include: {
+              organization: true,
+            },
+          },
+        },
+      });
+
+      // Send email if the user has enabled notification
+      const user = await this.prisma.users.findUnique({
+        where: {
+          id: updateApplication.userId,
+        },
+      });
+
+      let notificationEnabled = false;
+      user.notificationPreference.map((preference: any) => {
+        if (
+          preference.option === 'application_status_update' &&
+          preference.value
+        ) {
+          notificationEnabled = true;
+        }
+      });
+
+      if (notificationEnabled) {
+        const fullName = `${user.firstName} ${user.lastName}`;
+        const url = `http://localhost:3000/projects/${updateApplication.projectId}`;
+        const startDate = updateApplication.project.startDate.toDateString();
+
+        return this.emailService.sendApplicationAcceptedEmail(
+          user.email,
+          fullName,
+          updateApplication.project.title,
+          updateApplication.project.organization.name,
+          startDate,
+          url,
+        );
+      }
+
+      return {
+        message: 'Failed to accept application. Please try again.',
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to accept application. Please try again.',
+      );
+    }
+  }
+
+  async rejectApplication(applicationId: string) {
+    try {
+      const updateApplication = await this.prisma.applications.update({
+        where: {
+          id: applicationId,
+        },
+        data: {
+          status: 'REJECTED',
+        },
+        include: {
+          project: {
+            include: {
+              organization: true,
+            },
+          },
+        },
+      });
+
+      // Send email if the user has enabled notification
+      const user = await this.prisma.users.findUnique({
+        where: {
+          id: updateApplication.userId,
+        },
+      });
+
+      let notificationEnabled = false;
+      user.notificationPreference.map((preference: any) => {
+        if (
+          preference.option === 'application_status_update' &&
+          preference.value
+        ) {
+          notificationEnabled = true;
+        }
+      });
+
+      if (notificationEnabled) {
+        const fullName = `${user.firstName} ${user.lastName}`;
+
+        return this.emailService.sendApplicationRejectedEmail(
+          user.email,
+          fullName,
+          updateApplication.project.title,
+          updateApplication.project.organization.name,
+        );
+      }
+
+      return {
+        message: 'Failed to reject application. Please try again.',
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to accept application. Please try again.',
       );
     }
   }

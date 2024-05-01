@@ -6,30 +6,30 @@ import { useEffect, useState } from "react";
 import ApplicationCard from "../components/ApplicationCard";
 
 export default function ApplicationsPage() {
-  const [pending, setPending] = useState<any>();
-  const [rejected, setRejected] = useState<any>();
-  const [accepted, setAccepted] = useState<any>();
+  const [pending, setPending] = useState<Array<any> | null>();
+  const [rejected, setRejected] = useState<Array<any> | null>();
+  const [accepted, setAccepted] = useState<Array<any> | null>();
   const pathname = usePathname();
 
-  useEffect(() => {
-    const getApplications = async (id: string) => {
-      try {
-        const res = await axiosInstance.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/applications/${id}`,
-        );
+  const getApplications = async (id: string) => {
+    try {
+      const res = await axiosInstance.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/applications/${id}`,
+      );
 
-        if (res.status === 200) {
-          setPending(res.data.pending);
-          setRejected(res.data.rejected);
-          setAccepted(res.data.accepted);
-        }
-      } catch (error) {
-        setPending(null);
-        setRejected(null);
-        setAccepted(null);
+      if (res.status === 200) {
+        setPending(res.data.pending);
+        setRejected(res.data.rejected);
+        setAccepted(res.data.accepted);
       }
-    };
+    } catch (error) {
+      setPending(null);
+      setRejected(null);
+      setAccepted(null);
+    }
+  };
 
+  useEffect(() => {
     if (pathname) {
       getApplications(pathname.split("/")[2]);
     }
@@ -46,7 +46,13 @@ export default function ApplicationsPage() {
         {pending && pending.length > 0 ? (
           <div className="join join-vertical w-full rounded-md">
             {pending.map((application: any, index: number) => {
-              return <ApplicationCard key={index} application={application} />;
+              return (
+                <ApplicationCard
+                  key={index}
+                  application={application}
+                  getApplications={getApplications}
+                />
+              );
             })}
           </div>
         ) : (
@@ -63,7 +69,13 @@ export default function ApplicationsPage() {
         {accepted && accepted.length > 0 ? (
           <div className="join join-vertical w-full rounded-md">
             {accepted.map((application: any, index: number) => {
-              return <ApplicationCard key={index} application={application} />;
+              return (
+                <ApplicationCard
+                  key={index}
+                  application={application}
+                  getApplications={getApplications}
+                />
+              );
             })}
           </div>
         ) : (
@@ -80,7 +92,13 @@ export default function ApplicationsPage() {
         {rejected && rejected.length > 0 ? (
           <div className="join join-vertical w-full rounded-md">
             {rejected.map((application: any, index: number) => {
-              return <ApplicationCard key={index} application={application} />;
+              return (
+                <ApplicationCard
+                  key={index}
+                  application={application}
+                  getApplications={getApplications}
+                />
+              );
             })}
           </div>
         ) : (

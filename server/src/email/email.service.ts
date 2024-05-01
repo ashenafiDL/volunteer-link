@@ -129,4 +129,82 @@ export class EmailService {
       );
     }
   }
+
+  async sendApplicationAcceptedEmail(
+    recipient: string,
+    fullName: string,
+    projectTitle: string,
+    organizationName: string,
+    startDate: string,
+    url: string,
+  ) {
+    try {
+      const templatePath = join(
+        process.cwd(),
+        'templates',
+        'applicationAccepted.hbs',
+      );
+      const template = fs.readFileSync(templatePath, 'utf8');
+
+      const compiledTemplate = Handlebars.compile(template);
+      const html = compiledTemplate({
+        name: fullName,
+        projectTitle: projectTitle,
+        organizationName: organizationName,
+        startDate: startDate,
+        url: url,
+      });
+
+      await this.mailerService.sendMail({
+        to: recipient,
+        subject: `Application Accepted`,
+        html: html,
+      });
+
+      return {
+        message: 'Email sent',
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to send email. Please try again later.',
+      );
+    }
+  }
+
+  async sendApplicationRejectedEmail(
+    recipient: string,
+    fullName: string,
+    projectTitle: string,
+    organizationName: string,
+  ) {
+    try {
+      const templatePath = join(
+        process.cwd(),
+        'templates',
+        'applicationRejected.hbs',
+      );
+      const template = fs.readFileSync(templatePath, 'utf8');
+
+      const compiledTemplate = Handlebars.compile(template);
+      const html = compiledTemplate({
+        name: fullName,
+        projectTitle: projectTitle,
+        organizationName: organizationName,
+      });
+
+      await this.mailerService.sendMail({
+        to: recipient,
+        subject: `Application Rejected`,
+        html: html,
+      });
+
+      return {
+        message: 'Email sent',
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to send email. Please try again later.',
+      );
+    }
+  }
 }

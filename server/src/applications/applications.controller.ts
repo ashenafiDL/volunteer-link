@@ -21,4 +21,14 @@ export class ApplicationsController {
   getApplicationsByProjectId(@Param('projectId') projectId: string) {
     return this.applicationsService.getApplicationsByProjectId(projectId);
   }
+
+  @Get('accept/:applicationId')
+  acceptApplication(@Param('applicationId') applicationId: string) {
+    return this.applicationsService.acceptApplication(applicationId);
+  }
+
+  @Get('reject/:applicationId')
+  rejectApplication(@Param('applicationId') applicationId: string) {
+    return this.applicationsService.rejectApplication(applicationId);
+  }
 }

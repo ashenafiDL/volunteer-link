@@ -1,15 +1,81 @@
 "use client";
 
 import axiosInstance from "@/app/axiosInstance";
+import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import UserAvatar from "@/components/global/UserAvatar";
 import clsx from "clsx";
 import { format } from "date-fns";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 
-export default function ApplicationCard({ application }: any) {
+export default function ApplicationCard({
+  application,
+  getApplications,
+}: {
+  application: any;
+  getApplications: any;
+}) {
   const [cv, setCv] = useState<string | null>();
+  const { addAlert, dismissAlert } = useAlertsContext();
+  const pathname = usePathname();
+
+  const handleAccept = async (applicationId: string) => {
+    try {
+      const res = await axiosInstance.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/applications/accept/${applicationId}`,
+      );
+
+      if (res.status === 200) {
+        const id = addAlert({
+          severity: "success",
+          message: "Application accepted successfully",
+        });
+        setTimeout(() => {
+          dismissAlert(id);
+        }, 3000);
+
+        getApplications(pathname.split("/")[2]);
+      }
+    } catch (error) {
+      const id = addAlert({
+        severity: "error",
+        message: "Failed to accept application. Please try again.",
+      });
+      setTimeout(() => {
+        dismissAlert(id);
+      }, 3000);
+    }
+  };
+
+  const handleReject = async (applicationId: string) => {
+    try {
+      const res = await axiosInstance.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/applications/reject/${applicationId}`,
+      );
+
+      if (res.status === 200) {
+        const id = addAlert({
+          severity: "success",
+          message: "Application rejected successfully",
+        });
+        setTimeout(() => {
+          dismissAlert(id);
+        }, 3000);
+
+        getApplications(pathname.split("/")[2]);
+      }
+    } catch (error) {
+      const id = addAlert({
+        severity: "error",
+        message: "Failed to reject application. Please try again.",
+      });
+      setTimeout(() => {
+        dismissAlert(id);
+      }, 3000);
+    }
+  };
 
   useEffect(() => {
     async function getCV() {
@@ -136,8 +202,18 @@ export default function ApplicationCard({ application }: any) {
 
         {application.status === "PENDING" && (
           <div className="space-x-2 pt-4">
-            <button className="btn btn-success">Accept</button>
-            <button className="btn btn-error">Reject</button>
+            <button
+              className="btn btn-success"
+              onClick={() => handleAccept(application.id)}
+            >
+              Accept
+            </button>
+            <button
+              className="btn btn-error"
+              onClick={() => handleReject(application.id)}
+            >
+              Reject
+            </button>
           </div>
         )}
       </div>
