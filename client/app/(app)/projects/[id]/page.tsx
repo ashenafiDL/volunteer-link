@@ -1,9 +1,6 @@
 "use client";
 
-import axiosInstance from "@/app/axiosInstance";
 import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
-import { useAuthContext } from "@/app/lib/contexts/AppContext";
-import { useIsClient } from "@/app/lib/contexts/useIsClient";
 import formatDuration from "@/app/lib/formatDuration";
 import "@/app/styles.css";
 import axios from "axios";
@@ -14,97 +11,10 @@ import { BiCalendar } from "react-icons/bi";
 import { GoArrowLeft } from "react-icons/go";
 
 export default function ProjectPage() {
-  const [applied, setApplied] = useState(false);
   const [project, setProject] = useState<any>();
-  const [isOwner, setIsOwner] = useState(false);
   const router = useRouter();
   const { addAlert, dismissAlert } = useAlertsContext();
-  const isClient = useIsClient();
-  const [active, setActive] = useState(false);
-  const { org } = useAuthContext();
   const pathname = usePathname();
-
-  useEffect(() => {
-    if (pathname === "/o/my-org/projects") {
-      setActive(true);
-    } else {
-      setActive(false);
-    }
-  }, [pathname]);
-
-  const showModal = (id: string) => {
-    isClient && (document.getElementById(id) as HTMLDialogElement).showModal();
-  };
-
-  const closeModal = (id: string) => {
-    isClient && (document.getElementById(id) as HTMLDialogElement).close();
-  };
-
-  const handleApply = async (values: any) => {
-    try {
-      const res = await axiosInstance.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/projects/${project?.id}/apply`,
-        values,
-      );
-
-      if (res.status === 201) {
-        setApplied(true);
-        const id = addAlert({
-          severity: "success",
-          message: "Applied to project successfully",
-        });
-        setTimeout(() => {
-          dismissAlert(id);
-        }, 3000);
-      }
-    } catch (error: any) {
-      const id = addAlert({
-        severity: "error",
-        message:
-          error?.response?.data?.message ||
-          "Failed to apply to project. Please try again.",
-      });
-      setTimeout(() => {
-        dismissAlert(id);
-      }, 3000);
-    } finally {
-      closeModal("apply_to_projects_modal");
-    }
-  };
-
-  useEffect(() => {
-    const checkApplied = async () => {
-      try {
-        const res = await axiosInstance.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/applications/check/${project?.id}`,
-        );
-
-        if (res.status === 200 && res.data.applied) {
-          setApplied(res.data.applied);
-        }
-      } catch (error) {
-        setApplied(false);
-      }
-    };
-
-    if (project?.id) {
-      checkApplied();
-    }
-  }, [pathname, project]);
-
-  useEffect(() => {
-    const checkOwner = () => {
-      const res = org.projects.some((item: any) => {
-        return item.id === project.id;
-      });
-
-      setIsOwner(res);
-    };
-
-    if (org?.projects && project) {
-      checkOwner();
-    }
-  }, [org, project]);
 
   useEffect(() => {
     const fetchProject = async (id: string) => {

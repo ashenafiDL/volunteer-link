@@ -88,7 +88,18 @@ export class ApplicationsService {
           AND: [{ projectId: projectId }, { status: 'ACCEPTED' }],
         },
         include: {
-          user: true,
+          user: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              gender: true,
+              age: true,
+              username: true,
+              email: true,
+              bio: true,
+            },
+          },
         },
       });
 
@@ -97,7 +108,18 @@ export class ApplicationsService {
           AND: [{ projectId: projectId }, { status: 'REJECTED' }],
         },
         include: {
-          user: true,
+          user: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              gender: true,
+              age: true,
+              username: true,
+              email: true,
+              bio: true,
+            },
+          },
         },
       });
 

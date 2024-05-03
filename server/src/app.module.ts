@@ -12,6 +12,7 @@ import { OrganizationsModule } from './organizations/organizations.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { PrismaService } from './prisma/prisma.service';
 import { ProjectsModule } from './projects/projects.module';
+import { ReviewsModule } from './reviews/reviews.module';
 import { SkillCategoriesModule } from './skillsAndCategories/skill-categories/skill-categories.module';
 import { SkillsModule } from './skillsAndCategories/skills/skills.module';
 import { UsersModule } from './users/users.module';
@@ -34,6 +35,7 @@ import { UsersService } from './users/users.service';
     OrganizationsModule,
     ProjectsModule,
     ApplicationsModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService, UsersService],

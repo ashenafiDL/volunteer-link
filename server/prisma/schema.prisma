@@ -98,6 +98,7 @@ model Projects {
   donations      Donations[]
   messages       Messages[]
   tasks          Tasks[]
+  reviews        Reviews[]
 }
 
 model Organizations {
@@ -182,7 +183,10 @@ model Reviews {
   id        String   @id @default(uuid())
   user      Users    @relation(fields: [userId], references: [id])
   userId    String
+  project   Projects @relation(fields: [projectId], references: [id])
+  projectId String
   comment   String
+  rating    Int
   createdAt DateTime @default(now())
 }
 
