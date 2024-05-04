@@ -208,11 +208,15 @@ model Badges {
 }
 
 model Reports {
-  id                 String @id @default(uuid())
-  reporter           Users  @relation(fields: [reporterId], references: [id])
-  reporterId         String
-  reportedEntity     String
-  reportedEntityType String
+  id          String             @id @default(uuid())
+  reporter    Users              @relation(fields: [reporterId], references: [id])
+  reporterId  String
+  contentType ReportContentTypes
+  contentId   String
+  reason      ReportReasons
+  description String?
+  status      ReportStatus
+  createdAt   DateTime           @default(now())
 }
 
 model Tasks {
@@ -301,4 +305,26 @@ enum ProjectStatus {
 enum Gender {
   MALE
   FEMALE
+}
+
+enum ReportContentTypes {
+  USER
+  ORGANIZATION
+  PROJECT
+  REVIEW
+}
+
+enum ReportReasons {
+  FAKE
+  SCAM
+  INAPPROPRIATE_CONTENT
+  SPAM
+  IMPERSONATION
+  PRIVACY_VIOLATION
+  OTHER
+}
+
+enum ReportStatus {
+  ACTIVE
+  RESOLVED
 }
