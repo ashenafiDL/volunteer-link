@@ -293,7 +293,28 @@ export class ProjectsService {
         );
       }
 
-      return project;
+      // Fetch number of reviews and average rating
+      const rating = await this.prisma.reviews.aggregate({
+        where: {
+          projectId: id,
+        },
+        _avg: {
+          rating: true,
+        },
+        _count: {
+          _all: true,
+        },
+      });
+
+      console.log(rating);
+
+      return {
+        ...project,
+        rating: {
+          avg: rating._avg.rating,
+          count: rating._count._all,
+        },
+      };
     } catch (error) {
       if (error instanceof NotFoundException) {
         return error;

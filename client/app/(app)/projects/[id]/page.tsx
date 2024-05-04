@@ -71,6 +71,18 @@ export default function ProjectPage() {
             </div>
           </div>
 
+          {project?.status === "DONE" && (
+            <div className="section-container">
+              <p className="section-title">Rating</p>
+              <div className="space-x-3 text-2xl font-bold">
+                <span>{Math.round(project?.rating?.avg * 10) / 10}/5</span>
+                <span className="text-sm font-normal">
+                  {project?.rating?.count} reviews
+                </span>
+              </div>
+            </div>
+          )}
+
           <div className="section-container">
             <p className="section-title">Description</p>
             <p>{project?.description}</p>
