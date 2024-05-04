@@ -1,10 +1,13 @@
 "use client";
 
+import axiosInstance from "@/app/axiosInstance";
 import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import formatDuration from "@/app/lib/formatDuration";
 import "@/app/styles.css";
+import UserAvatar from "@/components/global/UserAvatar";
 import axios from "axios";
 import { format } from "date-fns";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BiCalendar } from "react-icons/bi";
@@ -12,6 +15,7 @@ import { GoArrowLeft } from "react-icons/go";
 
 export default function ProjectPage() {
   const [project, setProject] = useState<any>();
+  const [participants, setParticipants] = useState<Array<any> | null>();
   const router = useRouter();
   const { addAlert, dismissAlert } = useAlertsContext();
   const pathname = usePathname();
@@ -37,7 +41,23 @@ export default function ProjectPage() {
       }
     };
 
+    const fetchParticipants = async (id: string) => {
+      try {
+        const res = await axiosInstance.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/projects/${id}/participants`,
+        );
+
+        if (res.status === 200) {
+          console.log(res, "ppppppppp");
+          setParticipants(res.data);
+        }
+      } catch (error) {
+        setParticipants(null);
+      }
+    };
+
     fetchProject(pathname.split("/")[2]);
+    fetchParticipants(pathname.split("/")[2]);
   }, [addAlert, dismissAlert, pathname]);
 
   return (
@@ -171,6 +191,40 @@ export default function ProjectPage() {
           </div>
         </div>
       </div>
+
+      {participants && (
+        <div className="card rounded-md">
+          <div className="card-body">
+            <div className="card-title">Contributors</div>
+
+            <div className="flex flex-row flex-wrap items-center gap-2">
+              {participants
+                .slice(0, 20)
+                .map((participant: any, index: number) => {
+                  return (
+                    <Link
+                      href={`/v/${participant.user.username}`}
+                      key={index}
+                      className="badge badge-secondary badge-outline flex flex-row items-center gap-2 pl-0"
+                    >
+                      <UserAvatar
+                        email={participant.user.email}
+                        name={participant.user.firstName}
+                        size="xxs"
+                      />
+                      <span>
+                        {`${participant.user.firstName} ${participant.user.lastName}`}
+                      </span>
+                    </Link>
+                  );
+                })}
+              {participants.length - 20 > 0 && (
+                <span>{`+ ${participants.length - 20} volunteers`}</span>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

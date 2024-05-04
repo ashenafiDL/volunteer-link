@@ -44,7 +44,6 @@ model Users {
   skills                 Skills[]
   badges                 UsersToBadges[]
   applications           Applications[]
-  contributions          Contributions[]
   certificates           Certificates[]
   donations              Donations[]
   messages               Messages[]
@@ -94,7 +93,6 @@ model Projects {
   updatedAt      DateTime           @updatedAt
   skillsRequired SkillsToProjects[]
   applications   Applications[]
-  contributions  Contributions[]
   donations      Donations[]
   messages       Messages[]
   tasks          Tasks[]
@@ -130,17 +128,6 @@ model Applications {
   message   String
   status    ApplicationStatus @default(PENDING)
   createdAt DateTime          @default(now())
-}
-
-model Contributions {
-  id          String   @id @default(uuid())
-  user        Users    @relation(fields: [userId], references: [id])
-  userId      String
-  project     Projects @relation(fields: [projectId], references: [id])
-  projectId   String
-  startDate   DateTime
-  endDate     DateTime
-  description String
 }
 
 model Donations {

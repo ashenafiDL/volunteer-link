@@ -99,4 +99,9 @@ export class ProjectsController {
   ) {
     return this.projectsService.removeSkill(projectId, skillId);
   }
+
+  @Get(':projectId/participants')
+  getParticipants(@Param('projectId') projectId: string) {
+    return this.projectsService.fetchProjectParticipants(projectId);
+  }
 }

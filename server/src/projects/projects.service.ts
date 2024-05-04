@@ -93,7 +93,6 @@ export class ProjectsService {
           location: true,
           organization: true,
           applications: true,
-          contributions: true,
           donations: true,
           messages: true,
           skillsRequired: true,
@@ -132,7 +131,6 @@ export class ProjectsService {
           location: true,
           organization: true,
           applications: true,
-          contributions: true,
           donations: true,
           messages: true,
           skillsRequired: true,
@@ -219,7 +217,6 @@ export class ProjectsService {
         where: whereClause,
         include: {
           applications: true,
-          contributions: true,
           donations: true,
           location: true,
           messages: true,
@@ -272,7 +269,6 @@ export class ProjectsService {
         where: { id },
         include: {
           applications: true,
-          contributions: true,
           donations: true,
           location: true,
           messages: true,
@@ -305,8 +301,6 @@ export class ProjectsService {
           _all: true,
         },
       });
-
-      console.log(rating);
 
       return {
         ...project,
@@ -508,6 +502,46 @@ export class ProjectsService {
         return error;
       } else {
         throw new InternalServerErrorException('Failed to remove skill');
+      }
+    }
+  }
+
+  async fetchProjectParticipants(projectId: string) {
+    try {
+      // Check if project exists
+      const project = await this.prisma.projects.findUnique({
+        where: {
+          id: projectId,
+        },
+      });
+      if (!project) {
+        throw new NotFoundException('Project not found.');
+      }
+
+      const participants = await this.prisma.applications.findMany({
+        where: {
+          AND: [{ projectId: projectId }, { status: 'ACCEPTED' }],
+        },
+        select: {
+          user: {
+            select: {
+              firstName: true,
+              lastName: true,
+              email: true,
+              username: true,
+            },
+          },
+        },
+      });
+
+      return participants;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        return error;
+      } else {
+        throw new InternalServerErrorException(
+          'Failed to fetch participants list. Pleas try again.',
+        );
       }
     }
   }
