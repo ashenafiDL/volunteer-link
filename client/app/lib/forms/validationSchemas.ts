@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import { REPORT_REASONS } from "../reportReasons";
 
 // Form input validation logic definitions
 export const firstNameValidation = Yup.string()
@@ -130,3 +131,14 @@ export const projectEndDateValidation = Yup.date()
   .required("End date is required")
   .min(Yup.ref("startDate"), "End date must be after start date");
 // Input field used in `Add Project Info` form - END
+
+// Input field used in `Report` form - START
+export const reportReasonValidation = Yup.string()
+  .oneOf(REPORT_REASONS, "Please select a valid reason")
+  .required("Reason is required");
+
+export const reportDescriptionValidation = Yup.string()
+  .optional()
+  .min(10, "Description must be at least 10 characters long")
+  .max(500, "Description must not be more than 500 characters long");
+// Input field used in `Report` form - END

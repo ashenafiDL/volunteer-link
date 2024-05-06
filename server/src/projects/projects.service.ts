@@ -69,7 +69,7 @@ export class ProjectsService {
       return project;
     } catch (error) {
       if (error instanceof NotFoundException) {
-        return error;
+        throw error;
       } else {
         throw new InternalServerErrorException(
           'Failed to create project. Please try again.',
@@ -141,7 +141,7 @@ export class ProjectsService {
       return projects;
     } catch (error) {
       if (error instanceof NotFoundException) {
-        return error;
+        throw error;
       } else {
         throw new InternalServerErrorException(
           'Failed to retrieve projects. Please try again.',
@@ -172,7 +172,7 @@ export class ProjectsService {
       return projects;
     } catch (error) {
       if (error instanceof NotFoundException) {
-        return error;
+        throw error;
       } else {
         throw new InternalServerErrorException(
           'Failed to retrieve projects. Please try again.',

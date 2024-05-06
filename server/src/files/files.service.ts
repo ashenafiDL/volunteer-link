@@ -180,7 +180,7 @@ export class FilesService {
       return { massage: 'Logo updated successfully' };
     } catch (error) {
       if (error instanceof NotFoundException) {
-        return error;
+        throw error;
       } else {
         throw new InternalServerErrorException(
           'Failed to update logo. Please try again later.',
@@ -311,7 +311,7 @@ export class FilesService {
       return { massage: 'Permit updated successfully' };
     } catch (error) {
       if (error instanceof NotFoundException) {
-        return error;
+        throw error;
       } else {
         throw new InternalServerErrorException(
           'Failed to upload permit. Please try again later.',
@@ -396,7 +396,7 @@ export class FilesService {
       return { massage: 'CV uploaded successfully' };
     } catch (error) {
       if (error instanceof NotFoundException) {
-        return error;
+        throw error;
       } else {
         throw new InternalServerErrorException(
           'Failed to upload permit. Please try again later.',
@@ -427,7 +427,7 @@ export class FilesService {
       return file.filePath;
     } catch (error) {
       if (error instanceof NotFoundException) {
-        return error;
+        throw error;
       } else {
         throw new InternalServerErrorException(
           'Error while fetching CV. Please try again',

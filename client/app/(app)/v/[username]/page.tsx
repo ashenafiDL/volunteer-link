@@ -2,7 +2,7 @@
 
 import { fetchUser } from "@/app/lib/users";
 import "@/app/styles.css";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import PersonalInfoCard from "../components/PersonalInfoCard";
 import ShowMoreCard from "../components/ShowMoreCard";
@@ -14,7 +14,6 @@ export default function Profile() {
   const pathname = usePathname();
   const username = pathname.split("/")[2];
   const [user, setUser] = useState<any>();
-  const router = useRouter();
 
   useEffect(() => {
     const getUserData = async () => {

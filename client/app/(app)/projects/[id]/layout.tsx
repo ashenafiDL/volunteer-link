@@ -4,6 +4,11 @@ import axiosInstance from "@/app/axiosInstance";
 import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import { useIsClient } from "@/app/lib/contexts/useIsClient";
+import {
+  reportDescriptionValidation,
+  reportReasonValidation,
+} from "@/app/lib/forms/validationSchemas";
+import { REPORT_REASONS } from "@/app/lib/reportReasons";
 import "@/app/styles.css";
 import { SelectInput } from "@/components/formElements";
 import TextAreaInput from "@/components/formElements/TextAreaInput";
@@ -14,8 +19,9 @@ import { Form, Formik } from "formik";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { BiFile } from "react-icons/bi";
+import { BiDotsVerticalRounded, BiFile } from "react-icons/bi";
 import { MdOutlineRateReview } from "react-icons/md";
+import { RiErrorWarningFill } from "react-icons/ri";
 import * as Yup from "yup";
 
 export default function ProjectsLayout({
@@ -32,6 +38,46 @@ export default function ProjectsLayout({
   const [activeIndex, setActiveIndex] = useState(-1);
   const { org } = useAuthContext();
   const pathname = usePathname();
+
+  const handleReport = async (values: any) => {
+    try {
+      const res = await axiosInstance.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/reports`,
+        {
+          contentType: "PROJECT",
+          contentId: project.id,
+          reason: values.reason,
+          description: values.description,
+        },
+      );
+
+      if (res.status === 201) {
+        (
+          document.getElementById("report_project_modal") as HTMLDialogElement
+        ).close();
+
+        const id = addAlert({
+          severity: "success",
+          message: "Report submitted successfully",
+        });
+        setTimeout(() => {
+          dismissAlert(id);
+        }, 3000);
+      }
+    } catch (error: any) {
+      console.log("report", error);
+
+      const id = addAlert({
+        severity: "error",
+        message:
+          error?.response?.data?.message ||
+          "Failed to submit report. Please try again.",
+      });
+      setTimeout(() => {
+        dismissAlert(id);
+      }, 3000);
+    }
+  };
 
   useEffect(() => {
     if (pathname.includes("applications")) {
@@ -214,35 +260,68 @@ export default function ProjectsLayout({
                   <h1 className="text-2xl font-bold">{project?.title}</h1>
                 </Link>
               </div>
-              {isOwner && project?.status !== "DONE" ? (
-                <Link href={`/projects/${project.id}/edit`} className="w-fit">
-                  <button className="btn btn-primary">Edit Project</button>
-                </Link>
-              ) : project?.status !== "DONE" ? (
-                <button
-                  className={clsx("btn btn-primary", applied && "btn-disabled")}
-                  onClick={() => {
-                    if (!applied) {
-                      showModal("apply_to_projects_modal");
-                    }
-                  }}
-                >
-                  {applied ? "You have already applied." : "Apply"}
-                </button>
-              ) : !reviewed ? (
-                <button
-                  className="btn btn-primary"
-                  onClick={() => {
-                    if (!reviewed) {
-                      showModal("review_projects_modal");
-                    }
-                  }}
-                >
-                  Add review
-                </button>
-              ) : (
-                <></>
-              )}
+
+              <div className="flex flex-row gap-2">
+                {isOwner && project?.status !== "DONE" ? (
+                  <Link
+                    href={`/projects/${project.id}/edit`}
+                    className="w-fit flex-grow"
+                  >
+                    <button className="btn btn-primary">Edit Project</button>
+                  </Link>
+                ) : project?.status !== "DONE" ? (
+                  <button
+                    className={clsx(
+                      "btn btn-primary flex-grow",
+                      applied && "btn-disabled",
+                    )}
+                    onClick={() => {
+                      if (!applied) {
+                        showModal("apply_to_projects_modal");
+                      }
+                    }}
+                  >
+                    {applied ? "You have already applied." : "Apply"}
+                  </button>
+                ) : !reviewed ? (
+                  <button
+                    className="btn btn-primary flex-grow"
+                    onClick={() => {
+                      if (!reviewed) {
+                        showModal("review_projects_modal");
+                      }
+                    }}
+                  >
+                    Add review
+                  </button>
+                ) : (
+                  <></>
+                )}
+
+                <details className="dropdown dropdown-end">
+                  <summary className="btn btn-ghost px-1 py-0">
+                    <BiDotsVerticalRounded size={28} />
+                  </summary>
+
+                  <ul className="menu dropdown-content z-[1] rounded-md bg-base-100 text-base-content shadow">
+                    <li>
+                      <div
+                        className="flex flex-row items-center gap-2 pl-1"
+                        onClick={() => {
+                          (
+                            document.getElementById(
+                              "report_project_modal",
+                            ) as HTMLDialogElement
+                          ).showModal();
+                        }}
+                      >
+                        <RiErrorWarningFill size={20} />
+                        <span>Report</span>
+                      </div>
+                    </li>
+                  </ul>
+                </details>
+              </div>
             </div>
           </div>
 
@@ -409,6 +488,77 @@ export default function ProjectsLayout({
                 <div>
                   <button type="submit" className="btn btn-success">
                     Save
+                  </button>
+                </div>
+              </div>
+            </Form>
+          </Formik>
+        </div>
+      </dialog>
+
+      {/* Report project modal */}
+      <dialog id="report_project_modal" className="modal">
+        <div className="prose modal-box rounded-md lg:prose-lg">
+          <h3>Report Project</h3>
+
+          <Formik
+            initialValues={{
+              reason: "",
+              description: "",
+            }}
+            validationSchema={Yup.object({
+              reason: reportReasonValidation,
+              description: reportDescriptionValidation,
+            })}
+            onSubmit={(values) => {
+              handleReport(values);
+            }}
+          >
+            <Form>
+              <SelectInput
+                label="Reason"
+                props={{
+                  name: "reason",
+                }}
+              >
+                <option value="">Select reason</option>
+                {REPORT_REASONS.map((reason) => (
+                  <option key={reason} value={reason}>
+                    {reason}
+                  </option>
+                ))}
+              </SelectInput>
+
+              <TextAreaInput
+                label="Description"
+                props={{
+                  name: "description",
+                  id: "description",
+                  rows: 5,
+                  maxLength: 500,
+                  placeholder: "Any additional information you want to add?",
+                }}
+              />
+
+              <div className="modal-action mt-5 flex flex-row justify-end gap-4">
+                <div>
+                  <button
+                    type="reset"
+                    className="btn btn-outline"
+                    onClick={() => {
+                      (
+                        document.getElementById(
+                          "report_project_modal",
+                        ) as HTMLDialogElement
+                      ).close();
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+                <div>
+                  <button type="submit" className="btn btn-primary">
+                    Report
                   </button>
                 </div>
               </div>

@@ -60,8 +60,10 @@ export default function SideNav() {
               <div>{item.icon}</div>
 
               <div className="flex flex-col">
-                <span className="lg:text-2xl">{item.title}</span>
-                <span className="line-clamp-1 font-light">{item.subtitle}</span>
+                <span className="lg:text-xl">{item.title}</span>
+                <span className="line-clamp-1 text-sm font-light">
+                  {item.subtitle}
+                </span>
               </div>
             </div>
           </Link>

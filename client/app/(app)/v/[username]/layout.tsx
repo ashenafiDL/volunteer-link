@@ -41,6 +41,7 @@ export default function OtherUserProfileLayout({
             <div>
               {user && (
                 <UserProfile
+                  id={user.id}
                   firstName={user.firstName}
                   lastName={user.lastName}
                   username={user.username}

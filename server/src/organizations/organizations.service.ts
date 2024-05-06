@@ -114,7 +114,7 @@ export class OrganizationsService {
       return org;
     } catch (error) {
       if (error instanceof NotFoundException) {
-        return error;
+        throw error;
       } else {
         throw new InternalServerErrorException(
           'Failed to get organization. Please try again.',
@@ -151,7 +151,7 @@ export class OrganizationsService {
       return updatedOrg;
     } catch (error) {
       if (error instanceof NotFoundException) {
-        return error;
+        throw error;
       } else {
         throw new InternalServerErrorException(
           'Failed to update organization. Please try again.',
