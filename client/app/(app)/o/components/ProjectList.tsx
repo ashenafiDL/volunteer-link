@@ -26,7 +26,7 @@ export default function ProjectList({
             )}
           >
             <div className="card-body space-y-3">
-              <div className="flex flex-row items-center gap-2">
+              <div className="flex flex-row items-center justify-between gap-2">
                 <span className="text-2xl font-bold">{project.title}</span>
 
                 {own && (

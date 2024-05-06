@@ -172,6 +172,7 @@ export default function Projects() {
               locationId: "",
               startDate: "",
               endDate: "",
+              provideCertificate: false,
             }}
             validationSchema={Yup.object({
               title: projectTitleValidation,
@@ -239,6 +240,14 @@ export default function Projects() {
                   }}
                 />
               </div>
+
+              <TextInput
+                label="Provide certificate to users at the end of the project"
+                props={{
+                  name: "provideCertificate",
+                  type: "checkbox",
+                }}
+              />
 
               <div className="flex flex-row gap-2">
                 <button

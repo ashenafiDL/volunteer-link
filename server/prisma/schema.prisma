@@ -78,25 +78,26 @@ model Locations {
 }
 
 model Projects {
-  id             String             @id @default(uuid())
-  organization   Organizations      @relation(fields: [organizationId], references: [id])
-  organizationId String
-  title          String
-  description    String
-  location       Locations?         @relation(fields: [locationId], references: [id])
-  locationId     String?
-  startDate      DateTime
-  endDate        DateTime
-  timeCommitment TimePreference
-  status         ProjectStatus      @default(NOT_STARTED)
-  createdAt      DateTime           @default(now())
-  updatedAt      DateTime           @updatedAt
-  skillsRequired SkillsToProjects[]
-  applications   Applications[]
-  donations      Donations[]
-  messages       Messages[]
-  tasks          Tasks[]
-  reviews        Reviews[]
+  id                 String             @id @default(uuid())
+  organization       Organizations      @relation(fields: [organizationId], references: [id])
+  organizationId     String
+  title              String
+  description        String
+  location           Locations?         @relation(fields: [locationId], references: [id])
+  locationId         String?
+  startDate          DateTime
+  endDate            DateTime
+  timeCommitment     TimePreference
+  status             ProjectStatus      @default(NOT_STARTED)
+  provideCertificate Boolean            @default(false)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  skillsRequired     SkillsToProjects[]
+  applications       Applications[]
+  donations          Donations[]
+  messages           Messages[]
+  tasks              Tasks[]
+  reviews            Reviews[]
 }
 
 model Organizations {

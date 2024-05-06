@@ -39,6 +39,7 @@ export class ProjectsService {
           endDate: createProjectDto.endDate,
           status: 'NOT_STARTED',
           timeCommitment: createProjectDto.timeCommitment,
+          provideCertificate: createProjectDto.provideCertificate,
         },
       });
 

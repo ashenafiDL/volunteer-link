@@ -1,5 +1,11 @@
 import { ProjectStatus, TimePreference } from '@prisma/client';
-import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDateString,
+  IsEnum,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateProjectDto {
   @IsString()
@@ -23,6 +29,9 @@ export class CreateProjectDto {
 
   @IsEnum(TimePreference)
   timeCommitment: TimePreference;
+
+  @IsBoolean()
+  provideCertificate: boolean;
 
   @IsEnum(ProjectStatus)
   @IsOptional()
