@@ -77,12 +77,14 @@ export default function ProjectPage() {
             <h1 className="text-2xl font-bold">{project?.title}</h1>
           </div>
 
-          <div className="section-container">
-            <p className="section-title">Organized By</p>
-            <div className="text-2xl font-bold">
-              {project?.organization?.name}
+          <Link href={`/o/${project?.organizationId}`}>
+            <div className="section-container">
+              <p className="section-title">Organized By</p>
+              <div className="text-2xl font-bold">
+                {project?.organization?.name}
+              </div>
             </div>
-          </div>
+          </Link>
 
           <div className="section-container">
             <p className="section-title">Status</p>
