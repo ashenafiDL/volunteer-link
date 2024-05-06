@@ -80,6 +80,7 @@ export default function UserAvatar({
           <div
             className={clsx(
               "rounded-full",
+              size === "xxs" && "w-4",
               size === "xs" && "w-6",
               size === "sm" && "w-8",
               size === "base" && "w-10",

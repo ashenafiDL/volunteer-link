@@ -207,12 +207,12 @@ export default function ProjectPage() {
                     <Link
                       href={`/v/${participant.user.username}`}
                       key={index}
-                      className="badge badge-secondary badge-outline flex flex-row items-center gap-2 pl-0"
+                      className="badge badge-secondary badge-outline badge-lg flex flex-row items-center gap-2 pl-0"
                     >
                       <UserAvatar
                         email={participant.user.email}
                         name={participant.user.firstName}
-                        size="xxs"
+                        size="xs"
                       />
                       <span>
                         {`${participant.user.firstName} ${participant.user.lastName}`}
