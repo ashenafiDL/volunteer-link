@@ -1,8 +1,11 @@
 "use client";
 
+import axiosInstance from "@/app/axiosInstance";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import "@/app/styles.css";
+import { useEffect, useState } from "react";
 import CVCard from "../components/CVCard";
+import ContributionsCard from "../components/ContributionsCard";
 import PersonalInfoCard from "../components/PersonalInfoCard";
 import ShowMoreCard from "../components/ShowMoreCard";
 import UserBioCard from "../components/UserBioCard";
@@ -11,6 +14,25 @@ import UserSkillsCard from "../components/UserSkillsCard";
 
 export default function Profile() {
   const { user } = useAuthContext();
+  const [contributions, setContributions] = useState<Array<any> | null>();
+
+  useEffect(() => {
+    const fetchContributions = async () => {
+      try {
+        const res = await axiosInstance.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/users/${user.id}/contributions`,
+        );
+
+        if (res.status === 200) {
+          setContributions(res.data);
+        }
+      } catch (error) {
+        setContributions(null);
+      }
+    };
+
+    fetchContributions();
+  }, [user.id]);
 
   return (
     <div className="space-y-3">
@@ -45,6 +67,16 @@ export default function Profile() {
           </>
         )}
       </div>
+
+      {/* Contributions card */}
+      {contributions && (
+        <div className="card rounded-md">
+          <div className="card-body">
+            <div className="card-title">Contribution History</div>
+            <ContributionsCard contributions={contributions} />
+          </div>
+        </div>
+      )}
 
       {/* Education information card */}
       <div>

@@ -1,9 +1,11 @@
 "use client";
 
+import axiosInstance from "@/app/axiosInstance";
 import { fetchUser } from "@/app/lib/users";
 import "@/app/styles.css";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import ContributionsCard from "../components/ContributionsCard";
 import PersonalInfoCard from "../components/PersonalInfoCard";
 import ShowMoreCard from "../components/ShowMoreCard";
 import UserBioCard from "../components/UserBioCard";
@@ -14,6 +16,27 @@ export default function Profile() {
   const pathname = usePathname();
   const username = pathname.split("/")[2];
   const [user, setUser] = useState<any>();
+  const [contributions, setContributions] = useState<Array<any> | null>();
+
+  useEffect(() => {
+    const fetchContributions = async () => {
+      try {
+        const res = await axiosInstance.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/users/${user.id}/contributions`,
+        );
+
+        if (res.status === 200) {
+          setContributions(res.data);
+        }
+      } catch (error) {
+        setContributions(null);
+      }
+    };
+
+    if (user?.id) {
+      fetchContributions();
+    }
+  }, [user]);
 
   useEffect(() => {
     const getUserData = async () => {
@@ -61,6 +84,16 @@ export default function Profile() {
               </>
             )}
           </div>
+
+          {/* Contributions card */}
+          {contributions && (
+            <div className="card rounded-md">
+              <div className="card-body">
+                <div className="card-title">Contribution History</div>
+                <ContributionsCard contributions={contributions} />
+              </div>
+            </div>
+          )}
 
           {/* Education information card */}
           <div>

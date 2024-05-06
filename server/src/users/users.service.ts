@@ -477,6 +477,50 @@ export class UsersService {
     }
   }
 
+  async fetchContributions(id: string) {
+    try {
+      // Check if user exists
+      const user = await this.prisma.users.findUnique({
+        where: {
+          id: id,
+        },
+      });
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      // Fetch contributions
+      const contributions = await this.prisma.applications.findMany({
+        where: {
+          AND: [
+            { userId: id },
+            { status: 'ACCEPTED' },
+            {
+              project: {
+                status: 'DONE',
+              },
+            },
+          ],
+        },
+        include: {
+          project: {
+            include: {
+              organization: true,
+            },
+          },
+        },
+      });
+
+      return contributions;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException('Failed to fetch contributions');
+      }
+    }
+  }
+
   // Helper function to remove sensitive information from user data
   sanitizeUserData(user: any) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

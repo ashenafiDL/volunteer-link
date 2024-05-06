@@ -49,14 +49,14 @@ export class UserController {
 
   @Patch('me/update')
   @ApiUpdateProfileEndpoint()
-  async update(@Req() req, @Body() updateUserDto: UpdateUserDto) {
+  update(@Req() req, @Body() updateUserDto: UpdateUserDto) {
     const id = req.user.sub;
     return this.userService.updateUser(id, updateUserDto);
   }
 
   @Patch('me/education/update/:educationId')
   @ApiUpdateEducationEndpoint()
-  async updateEducation(
+  updateEducation(
     @Req() req,
     @Param('educationId') educationId: string,
     @Body() updateEducationInfoDto: EducationInfoDto,
@@ -71,28 +71,33 @@ export class UserController {
 
   @Delete('me/education/remove/:educationId')
   @ApiDeleteEducationEndpoint()
-  async removeEducation(@Req() req, @Param('educationId') educationId: string) {
+  removeEducation(@Req() req, @Param('educationId') educationId: string) {
     const userId = req.user.sub;
     return this.userService.deleteEducation(userId, educationId);
   }
 
   @Patch('deactivateAccount')
-  async deactivateAccount(@Req() req) {
+  deactivateAccount(@Req() req) {
     const id = req.user.sub;
     return this.userService.deactivateAccount(id);
   }
 
   @Delete('me/delete')
   @ApiDeleteAccountEndpoint()
-  async delete(@Req() req) {
+  delete(@Req() req) {
     const id = req.user.sub;
     return this.userService.deleteUser(id);
   }
 
   @Patch('me/skills/remove/:skillId')
   @ApiRemoveSkillEndpoint()
-  async removeSkill(@Req() req, @Param('skillId') skillId: string) {
+  removeSkill(@Req() req, @Param('skillId') skillId: string) {
     const userId = req.user.sub;
     return this.userService.removeSkill(userId, skillId);
+  }
+
+  @Get(':userId/contributions')
+  getContributions(@Param('userId') userId: string) {
+    return this.userService.fetchContributions(userId);
   }
 }
