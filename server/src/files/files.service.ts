@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import * as fs from 'fs-extra';
+import * as PDFDocument from 'pdfkit';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -433,6 +434,146 @@ export class FilesService {
           'Error while fetching CV. Please try again',
         );
       }
+    }
+  }
+
+  generateCertificate(
+    orgLogoPath: string,
+    vlLogoPath: string,
+    fullName: string,
+    projectTitle: string,
+    organizationName: string,
+    startDate: string,
+    endDate: string,
+  ): Promise<string> {
+    return new Promise((resolve, reject) => {
+      try {
+        const certificatePath = './uploads/certificate.pdf';
+        const outerDistanceMargin = 10;
+        const middleDistanceMargin = outerDistanceMargin + 8;
+        const filleAndStrokeColor = '#444';
+        const lineWidthLarge = 5;
+        const lineWidthSmall = 1;
+        const lineJoinType = 'bevel';
+        const logoMaxWidth = 140;
+        const logoMaxHeight = 50;
+        const fontOnePath = './assets/fonts/Montserrat-VariableFont_wght.ttf';
+        const fontTwoPath = './assets/fonts/Kalam-Regular.ttf';
+
+        // Create a new A4-landscape PDF document
+        const doc = new PDFDocument({ size: 'A4', layout: 'landscape' });
+
+        // Set destination for the PDF document
+        const writeStream = fs.createWriteStream(certificatePath);
+        doc.pipe(writeStream);
+
+        // Draw rectangle around the page
+        doc
+          .fillAndStroke(filleAndStrokeColor)
+          .lineWidth(lineWidthLarge)
+          .lineJoin(lineJoinType)
+          .rect(
+            outerDistanceMargin,
+            outerDistanceMargin,
+            doc.page.width - outerDistanceMargin * 2,
+            doc.page.height - outerDistanceMargin * 2,
+          )
+          .stroke();
+
+        // Draw a small rectangle in the middle
+        doc
+          .fillAndStroke(filleAndStrokeColor)
+          .lineWidth(lineWidthSmall)
+          .lineJoin(lineJoinType)
+          .rect(
+            middleDistanceMargin,
+            middleDistanceMargin,
+            doc.page.width - middleDistanceMargin * 2,
+            doc.page.height - middleDistanceMargin * 2,
+          )
+          .stroke();
+
+        // Add VolunteerLink and organization logos at the top
+        const x = doc.page.width / 2 - logoMaxWidth / 2;
+        const y = 60;
+        doc.image(orgLogoPath, x - 300, y, {
+          fit: [logoMaxWidth, logoMaxHeight],
+          align: 'center',
+        });
+
+        doc.image(vlLogoPath, x + 300, y, {
+          fit: [logoMaxWidth, logoMaxHeight],
+          align: 'center',
+        });
+
+        this.jumpLine(doc, 3);
+
+        // Add the text contents
+        doc
+          .font(fontTwoPath)
+          .fontSize(28)
+          .text('Certificate of Participation', { align: 'center' });
+
+        this.jumpLine(doc, 1);
+
+        doc
+          .font(fontTwoPath)
+          .fontSize(12)
+          .text(`This certificate is awarded to`, { align: 'center' });
+
+        this.jumpLine(doc, 2);
+
+        doc
+          .font(fontOnePath)
+          .fontSize(24)
+          .text(fullName, { align: 'center', underline: true });
+
+        this.jumpLine(doc, 1);
+
+        doc
+          .font(fontTwoPath)
+          .fontSize(12)
+          .text(`for participation in the project:`, { align: 'center' });
+
+        this.jumpLine(doc, 2);
+
+        doc
+          .font(fontOnePath)
+          .fontSize(24)
+          .text(projectTitle, { align: 'center', underline: true });
+
+        this.jumpLine(doc, 2);
+
+        doc
+          .font(fontTwoPath)
+          .fontSize(10)
+          .text(
+            `This certificate is awarded to recognize ${fullName}'s generous volunteering efforts in the project ${projectTitle} organized by ${organizationName}. The project spanned from ${startDate} to ${endDate}.`,
+            { align: 'center' },
+          );
+
+        // Close the PDF document
+        doc.end();
+
+        writeStream.on('finish', () => {
+          resolve(certificatePath);
+        });
+
+        writeStream.on('error', (error) => {
+          reject(error);
+        });
+      } catch (error) {
+        throw new InternalServerErrorException(
+          'Error while generating certificate. Please try again',
+        );
+      }
+    });
+  }
+
+  // Helper function to jump lines whn generating the certificate
+  jumpLine(doc, lines) {
+    for (let index = 0; index < lines; index++) {
+      doc.moveDown();
     }
   }
 }
