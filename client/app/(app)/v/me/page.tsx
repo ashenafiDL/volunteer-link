@@ -5,6 +5,7 @@ import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import "@/app/styles.css";
 import { useEffect, useState } from "react";
 import CVCard from "../components/CVCard";
+import CertificateCard from "../components/CertificateCard";
 import ContributionsCard from "../components/ContributionsCard";
 import PersonalInfoCard from "../components/PersonalInfoCard";
 import ShowMoreCard from "../components/ShowMoreCard";
@@ -14,7 +15,8 @@ import UserSkillsCard from "../components/UserSkillsCard";
 
 export default function Profile() {
   const { user } = useAuthContext();
-  const [contributions, setContributions] = useState<Array<any> | null>();
+  const [contributions, setContributions] = useState<Array<any> | null>(null);
+  const [certificates, setCertificates] = useState<Array<any> | null>(null);
 
   useEffect(() => {
     const fetchContributions = async () => {
@@ -31,7 +33,22 @@ export default function Profile() {
       }
     };
 
+    const fetchCertificates = async () => {
+      try {
+        const res = await axiosInstance.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/certificates/${user.id}`,
+        );
+
+        if (res.status === 200) {
+          setCertificates(res.data);
+        }
+      } catch (error) {
+        setCertificates(null);
+      }
+    };
+
     fetchContributions();
+    fetchCertificates();
   }, [user.id]);
 
   return (
@@ -69,11 +86,21 @@ export default function Profile() {
       </div>
 
       {/* Contributions card */}
-      {contributions && (
+      {contributions && contributions.length > 0 && (
         <div className="card rounded-md">
           <div className="card-body">
             <div className="card-title">Contribution History</div>
             <ContributionsCard contributions={contributions} />
+          </div>
+        </div>
+      )}
+
+      {certificates && certificates.length > 0 && (
+        <div className="card rounded-md">
+          <div className="card-body space-y-3">
+            {certificates.map((certificate: any) => (
+              <CertificateCard key={certificate.id} certificate={certificate} />
+            ))}
           </div>
         </div>
       )}

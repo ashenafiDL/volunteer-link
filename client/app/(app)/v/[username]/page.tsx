@@ -5,6 +5,7 @@ import { fetchUser } from "@/app/lib/users";
 import "@/app/styles.css";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import CertificateCard from "../components/CertificateCard";
 import ContributionsCard from "../components/ContributionsCard";
 import PersonalInfoCard from "../components/PersonalInfoCard";
 import ShowMoreCard from "../components/ShowMoreCard";
@@ -17,6 +18,7 @@ export default function Profile() {
   const username = pathname.split("/")[2];
   const [user, setUser] = useState<any>();
   const [contributions, setContributions] = useState<Array<any> | null>();
+  const [certificates, setCertificates] = useState<Array<any> | null>(null);
 
   useEffect(() => {
     const fetchContributions = async () => {
@@ -33,8 +35,23 @@ export default function Profile() {
       }
     };
 
+    const fetchCertificates = async () => {
+      try {
+        const res = await axiosInstance.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/certificates/${user.id}`,
+        );
+
+        if (res.status === 200) {
+          setCertificates(res.data);
+        }
+      } catch (error) {
+        setCertificates(null);
+      }
+    };
+
     if (user?.id) {
       fetchContributions();
+      fetchCertificates();
     }
   }, [user]);
 
@@ -86,11 +103,24 @@ export default function Profile() {
           </div>
 
           {/* Contributions card */}
-          {contributions && (
+          {contributions && contributions.length > 0 && (
             <div className="card rounded-md">
               <div className="card-body">
                 <div className="card-title">Contribution History</div>
                 <ContributionsCard contributions={contributions} />
+              </div>
+            </div>
+          )}
+
+          {certificates && certificates.length > 0 && (
+            <div className="card rounded-md">
+              <div className="card-body space-y-6">
+                {certificates.map((certificate: any) => (
+                  <CertificateCard
+                    key={certificate.id}
+                    certificate={certificate}
+                  />
+                ))}
               </div>
             </div>
           )}
