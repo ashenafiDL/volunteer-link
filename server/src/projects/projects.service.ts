@@ -394,12 +394,40 @@ export class ProjectsService {
       }
 
       // Update the project
-      await this.prisma.projects.update({
+      const updatedProject = await this.prisma.projects.update({
         where: {
           id: projectId,
         },
         data: updateProjectDto,
+        include: {
+          applications: {
+            where: {
+              status: 'ACCEPTED',
+            },
+            select: {
+              userId: true,
+            },
+          },
+        },
       });
+
+      // If the project is "DONE" and provideCertificate is true,
+      // award certificates to participate
+      if (
+        updateProjectDto.status === 'DONE' &&
+        updatedProject.provideCertificate
+      ) {
+        for (const record of updatedProject.applications) {
+          const { userId } = record;
+
+          await this.prisma.certificates.create({
+            data: {
+              userId: userId,
+              projectId: projectId,
+            },
+          });
+        }
+      }
 
       return {
         message: 'Project successfully updated',
