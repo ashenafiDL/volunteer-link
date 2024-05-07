@@ -5,6 +5,7 @@ import {
   Get,
   HttpStatus,
   InternalServerErrorException,
+  NotFoundException,
   Param,
   ParseFilePipeBuilder,
   Post,
@@ -15,7 +16,9 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiTags } from '@nestjs/swagger';
+import * as fs from 'fs-extra';
 import { diskStorage } from 'multer';
+import { CertificatesService } from 'src/certificates/certificates.service';
 import { Public } from '../auth/decorators/public.decorator';
 import {
   ApiDeleteProfilePictureEndpoint,
@@ -28,7 +31,10 @@ import { FilesService } from './files.service';
 @ApiTags('Files')
 @Controller('files')
 export class FilesController {
-  constructor(private readonly filesService: FilesService) {}
+  constructor(
+    private readonly filesService: FilesService,
+    private readonly certificatesService: CertificatesService,
+  ) {}
 
   @ApiProfilePicUpdateEndpoint()
   @Post('profilePic/update')
@@ -235,6 +241,48 @@ export class FilesController {
     } catch (error) {
       throw new InternalServerErrorException(
         'Error while fetching CV. Please try again.',
+      );
+    }
+  }
+
+  @Public()
+  @Get('certificates/:id')
+  async serveCertificate(@Param('id') id: string, @Res() res: any) {
+    try {
+      const certificate = await this.certificatesService.findOne(id);
+      if (!certificate) {
+        throw new NotFoundException('Certificate not found');
+      }
+
+      let orgLogoPath;
+      try {
+        orgLogoPath = await this.filesService.findLogoPath(
+          certificate.project.organization.id,
+        );
+      } catch (error) {
+        orgLogoPath = './assets/logos/logo.png';
+      }
+
+      const fullName = `${certificate.user.firstName} ${certificate.user.lastName}`;
+
+      const filepath = await this.filesService.generateCertificate(
+        orgLogoPath,
+        './assets/logos/logo.png',
+        fullName,
+        certificate.project.title,
+        certificate.project.organization.name,
+        certificate.project.startDate.toDateString(),
+        certificate.project.endDate.toDateString(),
+      );
+
+      const fullPath = `${process.cwd()}/${filepath.slice(2)}`;
+
+      if (fs.existsSync(fullPath)) {
+        res.sendFile(fullPath);
+      }
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Error while fetching certificate. Please try again.',
       );
     }
   }

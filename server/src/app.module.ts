@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ApplicationsModule } from './applications/applications.module';
 import { AuthModule } from './auth/auth.module';
+import { CertificatesModule } from './certificates/certificates.module';
 import { EmailModule } from './email/email.module';
 import { FilesModule } from './files/files.module';
 import { LocationsModule } from './locations/locations.module';
@@ -38,6 +39,7 @@ import { UsersService } from './users/users.service';
     ApplicationsModule,
     ReviewsModule,
     ReportsModule,
+    CertificatesModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService, UsersService],
