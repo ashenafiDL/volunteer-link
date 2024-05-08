@@ -13,6 +13,10 @@ export default function middleware(req: NextRequest) {
     } else {
       return NextResponse.next();
     }
+  } else {
+    if (!isAuthenticated) {
+      return NextResponse.redirect(new URL("/sign-in", req.nextUrl.origin));
+    }
   }
 
   if (!isAuthenticated) {

@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { useState } from "react";
-import { BiDonateBlood, BiMenu, BiX } from "react-icons/bi";
+import { BiDonateHeart, BiMenu, BiX } from "react-icons/bi";
 
 export default function Header() {
   const [navHidden, setNavHidden] = useState(true);
@@ -13,7 +13,7 @@ export default function Header() {
       <nav className="container relative flex items-center justify-between py-1">
         {/* Logo icon */}
         <Link href="/">
-          <BiDonateBlood size={40} />
+          <BiDonateHeart size={40} />
         </Link>
 
         {/* Nav links */}
@@ -25,9 +25,6 @@ export default function Header() {
         >
           <ul className="flex w-full flex-col text-lg md:p-4 lg:flex-row lg:items-center lg:gap-8 lg:p-0 [&>li]:py-4">
             <li>
-              <Link href="/organizations">Organizations</Link>
-            </li>
-            <li>
               <Link href="/about-us">About Us</Link>
             </li>
             <li>
@@ -35,7 +32,7 @@ export default function Header() {
             </li>
             <li>
               <Link href="/sign-in">
-                <button className="btn btn-outline">Sign In</button>
+                <button className="btn">Sign In</button>
               </Link>
             </li>
           </ul>

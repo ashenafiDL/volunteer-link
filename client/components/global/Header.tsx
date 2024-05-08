@@ -7,7 +7,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineSetting } from "react-icons/ai";
-import { BiDonateBlood, BiFile, BiLogOut, BiUserCircle } from "react-icons/bi";
+import { BiDonateHeart, BiFile, BiLogOut, BiUserCircle } from "react-icons/bi";
 import { GrOrganization } from "react-icons/gr";
 
 export default function Header() {
@@ -74,7 +74,7 @@ export default function Header() {
           href="/home"
           className="flex items-center gap-2 text-primary-content"
         >
-          <BiDonateBlood size={28} />
+          <BiDonateHeart size={28} />
           <span className="text-xl font-medium">VolunteerLink</span>
         </Link>
 

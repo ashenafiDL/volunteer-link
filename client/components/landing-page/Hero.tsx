@@ -18,11 +18,11 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-row gap-6">
-            <Link href="/projects">
-              <button className="btn btn-outline">Browse Projects</button>
+            <Link href="/home">
+              <button className="btn">Browse Projects</button>
             </Link>
             <Link href="/sign-up">
-              <button className="btn btn-outline">Sign Up</button>
+              <button className="btn btn-secondary">Sign Up</button>
             </Link>
           </div>
         </div>

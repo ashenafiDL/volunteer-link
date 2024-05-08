@@ -1,6 +1,6 @@
 import Link from "next/link";
 import {
-  BiDonateBlood,
+  BiDonateHeart,
   BiLogoInstagramAlt,
   BiLogoLinkedinSquare,
   BiLogoTelegram,
@@ -17,14 +17,15 @@ export default function Footer() {
         <div className="w-full space-y-20 lg:w-1/3">
           <div className="space-y-8">
             <div className="flex flex-row items-center gap-4">
-              <BiDonateBlood size={32} />
+              <BiDonateHeart size={32} />
               <span className="text-3xl font-semibold">VolunteerLink</span>
             </div>
 
             <p>
-              Ut est velit velit. Magnam quisquam dolor labore. Ipsum eius
-              aliquam dolor quiquia quaerat. Eius aliquam modi est. Etincidunt
-              tempora numquam quiquia. Magnam sed quiquia modi ut dolor.
+              VolunteerLink is an online community center, bringing together
+              passionate volunteers and organizations needing their help. It is
+              a place where connections are made, ideas come to life, and
+              communities are strengthened
             </p>
           </div>
 
@@ -42,12 +43,10 @@ export default function Footer() {
         <div className="hidden space-y-16 lg:block">
           <h5 className="text-2xl">Useful Links</h5>
 
-          <div className="grid grid-cols-2 gap-x-16 gap-y-8">
+          <div className="grid grid-cols-1 gap-y-8">
             <Link href="/about-us">About Us</Link>
-            <Link href="/organization">Organizations</Link>
             <Link href="/faq">FAQ</Link>
-            <Link href="/volunteers">Volunteers</Link>
-            <Link href="/support">Support</Link>
+            <Link href="/contact-us">Support/contact</Link>
           </div>
         </div>
 

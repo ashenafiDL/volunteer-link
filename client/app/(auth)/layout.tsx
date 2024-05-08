@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BiDonateBlood } from "react-icons/bi";
+import { BiDonateHeart } from "react-icons/bi";
 import { quotes } from "./quotes";
 
 export default function AuthLayout({
@@ -15,7 +15,7 @@ export default function AuthLayout({
       <div className="flex w-full flex-col items-center justify-center bg-primary px-[clamp(36px,5vw,96px)] py-12 text-primary-content lg:w-1/3 lg:items-start lg:justify-between">
         {/* Logo icon */}
         <Link className="flex flex-row items-center gap-4" href="/">
-          <BiDonateBlood size={40} />
+          <BiDonateHeart size={40} />
           <span className="text-[clamp(20px,2vw,30px)] font-semibold">
             VolunteerLink
           </span>
