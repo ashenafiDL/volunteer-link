@@ -248,11 +248,11 @@ model Education {
 
 // many to many relationship tables
 model UsersToBadges {
-  user       Users    @relation(fields: [userId], references: [id])
-  userId     String
-  badge      Badges   @relation(fields: [badgeId], references: [id])
-  badgeId    String
-  date_given DateTime @default(now())
+  user      Users    @relation(fields: [userId], references: [id])
+  userId    String
+  badge     Badges   @relation(fields: [badgeId], references: [id])
+  badgeId   String
+  dateGiven DateTime @default(now())
 
   @@id([userId, badgeId])
 }

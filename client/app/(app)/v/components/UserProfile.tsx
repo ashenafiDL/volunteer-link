@@ -16,6 +16,7 @@ import Link from "next/link";
 import { BiDotsVerticalRounded, BiSolidPencil } from "react-icons/bi";
 import { RiErrorWarningFill } from "react-icons/ri";
 import * as Yup from "yup";
+import BadgeCard from "./BadgeCard";
 
 export default function UserProfile({
   id,
@@ -25,6 +26,7 @@ export default function UserProfile({
   email,
   createdAt,
   ownProfile,
+  badge,
 }: {
   id?: string;
   firstName: string;
@@ -33,6 +35,7 @@ export default function UserProfile({
   email: string;
   createdAt: string;
   ownProfile: boolean;
+  badge?: any;
 }) {
   const { addAlert, dismissAlert } = useAlertsContext();
 
@@ -80,10 +83,9 @@ export default function UserProfile({
         <UserAvatar email={email} name={firstName} size="lg" />
 
         <div className="flex flex-grow flex-col">
-          <div className="flex flex-row items-center gap-2 capitalize">
+          <div className="flex flex-row items-center gap-3 capitalize">
             <span className="text-2xl">{`${firstName} ${lastName}`}</span>
-            {/* If there is a badge badge goes here */}
-            {/* <BiBadge size={24} /> */}
+            {badge && <BadgeCard badge={badge} size="sm" />}
           </div>
           <span className="text-lg">{`@${username}`}</span>
           <span className="font-light">{`Joined on ${createdAt && format(createdAt, "MMMM yyyy")}`}</span>

@@ -13,12 +13,9 @@ interface AuthContextType {
   org: any;
   setOrg: (user: any) => void;
   getUser: () => void;
-  getOrg: (identifier: string) => any;
   logout: () => void;
   isLoggedIn: boolean;
   setIsLoggedIn: (isLoggedIn: boolean) => void;
-  viewingOrg: boolean;
-  setViewingOrg: (viewingOrg: boolean) => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -29,14 +26,9 @@ export const AuthContext = createContext<AuthContextType>({
   org: {},
   setOrg: (org: any) => {},
   getUser: () => {},
-  getOrg: (identifier: string) => {
-    return {};
-  },
   logout: () => {},
   isLoggedIn: false,
   setIsLoggedIn: (isLoggedIn: boolean) => {},
-  viewingOrg: false,
-  setViewingOrg: (isLoggedIn: boolean) => {},
 });
 
 export default function AppContext({
@@ -47,7 +39,6 @@ export default function AppContext({
   const router = useRouter();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [viewingOrg, setViewingOrg] = useState(false);
   const [user, setUser] = useState<any>({});
   const [org, setOrg] = useState<any>({});
   const [token, setToken] = useState<string>(() => {
@@ -56,56 +47,43 @@ export default function AppContext({
   });
 
   const logout = () => {
-    router.replace("/sign-in");
-    setIsLoggedIn(false);
     setToken("");
     deleteCookie("token");
     setUser({});
     setOrg({});
+    setIsLoggedIn(false);
+    router.replace("/");
+  };
+
+  const getUser = () => {
+    const fetchUser = async () => {
+      try {
+        const res = await axiosInstance.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
+        );
+
+        if (res.status === 200) {
+          setUser(res.data);
+          setIsLoggedIn(true);
+          setToken(res.data.token);
+          setOrg(res.data.organization);
+
+          return res.data;
+        }
+      } catch (error) {
+        logout();
+      }
+    };
+
+    if (token !== "") {
+      fetchUser();
+    }
   };
 
   useEffect(() => {
-    const token = getCookie("token");
-
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-
-    if (token) {
-      getUser();
-    }
-  }, []);
-
-  const getUser = async () => {
-    try {
-      const response = await axiosInstance.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
-      );
-
-      if (response.status === 200) {
-        setUser(response.data);
-        getOrg(response.data.organization.id);
-        return response.data;
-      }
-    } catch (error) {
-      logout();
-    }
-  };
-
-  const getOrg = async (identifier: string) => {
-    try {
-      const res = await axiosInstance.get(
-        `${process.env.NEXT_PUBLIC_API_URL}/organizations/${identifier}`,
-      );
-
-      if (res.status === 200) {
-        setOrg(res.data);
-        return res.data;
-      }
-    } catch (error) {}
-  };
+    console.log("dddddddddd");
+    getUser();
+  }, [token]);
 
   return (
     <AuthContext.Provider
@@ -118,11 +96,8 @@ export default function AppContext({
         org,
         setOrg,
         getUser,
-        getOrg,
         isLoggedIn,
         setIsLoggedIn,
-        viewingOrg,
-        setViewingOrg,
       }}
     >
       {children}

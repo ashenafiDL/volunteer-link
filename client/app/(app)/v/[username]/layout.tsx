@@ -48,6 +48,11 @@ export default function OtherUserProfileLayout({
                   email={user.email}
                   createdAt={user.createdAt}
                   ownProfile={false}
+                  badge={
+                    user.badges &&
+                    user.badges.length > 0 &&
+                    user.badges[user.badges.length - 1]
+                  }
                 />
               )}
 

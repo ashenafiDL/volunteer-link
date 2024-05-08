@@ -129,6 +129,11 @@ export class UsersService {
             include: {
               badge: true,
             },
+            orderBy: {
+              badge: {
+                threshold: 'asc',
+              },
+            },
           },
           certificates: true,
           skills: {
@@ -142,7 +147,24 @@ export class UsersService {
           reports: true,
           reviews: true,
           tasks: true,
-          organization: true,
+          organization: {
+            include: {
+              location: true,
+              logo: true,
+              owner: true,
+              permit: true,
+              projects: true,
+              _count: {
+                select: {
+                  projects: {
+                    where: {
+                      status: 'DONE',
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       });
 
@@ -172,6 +194,11 @@ export class UsersService {
             include: {
               badge: true,
             },
+            orderBy: {
+              badge: {
+                threshold: 'asc',
+              },
+            },
           },
           certificates: true,
           skills: {
@@ -192,6 +219,15 @@ export class UsersService {
               owner: true,
               permit: true,
               projects: true,
+              _count: {
+                select: {
+                  projects: {
+                    where: {
+                      status: 'DONE',
+                    },
+                  },
+                },
+              },
             },
           },
         },

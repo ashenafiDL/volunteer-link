@@ -119,7 +119,7 @@ export default function Header() {
 
               <hr className="border-neutral-content" />
 
-              {org.name ? (
+              {org?.name ? (
                 <Link
                   onClick={handleMenuItemClick}
                   className="flex items-center gap-4 px-4 py-2 text-lg transition-colors duration-300 hover:bg-base-200"

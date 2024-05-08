@@ -4,6 +4,7 @@ import axiosInstance from "@/app/axiosInstance";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import "@/app/styles.css";
 import { useEffect, useState } from "react";
+import BadgeCard from "../components/BadgeCard";
 import CVCard from "../components/CVCard";
 import CertificateCard from "../components/CertificateCard";
 import ContributionsCard from "../components/ContributionsCard";
@@ -95,12 +96,28 @@ export default function Profile() {
         </div>
       )}
 
+      {/* Certificates card */}
       {certificates && certificates.length > 0 && (
         <div className="card rounded-md">
           <div className="card-body space-y-3">
             {certificates.map((certificate: any) => (
               <CertificateCard key={certificate.id} certificate={certificate} />
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Badge card */}
+      {user.badges && user.badges.length > 0 && (
+        <div className="card rounded-md">
+          <div className="card-body">
+            <h5 className="card-title">Badges</h5>
+
+            <div className="flex flex-row flex-wrap gap-3">
+              {user.badges.map((badge: any, index: number) => (
+                <BadgeCard key={index} badge={badge} size="lg" />
+              ))}
+            </div>
           </div>
         </div>
       )}

@@ -39,6 +39,11 @@ export default function SidebarLayout({
             email={user.email}
             createdAt={user.createdAt}
             ownProfile={true}
+            badge={
+              user.badges &&
+              user.badges.length > 0 &&
+              user.badges[user.badges.length - 1]
+            }
           />
 
           {hasSocialLinks && <SocialLinks socialLinks={user.socialLinks} />}

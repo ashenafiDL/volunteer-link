@@ -5,6 +5,7 @@ import { fetchUser } from "@/app/lib/users";
 import "@/app/styles.css";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import BadgeCard from "../components/BadgeCard";
 import CertificateCard from "../components/CertificateCard";
 import ContributionsCard from "../components/ContributionsCard";
 import PersonalInfoCard from "../components/PersonalInfoCard";
@@ -112,6 +113,7 @@ export default function Profile() {
             </div>
           )}
 
+          {/* Certificates card */}
           {certificates && certificates.length > 0 && (
             <div className="card rounded-md">
               <div className="card-body space-y-6">
@@ -121,6 +123,21 @@ export default function Profile() {
                     certificate={certificate}
                   />
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* Badge card */}
+          {user.badges && user.badges.length > 0 && (
+            <div className="card rounded-md">
+              <div className="card-body">
+                <h5 className="card-title">Badges</h5>
+
+                <div className="flex flex-row flex-wrap gap-3">
+                  {user.badges.map((badge: any, index: number) => (
+                    <BadgeCard key={index} badge={badge} size="lg" />
+                  ))}
+                </div>
               </div>
             </div>
           )}

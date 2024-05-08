@@ -19,7 +19,7 @@ type Texts = {
 };
 
 export default function EditContactInfo({ locations }: any) {
-  const { org, getOrg } = useAuthContext();
+  const { org, getUser } = useAuthContext();
   const [isOrgLoaded, setIsOrgLoaded] = useState(false);
   const [initialValues, setInitialValues] = useState<Texts>({});
   const { addAlert, dismissAlert } = useAlertsContext();
@@ -32,7 +32,7 @@ export default function EditContactInfo({ locations }: any) {
       );
 
       if (res.status === 200) {
-        await getOrg(org.id);
+        getUser();
         const id = addAlert({
           severity: "success",
           message: "Organization details updated successfully",
