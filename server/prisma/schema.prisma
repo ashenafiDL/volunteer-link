@@ -151,7 +151,6 @@ model Files {
   filePath           String
   size               Decimal
   createdAt          DateTime       @default(now())
-  Badges             Badges[]
   organizationLogo   Organizations? @relation("logo")
   organizarionPermit Organizations? @relation("permit")
   userCv             Users?         @relation("cv")
@@ -204,10 +203,9 @@ model SkillCategories {
 
 model Badges {
   id          String          @id @default(uuid())
-  name        String
+  name        String          @unique
+  threshold   Int
   description String
-  imageFile   Files?          @relation(fields: [imageFileId], references: [id])
-  imageFileId String
   users       UsersToBadges[]
 }
 

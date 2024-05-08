@@ -125,7 +125,11 @@ export class UsersService {
           location: true,
           profilePicture: true,
           applications: true,
-          badges: true,
+          badges: {
+            include: {
+              badge: true,
+            },
+          },
           certificates: true,
           skills: {
             include: {
@@ -164,7 +168,11 @@ export class UsersService {
           location: true,
           profilePicture: true,
           applications: true,
-          badges: true,
+          badges: {
+            include: {
+              badge: true,
+            },
+          },
           certificates: true,
           skills: {
             include: {

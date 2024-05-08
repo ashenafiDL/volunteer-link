@@ -420,6 +420,121 @@ export class ProjectsService {
         for (const record of updatedProject.applications) {
           const { userId } = record;
 
+          const count = await this.prisma.users.findUnique({
+            where: {
+              id: userId,
+            },
+            select: {
+              _count: {
+                select: {
+                  applications: {
+                    where: {
+                      status: 'ACCEPTED',
+                      project: {
+                        status: 'DONE',
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          });
+
+          console.log(count, 'count');
+
+          // One fucking LONG and MESSY code lies here
+          try {
+            switch (true) {
+              case count._count.applications >= 5:
+                await this.prisma.usersToBadges.create({
+                  data: {
+                    user: {
+                      connect: {
+                        id: userId,
+                      },
+                    },
+                    badge: {
+                      connect: {
+                        name: 'Diamond',
+                      },
+                    },
+                  },
+                });
+                break;
+              case count._count.applications >= 10:
+                await this.prisma.usersToBadges.create({
+                  data: {
+                    user: {
+                      connect: {
+                        id: userId,
+                      },
+                    },
+                    badge: {
+                      connect: {
+                        name: 'Platinum',
+                      },
+                    },
+                  },
+                });
+                break;
+              case count._count.applications >= 20:
+                await this.prisma.usersToBadges.create({
+                  data: {
+                    user: {
+                      connect: {
+                        id: userId,
+                      },
+                    },
+                    badge: {
+                      connect: {
+                        name: 'Gold',
+                      },
+                    },
+                  },
+                });
+                break;
+              case count._count.applications >= 10:
+                await this.prisma.usersToBadges.create({
+                  data: {
+                    user: {
+                      connect: {
+                        id: userId,
+                      },
+                    },
+                    badge: {
+                      connect: {
+                        name: 'Silver',
+                      },
+                    },
+                  },
+                });
+                break;
+              case count._count.applications >= 5:
+                await this.prisma.usersToBadges.create({
+                  data: {
+                    user: {
+                      connect: {
+                        id: userId,
+                      },
+                    },
+                    badge: {
+                      connect: {
+                        name: 'Bronze',
+                      },
+                    },
+                  },
+                });
+                break;
+            }
+          } catch (error) {}
+        }
+      }
+
+      // If the project is "DONE", award appropriate badges to eligible users
+      if (updateProjectDto.status === 'DONE') {
+        for (const record of updatedProject.applications) {
+          const { userId } = record;
+
           await this.prisma.certificates.create({
             data: {
               userId: userId,
@@ -433,6 +548,8 @@ export class ProjectsService {
         message: 'Project successfully updated',
       };
     } catch (error) {
+      console.log(error);
+
       if (error instanceof NotFoundException) {
         return error;
       } else {

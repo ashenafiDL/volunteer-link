@@ -92,6 +92,46 @@ async function main() {
 
   logger.log(`Created ${skills_count} skills.`);
 
+  // Seed badges
+  const badgeData = [
+    {
+      name: 'Bronze',
+      threshold: 5,
+      description:
+        'Users who have contributed to at least 5 projects will be awarded the Bronze badge.',
+    },
+    {
+      name: 'Silver',
+      threshold: 10,
+      description:
+        'Users who have contributed to at least 10 projects will be awarded the Silver badge.',
+    },
+    {
+      name: 'Gold',
+      threshold: 20,
+      description:
+        'Users who have contributed to at least 20 projects will be awarded the Gold badge.',
+    },
+    {
+      name: 'Platinum',
+      threshold: 50,
+      description:
+        'Users who have contributed to at least 50 projects will be awarded the Platinum badge.',
+    },
+    {
+      name: 'Diamond',
+      threshold: 100,
+      description:
+        'Users who have contributed to at least 100 projects will be awarded the Diamond badge.',
+    },
+  ];
+
+  const badges = await prisma.badges.createMany({
+    data: badgeData,
+  });
+
+  logger.log(`Created ${badges.count} badges.`);
+
   logger.log('Seeded successfully');
 }
 
