@@ -86,6 +86,9 @@ export class UsersService {
             { platform: 'Website', url: null },
           ],
         },
+        include: {
+          role: true,
+        },
       });
 
       // Wait 15 minutes (900,000ms == 15m) and
@@ -314,6 +317,9 @@ export class UsersService {
         },
         data: {
           password: hashedPassword,
+        },
+        include: {
+          role: true,
         },
       });
 

@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './RBAC/roles.guard';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ApplicationsModule } from './applications/applications.module';
@@ -42,6 +44,14 @@ import { UsersService } from './users/users.service';
     CertificatesModule,
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService, UsersService],
+  providers: [
+    AppService,
+    PrismaService,
+    UsersService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}

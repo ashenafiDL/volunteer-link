@@ -9,6 +9,8 @@ import {
   Query,
   Req,
 } from '@nestjs/common';
+import { Role } from 'src/RBAC/role.enum';
+import { Roles } from 'src/RBAC/roles.decorator';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { AddSkillToProjectDto } from './dto/add-skill-to-project.dto';
 import { ApplyToProjectDto } from './dto/apply.dto';
@@ -59,6 +61,7 @@ export class ProjectsController {
     return this.projectsService.findOneById(id);
   }
 
+  @Roles(Role.User)
   @Post(':projectId/apply')
   apply(
     @Req() req,

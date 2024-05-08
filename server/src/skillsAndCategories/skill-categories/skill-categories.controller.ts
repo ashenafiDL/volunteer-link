@@ -8,6 +8,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Role } from 'src/RBAC/role.enum';
+import { Roles } from 'src/RBAC/roles.decorator';
 import { Public } from 'src/auth/decorators/public.decorator';
 import {
   ApiCreateSkillCategoryEndpoint,
@@ -28,6 +30,7 @@ export class SkillCategoriesController {
     private readonly skillCategoriesService: SkillCategoriesService,
   ) {}
 
+  @Roles(Role.Admin)
   @Post()
   @ApiCreateSkillCategoryEndpoint()
   create(@Body() createSkillCategoryDto: CreateSkillCategoryDto) {
@@ -55,6 +58,7 @@ export class SkillCategoriesController {
     return this.skillCategoriesService.findOneByName(name);
   }
 
+  @Roles(Role.Admin)
   @Patch(':id')
   @ApiUpdateSkillCategoryEndpoint()
   update(
@@ -64,6 +68,7 @@ export class SkillCategoriesController {
     return this.skillCategoriesService.update(id, updateSkillCategoryDto);
   }
 
+  @Roles(Role.Admin)
   @Delete(':id')
   @ApiRemoveSkillCategoryEndpoint()
   remove(@Param('id') id: string) {

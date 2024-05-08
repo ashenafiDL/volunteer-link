@@ -1,4 +1,6 @@
 import { Controller, Get, Param, Req } from '@nestjs/common';
+import { Role } from 'src/RBAC/role.enum';
+import { Roles } from 'src/RBAC/roles.decorator';
 import { ApplicationsService } from './applications.service';
 
 @Controller('applications')
@@ -12,6 +14,7 @@ export class ApplicationsController {
   }
 
   @Get('myApplications')
+  @Roles(Role.User)
   getMyApplications(@Req() req) {
     const userId = req.user.sub;
     return this.applicationsService.getMyApplications(userId);
@@ -23,11 +26,13 @@ export class ApplicationsController {
   }
 
   @Get('accept/:applicationId')
+  @Roles(Role.User)
   acceptApplication(@Param('applicationId') applicationId: string) {
     return this.applicationsService.acceptApplication(applicationId);
   }
 
   @Get('reject/:applicationId')
+  @Roles(Role.User)
   rejectApplication(@Param('applicationId') applicationId: string) {
     return this.applicationsService.rejectApplication(applicationId);
   }

@@ -440,8 +440,6 @@ export class ProjectsService {
             },
           });
 
-          console.log(count, 'count');
-
           // One fucking LONG and MESSY code lies here
           try {
             switch (true) {
@@ -548,8 +546,6 @@ export class ProjectsService {
         message: 'Project successfully updated',
       };
     } catch (error) {
-      console.log(error);
-
       if (error instanceof NotFoundException) {
         return error;
       } else {

@@ -8,6 +8,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Role } from 'src/RBAC/role.enum';
+import { Roles } from 'src/RBAC/roles.decorator';
 import { Public } from 'src/auth/decorators/public.decorator';
 import {
   ApiCreateSkillEndpoint,
@@ -26,6 +28,7 @@ import { SkillsService } from './skills.service';
 export class SkillsController {
   constructor(private readonly skillsService: SkillsService) {}
 
+  @Roles(Role.Admin)
   @Post()
   @ApiCreateSkillEndpoint()
   create(@Body() createSkillDto: CreateSkillDto) {
@@ -53,12 +56,14 @@ export class SkillsController {
     return this.skillsService.findOne(id);
   }
 
+  @Roles(Role.Admin)
   @Patch(':id')
   @ApiUpdateSkillEndpoint()
   update(@Param('id') id: string, @Body() updateSkillDto: UpdateSkillDto) {
     return this.skillsService.update(id, updateSkillDto);
   }
 
+  @Roles(Role.Admin)
   @Delete(':id')
   @ApiDeleteSkillEndpoint()
   remove(@Param('id') id: string) {

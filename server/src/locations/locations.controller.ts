@@ -8,6 +8,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Role } from 'src/RBAC/role.enum';
+import { Roles } from 'src/RBAC/roles.decorator';
 import { Public } from 'src/auth/decorators/public.decorator';
 import {
   ApiCreateLocationEndpoint,
@@ -28,6 +30,7 @@ export class LocationsController {
   constructor(private readonly locationsService: LocationsService) {}
 
   @Post()
+  @Roles(Role.Admin)
   @ApiCreateLocationEndpoint()
   create(@Body() createLocationDto: CreateLocationDto) {
     return this.locationsService.create(
@@ -64,6 +67,7 @@ export class LocationsController {
     return this.locationsService.findOneByShortCode(code);
   }
 
+  @Roles(Role.Admin)
   @Patch(':id')
   @ApiUpdateLocationEndpoint()
   update(
@@ -73,6 +77,7 @@ export class LocationsController {
     return this.locationsService.update(id, updateLocationDto);
   }
 
+  @Roles(Role.Admin)
   @Delete(':id')
   @ApiDeleteLocationEndpoint()
   remove(@Param('id') id: string) {

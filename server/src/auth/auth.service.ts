@@ -37,6 +37,7 @@ export class AuthService {
       const verificationCode = await this.generateEmailVerificationCode(
         newUser.id,
         newUser.email,
+        newUser.role.name,
       );
 
       // Try sending the email verification code. If it fails, delete the user
@@ -95,6 +96,7 @@ export class AuthService {
           return this.generateTokenAndUpdateUser({
             sub: user.id,
             email: user.email,
+            role: user.role.name,
           });
         } else {
           throw new Error();
@@ -132,6 +134,7 @@ export class AuthService {
       const payload = {
         sub: user.id,
         email: user.email,
+        role: user.role.name,
       };
 
       // Make the user active if it was deactivated
@@ -166,6 +169,7 @@ export class AuthService {
       const resetCode = await this.generatePasswordResetCode(
         user.id,
         user.email,
+        user.role.name,
       );
 
       return this.emailService.sendPasswordResetCode(
@@ -249,6 +253,7 @@ export class AuthService {
       return this.generateTokenAndUpdateUser({
         sub: updatedUser.id,
         email: updatedUser.email,
+        role: updatedUser.role.name,
       });
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -298,6 +303,7 @@ export class AuthService {
       return this.generateTokenAndUpdateUser({
         sub: updatedUser.id,
         email: updatedUser.email,
+        role: updatedUser.role.name,
       });
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -312,15 +318,24 @@ export class AuthService {
 
   // A helper function to generate a JWT token and update user information
   // the function returns user data without sensitive information
-  async generateTokenAndUpdateUser(payload: { sub: string; email: string }) {
+  async generateTokenAndUpdateUser(payload: {
+    sub: string;
+    email: string;
+    role: string;
+  }) {
     try {
-      const token = await this.jwtService.signAsync(payload);
+      const token = await this.jwtService.signAsync(payload, {
+        secret: process.env.JWT_SECRET,
+      });
 
       const updatedUser = await this.prisma.users.update({
         where: { id: payload.sub },
         data: {
           token: token,
           lastLoggedInAt: new Date(),
+        },
+        include: {
+          role: true,
         },
       });
 
@@ -336,7 +351,7 @@ export class AuthService {
   }
 
   // A helper function to generate a password reset code
-  async generatePasswordResetCode(userId: string, email: string) {
+  async generatePasswordResetCode(userId: string, email: string, role: string) {
     try {
       const resetCode = randomBytes(3).toString('hex');
 
@@ -344,6 +359,7 @@ export class AuthService {
         sub: userId,
         resetCode: resetCode,
         email: email,
+        role: role,
       };
 
       const token = await this.jwtService.signAsync(payload, {
@@ -367,7 +383,11 @@ export class AuthService {
   }
 
   // A helper function to generate a email verification code
-  async generateEmailVerificationCode(userId: string, email: string) {
+  async generateEmailVerificationCode(
+    userId: string,
+    email: string,
+    role: string,
+  ) {
     try {
       const verificationCode = randomBytes(3).toString('hex');
 
@@ -375,6 +395,7 @@ export class AuthService {
         sub: userId,
         verificationCode: verificationCode,
         email: email,
+        role: role,
       };
 
       const token = await this.jwtService.signAsync(payload, {
