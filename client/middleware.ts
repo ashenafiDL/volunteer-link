@@ -1,31 +1,56 @@
 import { NextRequest, NextResponse } from "next/server";
+import { verifyAuth } from "./app/lib/auth";
 
-export default function middleware(req: NextRequest) {
-  const isAuthenticated = !!req.cookies.get("token");
+export default async function middleware(req: NextRequest) {
+  const verifiedToken = await verifyAuth(req).catch((err) => {
+    console.error(err.message);
+  });
+
+  const userRole = verifiedToken?.role;
+
   const isAuthRoute =
     req.nextUrl.pathname.startsWith("/forgot-password") ||
     req.nextUrl.pathname.startsWith("/sign-in") ||
     req.nextUrl.pathname.startsWith("/sign-up");
+  const isAdminRoute = req.nextUrl.pathname.startsWith("/admin");
 
-  if (isAuthRoute) {
-    if (isAuthenticated) {
+  if (isAdminRoute) {
+    // Admin routes
+    if (userRole === "Admin") {
+      // Authorized admin, continue
+      return NextResponse.next();
+    } else {
+      // Unauthorized user, redirect to home
+      return NextResponse.redirect(new URL("/home", req.nextUrl.origin));
+    }
+  } else if (isAuthRoute) {
+    if (verifiedToken) {
+      // Authenticated user trying to access auth pages, redirect to home
       return NextResponse.redirect(new URL("/home", req.nextUrl.origin));
     } else {
       return NextResponse.next();
     }
   } else {
-    if (!isAuthenticated) {
+    // Other routes
+    if (verifiedToken) {
+      // Authenticated user, continue
+      return NextResponse.next();
+    } else {
+      // Unauthenticated user, redirect to /sign-in
       return NextResponse.redirect(new URL("/sign-in", req.nextUrl.origin));
     }
   }
-
-  if (!isAuthenticated) {
-    return NextResponse.redirect(new URL("/", req.nextUrl.origin));
-  }
-
-  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/forgot-password", "/sign-in", "/sign-up", "/home", "/v/:path*"],
+  matcher: [
+    "/home",
+    "/o/:path*",
+    "/projects/:path*",
+    "/v/:path*",
+    "/forgot-password",
+    "/sign-in",
+    "/sign-up",
+    "/admin/:path*",
+  ],
 };

@@ -40,7 +40,7 @@ export default function LogoAvatar({
     if (id !== undefined) {
       getAvatar();
     }
-  }, [id, org.logoId]);
+  }, [id, org?.logoId]);
 
   const sizeMap = {
     xs: 6,

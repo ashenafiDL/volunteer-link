@@ -81,8 +81,6 @@ export default function OrgProfileSidebar({
           `${process.env.NEXT_PUBLIC_API_URL}/organizations/${pathname.split("/")[2]}`,
         );
 
-        console.log(res, "res");
-
         if (res.status === 200) {
           setOrg(res.data);
         }

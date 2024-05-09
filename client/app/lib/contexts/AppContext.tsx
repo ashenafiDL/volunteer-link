@@ -52,7 +52,7 @@ export default function AppContext({
     setUser({});
     setOrg({});
     setIsLoggedIn(false);
-    router.replace("/");
+    router.replace("/sign-in");
   };
 
   const getUser = () => {
@@ -81,7 +81,6 @@ export default function AppContext({
   };
 
   useEffect(() => {
-    console.log("dddddddddd");
     getUser();
   }, [token]);
 

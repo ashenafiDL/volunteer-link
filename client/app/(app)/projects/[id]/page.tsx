@@ -48,7 +48,6 @@ export default function ProjectPage() {
         );
 
         if (res.status === 200) {
-          console.log(res, "ppppppppp");
           setParticipants(res.data);
         }
       } catch (error) {

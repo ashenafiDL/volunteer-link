@@ -43,8 +43,14 @@ export default function SignInForm() {
           setUser(res.data);
           setIsLoggedIn(true);
 
-          router.replace("/");
+          if (res.data.role.name === "Admin") {
+            router.replace("/admin/dashboard");
+          } else {
+            router.replace("/home");
+          }
         } catch (error: any) {
+          console.log("signin", error);
+
           const id = addAlert({
             severity: "error",
             message:

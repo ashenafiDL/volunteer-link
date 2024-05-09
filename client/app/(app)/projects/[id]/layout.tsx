@@ -65,8 +65,6 @@ export default function ProjectsLayout({
         }, 3000);
       }
     } catch (error: any) {
-      console.log("report", error);
-
       const id = addAlert({
         severity: "error",
         message:

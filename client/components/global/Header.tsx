@@ -86,8 +86,9 @@ export default function Header() {
               onClick={() => {
                 setDropdownHidden(!dropdownHidden);
               }}
-              className="cursor-pointer"
+              className="flex cursor-pointer flex-row items-center gap-4"
             >
+              <p className="text-xl text-primary-content">{`Hi, ${user.firstName} ${user.lastName}`}</p>
               <UserAvatar
                 email={user.email}
                 name={user.firstName}
