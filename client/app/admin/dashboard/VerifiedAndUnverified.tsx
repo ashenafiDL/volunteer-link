@@ -1,5 +1,7 @@
 "use client";
 
+import axios from "axios";
+import { useEffect, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -13,18 +15,22 @@ import {
 import ChartCard from "../components/ChartCard";
 
 export default function VerifiedAndUnverified() {
-  const data = [
-    {
-      name: "Users",
-      verified: 4000,
-      unverified: 2400,
-    },
-    {
-      name: "Org",
-      verified: 3000,
-      unverified: 1398,
-    },
-  ];
+  const [data, setData] = useState<any>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/stats/verifiedAndNotVerified`,
+      );
+
+      if (res.status === 200) {
+        setData(res.data);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <ChartCard title="Verified and Unverified">
       <ResponsiveContainer width="100%" height={300}>

@@ -1,5 +1,7 @@
 "use client";
 
+import axios from "axios";
+import { useEffect, useState } from "react";
 import {
   Cell,
   Legend,
@@ -10,27 +12,31 @@ import {
 } from "recharts";
 import ChartCard from "../components/ChartCard";
 
-const data01 = [
-  { name: "Male", value: 400 },
-  { name: "Female", value: 300 },
-];
-
-const data02 = [
-  { name: "18-34", value: 300 },
-  { name: "35-54", value: 6 },
-  { name: "55-74", value: 45 },
-  { name: "75-100", value: 400 },
-];
-
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 export default function AgeAndGenderPieChart() {
+  const [data, setData] = useState<any>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/stats/age-and-gender`,
+      );
+
+      if (res.status === 200) {
+        setData(res.data);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <ChartCard title="Age and Gender">
       <ResponsiveContainer width="100%" height={300}>
         <PieChart width={400} height={400}>
           <Pie
-            data={data01}
+            data={data && data.gender}
             dataKey="value"
             paddingAngle={5}
             innerRadius={"50%"}
@@ -41,15 +47,16 @@ export default function AgeAndGenderPieChart() {
             legendType="circle"
             label
           >
-            {data01.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
+            {data &&
+              data.gender.map((entry: any, index: number) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
           </Pie>
           <Pie
-            data={data02}
+            data={data && data.age}
             dataKey="value"
             innerRadius={"50%"}
             outerRadius={"80%"}
@@ -59,12 +66,13 @@ export default function AgeAndGenderPieChart() {
             paddingAngle={5}
             label
           >
-            {data02.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
+            {data &&
+              data.age.map((entry: any, index: number) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
           </Pie>
           <Legend layout="vertical" align="right" verticalAlign="middle" />
           <Tooltip

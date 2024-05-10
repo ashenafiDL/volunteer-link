@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -13,33 +14,22 @@ import {
 
 export default function ProjectBarChart() {
   const [selected, setSelected] = useState<"duration" | "location">("duration");
+  const [data, setData] = useState<Array<any>>();
 
-  const data = [
-    {
-      name: "Not Started",
-      shortTerm: 4000,
-      longTerm: 3456,
-      inPerson: 9876,
-      remote: 2400,
-      amt: 2400,
-    },
-    {
-      name: "Done",
-      shortTerm: 3000,
-      longTerm: 1398,
-      inPerson: 9878,
-      remote: 23,
-      amt: 2210,
-    },
-    {
-      name: "In Progress",
-      shortTerm: 2000,
-      longTerm: 9800,
-      inPerson: 8778,
-      remote: 557,
-      amt: 2290,
-    },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/stats/projectStat`,
+      );
+
+      if (res.status === 200) {
+        setData(res.data);
+        console.log("dddd", res.data);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="card rounded-md">
@@ -59,7 +49,7 @@ export default function ProjectBarChart() {
         </div>
 
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart width={500} height={300} data={data}>
+          <BarChart width={500} height={300} data={data && data}>
             <Tooltip
               cursor={{ fill: "#4E4E55" }}
               contentStyle={{ backgroundColor: "#3b3c3f", borderRadius: 5 }}

@@ -15,4 +15,22 @@ export class StatsController {
   getUserInfo() {
     return this.statsService.getSummary();
   }
+
+  @Public()
+  @Get('age-and-gender')
+  getAgeAndGenderCount() {
+    return this.statsService.getAgeAndGenderCount();
+  }
+
+  @Public()
+  @Get('projectStat')
+  getProjectStat() {
+    return this.statsService.projectStat();
+  }
+
+  @Public()
+  @Get('verifiedAndNotVerified')
+  verifiedAndNotVerified() {
+    return this.statsService.verifiedAndNotVerified();
+  }
 }

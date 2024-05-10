@@ -119,6 +119,7 @@ model Organizations {
   permit       Files?     @relation("permit", fields: [permitId], references: [id])
   permitId     String?    @unique
   verified     Boolean    @default(false)
+  createdAt    DateTime   @default(now())
   owner        Users?
   projects     Projects[]
 }
