@@ -65,10 +65,10 @@ export default function ReportsPage() {
   }, []);
 
   return (
-    <div className="overflow-x-auto">
+    <div className="space-y-3 overflow-x-auto">
       <div className="card-title">Reports</div>
 
-      <div className="my-3 grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7">
         <div className="card card-compact rounded-md bg-gradient-to-tl from-info/50 to-info/25 duration-300 hover:scale-[0.98]">
           <div className="card-body">
             <span className="font-bold">Fake</span>

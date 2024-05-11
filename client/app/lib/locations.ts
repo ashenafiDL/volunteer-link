@@ -6,14 +6,7 @@ export async function fetchLocations() {
 
     if (res.status === 200) {
       const data = res.data;
-
-      const sortedLocations = data.sort(
-        (a: { name: string }, b: { name: string }) => {
-          return a.name.localeCompare(b.name);
-        },
-      );
-
-      return sortedLocations;
+      return data;
     }
   } catch (error) {
     return null;

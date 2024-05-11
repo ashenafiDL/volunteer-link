@@ -42,7 +42,20 @@ export class LocationsService {
 
   async findAll() {
     try {
-      return await this.prisma.locations.findMany();
+      return await this.prisma.locations.findMany({
+        orderBy: {
+          name: 'asc',
+        },
+        include: {
+          _count: {
+            select: {
+              users: true,
+              projects: true,
+              organizations: true,
+            },
+          },
+        },
+      });
     } catch (error) {
       throw new InternalServerErrorException(
         'Failed to find all locations. Please try again later',
