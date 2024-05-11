@@ -63,7 +63,9 @@ export default function EditDetails() {
         name: org.name,
         mission: org.mission,
         aboutUs: org.aboutUs,
-        foundingDate: format(org.foundingDate, "yyy-MM-dd"),
+        foundingDate: org.foundingDate
+          ? format(org.foundingDate, "yyy-MM-dd")
+          : "",
       });
     }
   }, [org]);

@@ -85,7 +85,7 @@ export class OrganizationsService {
     try {
       const org = await this.prisma.organizations.findFirst({
         where: {
-          OR: [{ id: identifier }, { name: identifier }],
+          OR: [{ id: identifier }, { name: identifier }, { isActive: true }],
         },
         include: {
           location: true,
@@ -157,6 +157,23 @@ export class OrganizationsService {
           'Failed to update organization. Please try again.',
         );
       }
+    }
+  }
+
+  async findAll() {
+    try {
+      const organizations = await this.prisma.organizations.findMany({
+        orderBy: [{ verified: 'asc' }, { name: 'asc' }],
+        include: { location: true },
+      });
+
+      return organizations;
+    } catch (error) {
+      console.log(error);
+
+      throw new InternalServerErrorException(
+        'Failed to find all organizations. Please try again later',
+      );
     }
   }
 }

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsBoolean,
   IsDateString,
   IsEmail,
   IsOptional,
@@ -51,4 +52,12 @@ export class CreateOrganizationDto {
   @IsOptional()
   @ApiProperty({ description: 'The founding date of the organization' })
   foundingDate?: Date;
+
+  @IsOptional()
+  @IsBoolean()
+  verified: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  isActive: boolean;
 }

@@ -11,7 +11,6 @@ import {
   BiSolidDashboard,
 } from "react-icons/bi";
 import { FaProjectDiagram } from "react-icons/fa";
-import { GiSkills } from "react-icons/gi";
 import { HiMiniBuildingOffice } from "react-icons/hi2";
 import { IoLocationSharp } from "react-icons/io5";
 import { LuUsers } from "react-icons/lu";
@@ -51,11 +50,11 @@ export default function AdminPagesLayout({
       icon: <HiMiniBuildingOffice size={24} />,
       href: "/admin/organizations",
     },
-    {
-      label: "Skills & Categories",
-      icon: <GiSkills size={24} />,
-      href: "/admin/skills",
-    },
+    // {
+    //   label: "Skills & Categories",
+    //   icon: <GiSkills size={24} />,
+    //   href: "/admin/skills",
+    // },
     {
       label: "Locations",
       icon: <IoLocationSharp size={24} />,

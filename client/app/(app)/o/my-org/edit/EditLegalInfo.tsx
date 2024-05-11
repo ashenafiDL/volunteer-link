@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function EditLegalInfo() {
-  const { org, getOrg } = useAuthContext();
+  const { org, getUser } = useAuthContext();
   const { addAlert, dismissAlert } = useAlertsContext();
   const isClient = useIsClient();
   const [permit, setPermit] = useState<string | null>();
@@ -26,7 +26,7 @@ export default function EditLegalInfo() {
       );
 
       if (res.status === 201) {
-        await getOrg(org.id);
+        getUser();
         const id = addAlert({
           severity: "success",
           message: "Permit uploaded successfully",
