@@ -214,6 +214,96 @@ export class StatsService {
     } catch (error) {}
   }
 
+  async reportStats() {
+    try {
+      const fakeActive = await this.countReports('FAKE', true);
+      const fakeResolved = await this.countReports('FAKE', false);
+
+      const scamActive = await this.countReports('SCAM', true);
+      const scamResolved = await this.countReports('SCAM', false);
+
+      const contentActive = await this.countReports(
+        'INAPPROPRIATE_CONTENT',
+        true,
+      );
+      const contentResolved = await this.countReports(
+        'INAPPROPRIATE_CONTENT',
+        false,
+      );
+
+      const spamActive = await this.countReports('SPAM', true);
+      const spamResolved = await this.countReports('SPAM', false);
+
+      const impersonationActive = await this.countReports(
+        'IMPERSONATION',
+        true,
+      );
+      const impersonationResolved = await this.countReports(
+        'IMPERSONATION',
+        false,
+      );
+
+      const privacyActive = await this.countReports('PRIVACY_VIOLATION', true);
+      const privacyResolved = await this.countReports(
+        'PRIVACY_VIOLATION',
+        false,
+      );
+
+      const otherActive = await this.countReports('OTHER', true);
+      const otherResolved = await this.countReports('OTHER', false);
+
+      return {
+        fake: {
+          active: fakeActive,
+          resolved: fakeResolved,
+        },
+        scam: {
+          active: scamActive,
+          resolved: scamResolved,
+        },
+        inappropriate_content: {
+          active: contentActive,
+          resolved: contentResolved,
+        },
+        spam: {
+          active: spamActive,
+          resolved: spamResolved,
+        },
+        impersonation: {
+          active: impersonationActive,
+          resolved: impersonationResolved,
+        },
+        privacy: {
+          active: privacyActive,
+          resolved: privacyResolved,
+        },
+        other: {
+          active: otherActive,
+          resolved: otherResolved,
+        },
+      };
+    } catch (error) {}
+  }
+
+  async countReports(reason, isActive) {
+    const whereConditions = [];
+    whereConditions.push({ reason: reason });
+
+    if (isActive) {
+      whereConditions.push({ status: 'ACTIVE' });
+    } else {
+      whereConditions.push({ status: 'RESOLVED' });
+    }
+
+    const count = await this.prisma.reports.count({
+      where: {
+        AND: whereConditions,
+      },
+    });
+
+    return count;
+  }
+
   async countProjects(status, timeCommitment = null, locationId = null) {
     const whereConditions = [];
     whereConditions.push({ status: status });

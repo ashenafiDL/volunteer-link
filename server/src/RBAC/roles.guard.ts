@@ -39,7 +39,7 @@ export class RolesGuard implements CanActivate {
     return false;
   }
 
-  private checkRole(user: any, roles: string[]): boolean {
-    return roles.every((role) => user.role.name === role);
+  private checkRole(user: any, requiredRoles: string[]): boolean {
+    return requiredRoles.includes(user.role);
   }
 }

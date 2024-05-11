@@ -33,6 +33,11 @@ export default async function middleware(req: NextRequest) {
   } else {
     // Other routes
     if (verifiedToken) {
+      if (userRole === "Admin" && !isAdminRoute) {
+        return NextResponse.redirect(
+          new URL("/admin/dashboard", req.nextUrl.origin),
+        );
+      }
       // Authenticated user, continue
       return NextResponse.next();
     } else {

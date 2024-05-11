@@ -1,4 +1,6 @@
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Role } from 'src/RBAC/role.enum';
+import { Roles } from 'src/RBAC/roles.decorator';
 import { CreateReportDto } from './dto/create-report.dto';
 import { ReportsService } from './reports.service';
 
@@ -15,5 +17,13 @@ export class ReportsController {
   @Get()
   findAll() {
     return this.reportsService.findAll();
+  }
+
+  @Roles(Role.Admin)
+  @Post(':id/resolve')
+  resolveReport(@Param('id') id: string, @Req() req) {
+    console.log(req);
+
+    this.reportsService.resolveAReport(id);
   }
 }

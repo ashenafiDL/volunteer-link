@@ -70,13 +70,53 @@ export class ReportsService {
     }
   }
 
-  findAll() {
+  async findAll() {
     try {
-      return this.prisma.reports.findMany();
+      return await this.prisma.reports.findMany({
+        include: {
+          reporter: {
+            select: {
+              firstName: true,
+              lastName: true,
+            },
+          },
+        },
+        orderBy: [{ status: 'asc' }, { createdAt: 'asc' }],
+      });
     } catch (error) {
       throw new InternalServerErrorException(
         'Failed to find all reports. Please try again later',
       );
+    }
+  }
+
+  async resolveAReport(id: string) {
+    try {
+      // Check if the report exists
+      const report = await this.prisma.reports.findUnique({
+        where: { id },
+      });
+      if (!report) {
+        throw new NotFoundException('Report not found');
+      }
+
+      // Resolve Report
+      await this.prisma.reports.update({
+        where: { id },
+        data: {
+          status: 'RESOLVED',
+        },
+      });
+
+      return {
+        message: 'Resolved successful',
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException('Failed to resolve report');
+      }
     }
   }
 }

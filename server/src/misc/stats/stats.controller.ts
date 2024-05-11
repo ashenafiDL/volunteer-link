@@ -33,4 +33,10 @@ export class StatsController {
   verifiedAndNotVerified() {
     return this.statsService.verifiedAndNotVerified();
   }
+
+  @Public()
+  @Get('reportStat')
+  reportStat() {
+    return this.statsService.reportStats();
+  }
 }

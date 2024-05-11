@@ -10,6 +10,11 @@ import {
   BiDotsVerticalRounded,
   BiSolidDashboard,
 } from "react-icons/bi";
+import { FaProjectDiagram } from "react-icons/fa";
+import { GiSkills } from "react-icons/gi";
+import { HiMiniBuildingOffice } from "react-icons/hi2";
+import { IoLocationSharp } from "react-icons/io5";
+import { LuUsers } from "react-icons/lu";
 import { MdReport } from "react-icons/md";
 import { useAuthContext } from "../lib/contexts/AppContext";
 import { useIsClient } from "../lib/contexts/useIsClient";
@@ -38,33 +43,28 @@ export default function AdminPagesLayout({
     },
     {
       label: "Users",
-      icon: <MdReport size={24} />,
-      href: "/admin/reports",
+      icon: <LuUsers size={24} />,
+      href: "/admin/users",
     },
     {
       label: "Organizations",
-      icon: <MdReport size={24} />,
-      href: "/admin/reports",
+      icon: <HiMiniBuildingOffice size={24} />,
+      href: "/admin/organizations",
     },
     {
       label: "Skills & Categories",
-      icon: <MdReport size={24} />,
-      href: "/admin/reports",
+      icon: <GiSkills size={24} />,
+      href: "/admin/skills",
     },
     {
       label: "Locations",
-      icon: <MdReport size={24} />,
-      href: "/admin/reports",
+      icon: <IoLocationSharp size={24} />,
+      href: "/admin/locations",
     },
     {
       label: "Projects",
-      icon: <MdReport size={24} />,
-      href: "/admin/reports",
-    },
-    {
-      label: "Badges",
-      icon: <MdReport size={24} />,
-      href: "/admin/reports",
+      icon: <FaProjectDiagram size={24} />,
+      href: "/admin/projects",
     },
   ];
 
@@ -181,4 +181,3 @@ export default function AdminPagesLayout({
     </div>
   );
 }
-<input id="my-drawer-2" type="checkbox" className="drawer-toggle bg-red-600" />;
