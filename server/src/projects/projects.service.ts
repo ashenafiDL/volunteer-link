@@ -86,9 +86,16 @@ export class ProjectsService {
 
       const projects = await this.prisma.projects.findMany({
         where: {
-          createdAt: {
-            gte: cutoffDate,
-          },
+          AND: [
+            {
+              createdAt: {
+                gte: cutoffDate,
+              },
+            },
+            {
+              isActive: true,
+            },
+          ],
         },
         include: {
           location: true,
@@ -126,6 +133,7 @@ export class ProjectsService {
           AND: [
             { organizationId: organizationId },
             { status: { not: 'DONE' } },
+            { isActive: true },
           ],
         },
         include: {
@@ -166,7 +174,11 @@ export class ProjectsService {
       // Retrieve finished projects projects
       const projects = await this.prisma.projects.findMany({
         where: {
-          AND: [{ organizationId: organizationId }, { status: 'DONE' }],
+          AND: [
+            { organizationId: organizationId },
+            { status: 'DONE' },
+            { isActive: true },
+          ],
         },
       });
 
@@ -284,7 +296,7 @@ export class ProjectsService {
         },
       });
 
-      if (!project) {
+      if (!project || !project.isActive) {
         throw new NotFoundException(
           'Project with the specified ID was not found.',
         );

@@ -6,9 +6,13 @@ import {
   NotFoundException,
   Param,
   Patch,
+  Post,
   Req,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Role } from 'src/RBAC/role.enum';
+import { Roles } from 'src/RBAC/roles.decorator';
+import { CreateAdminDto } from 'src/auth/dto/create-admin.dto';
 import {
   ApiDeleteAccountEndpoint,
   ApiDeleteEducationEndpoint,
@@ -99,5 +103,26 @@ export class UserController {
   @Get(':userId/contributions')
   getContributions(@Param('userId') userId: string) {
     return this.userService.fetchContributions(userId);
+  }
+
+  @Roles(Role.Admin)
+  @Get()
+  getAll() {
+    return this.userService.findAll();
+  }
+
+  @Roles(Role.Admin)
+  @Patch(':id')
+  updateUserById(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.userService.updateUser(id, updateUserDto);
+  }
+
+  @Roles(Role.Admin)
+  @Post('register-admin')
+  registerAdmin(@Body() createAdminDto: CreateAdminDto) {
+    return this.userService.createAdmin(createAdminDto);
   }
 }

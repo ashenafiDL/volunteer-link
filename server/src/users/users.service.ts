@@ -117,6 +117,68 @@ export class UsersService {
     }
   }
 
+  async createAdmin(newAdmin: {
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+    password: string;
+  }) {
+    try {
+      // Check for username and email uniqueness
+      const existingEmail = await this.prisma.users.findFirst({
+        where: { email: newAdmin.email },
+      });
+
+      if (existingEmail) {
+        throw new ConflictException(
+          'There is already an account with that email',
+        );
+      }
+
+      const existingUsername = await this.prisma.users.findFirst({
+        where: { username: newAdmin.username },
+      });
+
+      if (existingUsername) {
+        throw new ConflictException(
+          'There is already a user with that username',
+        );
+      }
+
+      const adminRole = await this.prisma.roles.findFirst({
+        where: {
+          name: 'Admin',
+        },
+      });
+
+      // Encrypt the password
+      const hashedPassword = await bcrypt.hash(newAdmin.password, 10);
+      newAdmin.password = hashedPassword;
+
+      const createdUser = await this.prisma.users.create({
+        data: {
+          ...newAdmin,
+          roleId: adminRole.id,
+        },
+        include: {
+          role: true,
+        },
+      });
+
+      return createdUser;
+    } catch (error) {
+      if (
+        error instanceof ConflictException ||
+        error instanceof NotFoundException
+      ) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException('Failed to create a new user');
+      }
+    }
+  }
+
   async findOne(selector: string) {
     try {
       const user = await this.prisma.users.findFirst({
@@ -568,6 +630,22 @@ export class UsersService {
       } else {
         throw new InternalServerErrorException('Failed to fetch contributions');
       }
+    }
+  }
+
+  async findAll() {
+    try {
+      const users = await this.prisma.users.findMany({
+        include: {
+          role: true,
+          location: true,
+          organization: true,
+        },
+      });
+
+      return users;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to fetch users');
     }
   }
 

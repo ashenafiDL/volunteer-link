@@ -3,9 +3,11 @@ import { Gender, LocationPreference, TimePreference } from '@prisma/client';
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsBoolean,
   IsEmail,
   IsEnum,
   IsInt,
+  IsOptional,
   IsString,
   Min,
   ValidateNested,
@@ -112,4 +114,8 @@ export class UserDto {
   @ValidateNested({ each: true }) // Validate each element of the array
   @Type(() => EducationInfoDto) // Specify the type of each element
   education: EducationInfoDto[];
+
+  @IsOptional()
+  @IsBoolean()
+  isActive?: boolean;
 }

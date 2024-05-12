@@ -22,8 +22,8 @@ model Users {
   password               String?
   role                   Roles              @relation(fields: [roleId], references: [id])
   roleId                 String
-  location               Locations          @relation(fields: [locationId], references: [id])
-  locationId             String
+  location               Locations?         @relation(fields: [locationId], references: [id])
+  locationId             String?
   profilePicture         Files?             @relation("profilePic", fields: [profilePictureId], references: [id])
   profilePictureId       String?            @unique
   cv                     Files?             @relation("cv", fields: [cvId], references: [id])
