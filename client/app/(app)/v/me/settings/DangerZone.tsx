@@ -60,7 +60,7 @@ export default function DangerZone() {
   return (
     <div className="space-y-1">
       <p className="text-error">Danger Zone</p>
-      <div className="setting-item card rounded-md border border-error">
+      <div className="card rounded-md border border-error">
         <div className="card-body flex flex-col gap-4">
           <div className="flex flex-row items-center justify-between">
             <SettingItemText
