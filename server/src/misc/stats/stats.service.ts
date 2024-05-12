@@ -132,7 +132,7 @@ export class StatsService {
         null,
         'IN_PERSON',
       );
-      const remote1 = await this.countProjects('NOT_STARTED', null);
+      const remote1 = await this.countProjects('NOT_STARTED', null, 'REMOTE');
 
       res.push({
         name: 'Not Started',
@@ -149,7 +149,7 @@ export class StatsService {
         null,
         'IN_PERSON',
       );
-      const remote2 = await this.countProjects('IN_PROGRESS', null);
+      const remote2 = await this.countProjects('IN_PROGRESS', null, 'REMOTE');
 
       res.push({
         name: 'In Progress',
@@ -162,7 +162,7 @@ export class StatsService {
       const shortTerm3 = await this.countProjects('DONE', 'SHORT_TERM');
       const longTerm3 = await this.countProjects('DONE', 'LONG_TERM');
       const inPerson3 = await this.countProjects('DONE', null, 'IN_PERSON');
-      const remote3 = await this.countProjects('DONE', null);
+      const remote3 = await this.countProjects('DONE', null, 'REMOTE');
 
       res.push({
         name: 'Done',
@@ -173,7 +173,9 @@ export class StatsService {
       });
 
       return res;
-    } catch (error) {}
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to load data.');
+    }
   }
 
   async verifiedAndNotVerified() {
@@ -314,7 +316,7 @@ export class StatsService {
 
     if (locationId !== null && locationId === 'IN_PERSON') {
       whereConditions.push({ locationId: { not: null } });
-    } else {
+    } else if (locationId === 'REMOTE') {
       whereConditions.push({ locationId: null });
     }
 

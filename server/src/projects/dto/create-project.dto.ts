@@ -36,4 +36,8 @@ export class CreateProjectDto {
   @IsEnum(ProjectStatus)
   @IsOptional()
   status?: ProjectStatus;
+
+  @IsOptional()
+  @IsBoolean()
+  isActive?: boolean;
 }
