@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "axios";
+import axiosInstance from "@/app/axiosInstance";
 import { useEffect, useState } from "react";
 import {
   Bar,
@@ -19,7 +19,7 @@ export default function VerifiedAndUnverified() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get(
+      const res = await axiosInstance.get(
         `${process.env.NEXT_PUBLIC_API_URL}/stats/verifiedAndNotVerified`,
       );
 

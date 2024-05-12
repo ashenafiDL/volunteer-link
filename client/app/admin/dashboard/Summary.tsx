@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "axios";
+import axiosInstance from "@/app/axiosInstance";
 import { useEffect, useState } from "react";
 import { FaProjectDiagram } from "react-icons/fa";
 import { HiMiniBuildingLibrary } from "react-icons/hi2";
@@ -12,7 +12,7 @@ export default function Summary() {
 
   useEffect(() => {
     const fetchSummary = async () => {
-      const res = await axios.get(
+      const res = await axiosInstance.get(
         `${process.env.NEXT_PUBLIC_API_URL}/stats/summary`,
       );
 
