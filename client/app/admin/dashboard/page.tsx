@@ -1,5 +1,6 @@
 import AgePieChart from "./AgePieChart";
 import GenderPieChart from "./GenderPieChart";
+import PopularSkillsChart from "./PopularSkillsChart";
 import ProjectBarChart from "./ProjectBarChart";
 import Summary from "./Summary";
 import VerifiedAndUnverified from "./VerifiedAndUnverified";
@@ -21,6 +22,8 @@ export default function DashboardPage() {
         <div className="col-span-3">
           <ProjectBarChart />
         </div>
+
+        <PopularSkillsChart />
       </div>
     </div>
   );

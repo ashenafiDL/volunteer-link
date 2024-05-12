@@ -287,6 +287,32 @@ export class StatsService {
     } catch (error) {}
   }
 
+  async getPopularSkills() {
+    const skills = await this.prisma.skills.findMany({
+      select: {
+        id: true,
+        name: true,
+        _count: {
+          select: {
+            users: true,
+            projects: true,
+          },
+        },
+      },
+    });
+
+    // Sort skills based on usage (sum of users + projects)
+    const sortedSkills = skills.sort((a, b) => {
+      const aUsage = (a._count.users || 0) + (a._count.projects || 0);
+      const bUsage = (b._count.users || 0) + (b._count.projects || 0);
+      return bUsage - aUsage; // Sort in descending order
+    });
+
+    const filteredSkills = sortedSkills.slice(0, 10);
+
+    return filteredSkills;
+  }
+
   async countReports(reason, isActive) {
     const whereConditions = [];
     whereConditions.push({ reason: reason });
