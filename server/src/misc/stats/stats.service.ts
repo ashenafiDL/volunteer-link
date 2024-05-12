@@ -100,7 +100,7 @@ export class StatsService {
       const gender = [];
       for (const item of genderCount) {
         const bb = {
-          name: item.gender,
+          name: item.gender || 'N/A',
           value: item._count._all,
         };
 

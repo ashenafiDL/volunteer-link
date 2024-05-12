@@ -48,8 +48,8 @@ export default function ProjectBarChart() {
           </select>
         </div>
 
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart width={500} height={300} data={data && data}>
+        <ResponsiveContainer width="100%" height={250}>
+          <BarChart data={data && data}>
             <Tooltip
               cursor={{ fill: "#4E4E55" }}
               contentStyle={{ backgroundColor: "#3b3c3f", borderRadius: 5 }}

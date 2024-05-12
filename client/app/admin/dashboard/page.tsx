@@ -1,4 +1,5 @@
-import AgeAndGenderPieChart from "./AgeAndGenderPieChart";
+import AgePieChart from "./AgePieChart";
+import GenderPieChart from "./GenderPieChart";
 import ProjectBarChart from "./ProjectBarChart";
 import Summary from "./Summary";
 import VerifiedAndUnverified from "./VerifiedAndUnverified";
@@ -8,12 +9,18 @@ export default function DashboardPage() {
     <div className="space-y-3">
       <Summary />
 
-      <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
-        <AgeAndGenderPieChart />
+      <div className="grid grid-cols-1 gap-3 xl:grid-cols-4">
+        <AgePieChart />
 
-        <ProjectBarChart />
+        <GenderPieChart />
 
-        <VerifiedAndUnverified />
+        <div className="col-span-2">
+          <VerifiedAndUnverified />
+        </div>
+
+        <div className="col-span-3">
+          <ProjectBarChart />
+        </div>
       </div>
     </div>
   );

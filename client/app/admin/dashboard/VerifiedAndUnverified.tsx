@@ -33,8 +33,8 @@ export default function VerifiedAndUnverified() {
 
   return (
     <ChartCard title="Verified and Unverified">
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart width={500} height={300} layout="vertical" data={data}>
+      <ResponsiveContainer width="100%" height={250}>
+        <BarChart layout="vertical" data={data}>
           <Tooltip
             cursor={{ fill: "#4E4E55" }}
             contentStyle={{ backgroundColor: "#3b3c3f", borderRadius: 5 }}
