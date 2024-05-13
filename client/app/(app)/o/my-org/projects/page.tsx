@@ -29,7 +29,7 @@ export default function Projects() {
   const [finishedProjects, setFinishedProjects] = useState<any>();
   const isClient = useIsClient();
   const { addAlert, dismissAlert } = useAlertsContext();
-  const { org, getOrg } = useAuthContext();
+  const { org, getUser } = useAuthContext();
 
   const handleSubmit = async (values: any) => {
     // Calculate the duration in days and set the time commitment
@@ -53,7 +53,7 @@ export default function Projects() {
       );
 
       if (res.status === 201) {
-        await getOrg(org.id);
+        getUser();
         const id = addAlert({
           severity: "success",
           message: "Project created successfully",
