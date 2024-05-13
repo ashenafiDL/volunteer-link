@@ -7,7 +7,7 @@ import { useIsClient } from "@/app/lib/contexts/useIsClient";
 import LogoAvatar from "@/components/global/LogoAvatar";
 
 export default function EditLogo() {
-  const { org, getOrg, setOrg } = useAuthContext();
+  const { org, getUser } = useAuthContext();
   const { addAlert, dismissAlert } = useAlertsContext();
   const isClient = useIsClient();
 
@@ -24,7 +24,7 @@ export default function EditLogo() {
       );
 
       if (res.status === 201) {
-        await getOrg(org.id);
+        getUser();
       }
     } catch (error: any) {
       const id = addAlert({
@@ -46,7 +46,7 @@ export default function EditLogo() {
       );
 
       if (res.status === 200) {
-        await getOrg(org.id);
+        getUser();
       }
     } catch (error: any) {
       const id = addAlert({

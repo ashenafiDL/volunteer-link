@@ -31,6 +31,7 @@ To get started with VolunteerLink, follow the installation steps outlined below.
 ## Installation
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/ashenafiDL/volunteer-link.git
    ```
@@ -45,16 +46,35 @@ To get started with VolunteerLink, follow the installation steps outlined below.
    npm install
    ```
 
-3. **Set up environmental variables according to `.env.example` files:**
+3. **Set up environmental variables according to `.env.example` files both inside `client` and `server` folders**
 
-4. **Start the server:**
+4. **Apply database migrations in server folder**
 
    ```bash
    cd server
-   npm run start:dev
+   npx prisma migrate dev
+   ```
+
+5. **Add initial seed data:**
+
+   ```bash
+   npx prisma migrate reset # This will remove the existing data from the database
+   ```
+
+   ```bash
+   npx prisma db seed # Use this as alternative
+   ```
+
+6. **Start the server:**
+
+   ```bash
+   cd server
+   npm run start:dev # For development server
+   npm run start:prod # For production server
 
    cd client
-   npm run dev
+   npm run dev # For development build
+   npm run build # For production build
    ```
 
 ## Usage
