@@ -4,11 +4,11 @@ import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import "@/app/styles.css";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, Suspense, useCallback, useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import ProjectList from "./components/ProjectList";
 
-export default function HomePage() {
+function Home() {
   const { user } = useAuthContext();
   const [projects, setProjects] = useState<any>();
   const [range, setRange] = useState([0, 10]);
@@ -318,5 +318,13 @@ export default function HomePage() {
         </>
       </div>
     </div>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <Suspense>
+      <Home />
+    </Suspense>
   );
 }

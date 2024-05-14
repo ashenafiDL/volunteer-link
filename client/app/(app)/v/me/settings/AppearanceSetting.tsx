@@ -3,7 +3,6 @@
 import Toggle from "@/components/global/Toggle";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import "tailwindcss/tailwind.css";
 import SettingItemText from "../../components/SettingItemText";
 
 export default function AppearanceSetting() {

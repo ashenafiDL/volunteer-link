@@ -2,17 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyAuth } from "./app/lib/auth";
 
 export default async function middleware(req: NextRequest) {
-  const verifiedToken = await verifyAuth(req).catch((err) => {
-    console.error(err.message);
-  });
-
-  const userRole = verifiedToken?.role;
-
   const isAuthRoute =
     req.nextUrl.pathname.startsWith("/forgot-password") ||
     req.nextUrl.pathname.startsWith("/sign-in") ||
     req.nextUrl.pathname.startsWith("/sign-up");
   const isAdminRoute = req.nextUrl.pathname.startsWith("/admin");
+
+  let userRole;
+  let verifiedToken;
+  if (!isAuthRoute) {
+    verifiedToken = await verifyAuth(req).catch((err) => {
+      console.error(err.message);
+    });
+
+    userRole = verifiedToken?.role;
+  }
 
   if (isAdminRoute) {
     // Admin routes
