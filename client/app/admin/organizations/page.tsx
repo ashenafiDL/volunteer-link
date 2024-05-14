@@ -108,7 +108,7 @@ export default function OrganizationsPage() {
             </tr>
           </thead>
           <tbody>
-            {orgs && orgs.length >= 0 && (
+            {orgs && orgs.length > 0 ? (
               <>
                 {orgs.map((org, index) => {
                   return (
@@ -183,6 +183,10 @@ export default function OrganizationsPage() {
                   );
                 })}
               </>
+            ) : (
+              <tr className="text-center italic">
+                <td colSpan={11}>There are no organization data</td>
+              </tr>
             )}
           </tbody>
         </table>

@@ -165,7 +165,7 @@ export default function LocationsPage() {
             </tr>
           </thead>
           <tbody>
-            {locations && locations.length >= 0 && (
+            {locations && locations.length > 0 ? (
               <>
                 {locations.map((location, index) => {
                   return (
@@ -204,6 +204,10 @@ export default function LocationsPage() {
                   );
                 })}
               </>
+            ) : (
+              <tr className="text-center italic">
+                <td colSpan={6}>There are no location data</td>
+              </tr>
             )}
           </tbody>
         </table>

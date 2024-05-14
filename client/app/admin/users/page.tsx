@@ -135,7 +135,7 @@ export default function UsersPage() {
             </tr>
           </thead>
           <tbody>
-            {users && users.length >= 0 && (
+            {users && users.length > 0 ? (
               <>
                 {users.map((user, index) => {
                   return (
@@ -193,6 +193,10 @@ export default function UsersPage() {
                   );
                 })}
               </>
+            ) : (
+              <tr className="text-center italic">
+                <td colSpan={14}>There are no users data</td>
+              </tr>
             )}
           </tbody>
         </table>

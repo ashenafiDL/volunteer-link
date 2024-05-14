@@ -128,7 +128,7 @@ export default function ReportsPage() {
           </tr>
         </thead>
         <tbody>
-          {reports && reports.length >= 0 && (
+          {reports && reports.length > 0 ? (
             <>
               {reports.map((report, index) => {
                 return (
@@ -158,6 +158,10 @@ export default function ReportsPage() {
                 );
               })}
             </>
+          ) : (
+            <tr className="text-center italic">
+              <td colSpan={7}>There are no reports data</td>
+            </tr>
           )}
         </tbody>
       </table>

@@ -74,7 +74,7 @@ export default function ProjectsPage() {
           </tr>
         </thead>
         <tbody>
-          {projects && projects.length >= 0 && (
+          {projects && projects.length > 0 ? (
             <>
               {projects.map((project, index) => {
                 return (
@@ -114,6 +114,10 @@ export default function ProjectsPage() {
                 );
               })}
             </>
+          ) : (
+            <tr className="text-center italic">
+              <td colSpan={10}>There are no projects data</td>
+            </tr>
           )}
         </tbody>
       </table>
