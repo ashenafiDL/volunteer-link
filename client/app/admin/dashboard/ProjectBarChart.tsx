@@ -40,7 +40,7 @@ export default function ProjectBarChart() {
           <select
             className="select"
             onChange={(e) =>
-              setSelected(e.target.value as "duration" | "location")
+              setSelected(e && (e.target.value as "duration" | "location"))
             }
           >
             <option value="duration">By project duration</option>

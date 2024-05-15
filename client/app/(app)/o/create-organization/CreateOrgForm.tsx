@@ -192,7 +192,7 @@ export default function CreateOrgForm({ locations }: { locations: any }) {
         )}
       </Formik>
 
-      {/* Delete account modal */}
+      {/* Confirm creation modal */}
       <dialog id="confirm_creation_dialog" className="modal">
         <div className="prose modal-box rounded-md lg:prose-lg">
           <h3>Confirm</h3>

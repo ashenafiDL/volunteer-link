@@ -216,112 +216,7 @@ export default function EditEducationInfo() {
               handleSave(values);
             }}
           >
-            <Form>
-              <TextInput
-                label="Field"
-                props={{
-                  name: "field",
-                  id: "field",
-                  type: "text",
-                  placeholder: "What field did you study?",
-                }}
-              />
-
-              <TextInput
-                label="School/Institute name"
-                props={{
-                  name: "institute",
-                  id: "institute",
-                  type: "text",
-                  placeholder: "Where did you study?",
-                }}
-              />
-
-              <div className="flex flex-row gap-4">
-                <TextInput
-                  label="Start Date"
-                  props={{
-                    name: "startDate",
-                    id: "startDate",
-                    type: "date",
-                  }}
-                />
-
-                <div className="flex w-1/2 flex-col">
-                  <TextInput
-                    label="End Date"
-                    props={{
-                      name: "endDate",
-                      id: "endDate",
-                      type: "date",
-                    }}
-                  />
-
-                  <TextInput
-                    label="Still studying?"
-                    props={{
-                      name: "stillStudying",
-                      type: "checkbox",
-                    }}
-                  />
-                </div>
-              </div>
-
-              <TextAreaInput
-                label="Description"
-                props={{
-                  name: "description",
-                  id: "description",
-                  rows: 5,
-                  maxLength: 500,
-                  placeholder: "Tell us a little about your education",
-                }}
-              />
-
-              <div className="modal-action mt-5 flex flex-row justify-end gap-4">
-                <div onClick={() => closeModal("add_education_info_modal")}>
-                  <button type="reset" className="btn btn-outline">
-                    Cancel
-                  </button>
-                </div>
-                <div>
-                  <button type="submit" className="btn btn-success">
-                    Save
-                  </button>
-                </div>
-              </div>
-            </Form>
-          </Formik>
-        </div>
-      </dialog>
-
-      {/* Edit education info modal */}
-      <dialog id="edit_education_info_modal" className="modal">
-        <div className="prose modal-box rounded-md lg:prose-lg">
-          <h3>Edit Education Info</h3>
-
-          {currentEditing && (
-            <Formik
-              initialValues={{
-                field: currentEditing?.field,
-                institute: currentEditing?.institute,
-                startDate: formatDate(currentEditing?.startDate),
-                endDate: formatDate(currentEditing?.endDate),
-                stillStudying: false,
-                description: currentEditing?.description,
-              }}
-              validationSchema={Yup.object({
-                field: fieldNameValidation,
-                institute: instituteValidation,
-                startDate: startDateValidation,
-                endDate: endDateValidation,
-                stillStudying: Yup.boolean(),
-                description: descriptionValidation,
-              })}
-              onSubmit={(values) => {
-                handleUpdate(values);
-              }}
-            >
+            {({ isSubmitting }) => (
               <Form>
                 <TextInput
                   label="Field"
@@ -385,23 +280,148 @@ export default function EditEducationInfo() {
                 />
 
                 <div className="modal-action mt-5 flex flex-row justify-end gap-4">
-                  <div
-                    onClick={() => {
-                      setCurrentEditing(null);
-                      closeModal("edit_education_info_modal");
-                    }}
-                  >
-                    <button type="reset" className="btn btn-outline">
+                  <div onClick={() => closeModal("add_education_info_modal")}>
+                    <button
+                      disabled={isSubmitting}
+                      type="reset"
+                      className="btn btn-outline"
+                    >
                       Cancel
                     </button>
                   </div>
                   <div>
-                    <button type="submit" className="btn btn-success">
-                      Update
+                    <button
+                      disabled={isSubmitting}
+                      type="submit"
+                      className="btn btn-success"
+                    >
+                      Save
                     </button>
                   </div>
                 </div>
               </Form>
+            )}
+          </Formik>
+        </div>
+      </dialog>
+
+      {/* Edit education info modal */}
+      <dialog id="edit_education_info_modal" className="modal">
+        <div className="prose modal-box rounded-md lg:prose-lg">
+          <h3>Edit Education Info</h3>
+
+          {currentEditing && (
+            <Formik
+              initialValues={{
+                field: currentEditing?.field,
+                institute: currentEditing?.institute,
+                startDate: formatDate(currentEditing?.startDate),
+                endDate: formatDate(currentEditing?.endDate),
+                stillStudying: false,
+                description: currentEditing?.description,
+              }}
+              validationSchema={Yup.object({
+                field: fieldNameValidation,
+                institute: instituteValidation,
+                startDate: startDateValidation,
+                endDate: endDateValidation,
+                stillStudying: Yup.boolean(),
+                description: descriptionValidation,
+              })}
+              onSubmit={(values) => {
+                handleUpdate(values);
+              }}
+            >
+              {({ isSubmitting }) => (
+                <Form>
+                  <TextInput
+                    label="Field"
+                    props={{
+                      name: "field",
+                      id: "field",
+                      type: "text",
+                      placeholder: "What field did you study?",
+                    }}
+                  />
+
+                  <TextInput
+                    label="School/Institute name"
+                    props={{
+                      name: "institute",
+                      id: "institute",
+                      type: "text",
+                      placeholder: "Where did you study?",
+                    }}
+                  />
+
+                  <div className="flex flex-row gap-4">
+                    <TextInput
+                      label="Start Date"
+                      props={{
+                        name: "startDate",
+                        id: "startDate",
+                        type: "date",
+                      }}
+                    />
+
+                    <div className="flex w-1/2 flex-col">
+                      <TextInput
+                        label="End Date"
+                        props={{
+                          name: "endDate",
+                          id: "endDate",
+                          type: "date",
+                        }}
+                      />
+
+                      <TextInput
+                        label="Still studying?"
+                        props={{
+                          name: "stillStudying",
+                          type: "checkbox",
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <TextAreaInput
+                    label="Description"
+                    props={{
+                      name: "description",
+                      id: "description",
+                      rows: 5,
+                      maxLength: 500,
+                      placeholder: "Tell us a little about your education",
+                    }}
+                  />
+
+                  <div className="modal-action mt-5 flex flex-row justify-end gap-4">
+                    <div
+                      onClick={() => {
+                        setCurrentEditing(null);
+                        closeModal("edit_education_info_modal");
+                      }}
+                    >
+                      <button
+                        disabled={isSubmitting}
+                        type="reset"
+                        className="btn btn-outline"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        disabled={isSubmitting}
+                        type="submit"
+                        className="btn btn-success"
+                      >
+                        Update
+                      </button>
+                    </div>
+                  </div>
+                </Form>
+              )}
             </Formik>
           )}
         </div>

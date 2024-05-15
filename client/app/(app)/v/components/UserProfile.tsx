@@ -141,55 +141,62 @@ export default function UserProfile({
               handleReport(values);
             }}
           >
-            <Form>
-              <SelectInput
-                label="Reason"
-                props={{
-                  name: "reason",
-                }}
-              >
-                <option value="">Select reason</option>
-                {REPORT_REASONS.map((reason) => (
-                  <option key={reason} value={reason}>
-                    {reason}
-                  </option>
-                ))}
-              </SelectInput>
+            {({ isSubmitting }) => (
+              <Form>
+                <SelectInput
+                  label="Reason"
+                  props={{
+                    name: "reason",
+                  }}
+                >
+                  <option value="">Select reason</option>
+                  {REPORT_REASONS.map((reason) => (
+                    <option key={reason} value={reason}>
+                      {reason}
+                    </option>
+                  ))}
+                </SelectInput>
 
-              <TextAreaInput
-                label="Description"
-                props={{
-                  name: "description",
-                  id: "description",
-                  rows: 5,
-                  maxLength: 500,
-                  placeholder: "Any additional information you want to add?",
-                }}
-              />
+                <TextAreaInput
+                  label="Description"
+                  props={{
+                    name: "description",
+                    id: "description",
+                    rows: 5,
+                    maxLength: 500,
+                    placeholder: "Any additional information you want to add?",
+                  }}
+                />
 
-              <div className="modal-action mt-5 flex flex-row justify-end gap-4">
-                <div>
-                  <button
-                    type="reset"
-                    className="btn btn-outline"
-                    onClick={() => {
-                      (
-                        document.getElementById(
-                          "report_user_modal",
-                        ) as HTMLDialogElement
-                      ).close();
-                    }}
-                  >
-                    Cancel
-                  </button>
+                <div className="modal-action mt-5 flex flex-row justify-end gap-4">
+                  <div>
+                    <button
+                      disabled={isSubmitting}
+                      type="reset"
+                      className="btn btn-outline"
+                      onClick={() => {
+                        (
+                          document.getElementById(
+                            "report_user_modal",
+                          ) as HTMLDialogElement
+                        ).close();
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      disabled={isSubmitting}
+                      type="submit"
+                      className="btn btn-primary"
+                    >
+                      Report
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <button type="submit" className="btn btn-primary">
-                    Report
-                  </button>
-                </div>
-              </div>
-            </Form>
+              </Form>
+            )}
           </Formik>
         </div>
       </dialog>

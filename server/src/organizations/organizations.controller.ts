@@ -1,6 +1,4 @@
 import { Body, Controller, Get, Param, Patch, Post, Req } from '@nestjs/common';
-import { Role } from 'src/RBAC/role.enum';
-import { Roles } from 'src/RBAC/roles.decorator';
 import { Public } from 'src/auth/decorators/public.decorator';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
@@ -10,7 +8,6 @@ import { OrganizationsService } from './organizations.service';
 export class OrganizationsController {
   constructor(private readonly organizationsService: OrganizationsService) {}
 
-  @Roles(Role.User)
   @Post()
   create(
     @Req() req: Request,

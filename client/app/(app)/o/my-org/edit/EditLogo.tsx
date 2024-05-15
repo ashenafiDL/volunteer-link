@@ -15,7 +15,7 @@ export default function EditLogo() {
     try {
       const res = await axiosInstance.post(
         `${process.env.NEXT_PUBLIC_API_URL}/files/logo/update/${org?.id}`,
-        { logo: e.target.files[0] },
+        { logo: e && e.target.files[0] },
         {
           headers: {
             "Content-Type": "multipart/form-data",

@@ -17,7 +17,7 @@ export default function EditCV() {
     try {
       const res = await axiosInstance.post(
         `${process.env.NEXT_PUBLIC_API_URL}/files/uploadCV/${user?.id}`,
-        { cv: e.target.files[0] },
+        { cv: e && e.target.files[0] },
         {
           headers: {
             "Content-Type": "multipart/form-data",

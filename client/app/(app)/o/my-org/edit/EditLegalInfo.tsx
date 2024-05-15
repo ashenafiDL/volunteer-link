@@ -17,7 +17,7 @@ export default function EditLegalInfo() {
     try {
       const res = await axiosInstance.post(
         `${process.env.NEXT_PUBLIC_API_URL}/files/uploadPermit/${org?.id}`,
-        { permit: e.target.files[0] },
+        { permit: e && e.target.files[0] },
         {
           headers: {
             "Content-Type": "multipart/form-data",

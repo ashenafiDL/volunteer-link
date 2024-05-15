@@ -181,7 +181,7 @@ function Home() {
               <div
                 className="flex flex-col"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  handleLocationFilterChange(e.target.value);
+                  handleLocationFilterChange(e && e.target.value);
                 }}
               >
                 {locationOptions.map((option, index) => (
@@ -213,7 +213,7 @@ function Home() {
               <div
                 className="flex flex-col"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  handleTimeFilterChange(e.target.value);
+                  handleTimeFilterChange(e && e.target.value);
                 }}
               >
                 {timePreferenceOptions.map((option, index) => (
@@ -243,7 +243,7 @@ function Home() {
               <div
                 className="flex flex-col"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  handleProjectStatusChange(e.target.value);
+                  handleProjectStatusChange(e && e.target.value);
                 }}
               >
                 {projectStatusOptions.map((option, index) => (
@@ -276,7 +276,7 @@ function Home() {
           placeholder="Search by project title, description or organization name"
           className="input input-bordered w-full"
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            handleQueryChange(e.target.value);
+            handleQueryChange(e && e.target.value);
           }}
         />
 

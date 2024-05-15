@@ -19,7 +19,7 @@ export default function EditSkills() {
 
   // Update the search query after 300ms of inactivity in the search input
   const handleChange = useDebouncedCallback((e: any) => {
-    setSearchQuery(e.target.value);
+    setSearchQuery(e && e.target.value);
   }, 300);
 
   // Update the user skill set when the user clicks on an option
@@ -160,49 +160,45 @@ export default function EditSkills() {
               }}
               onSubmit={() => {}}
             >
-              {({ isSubmitting }) => (
-                <Form>
-                  <TextInput
-                    label="Add Skill"
-                    props={{
-                      name: "add skill",
-                      type: "search",
-                      autoComplete: undefined,
-                      placeholder: "Search for skills...",
-                    }}
-                    onChange={handleChange}
-                  />
-                  <ul className="max-h-56 space-y-2 overflow-y-scroll p-2 shadow-xl">
-                    {skills && skills.length > 0
-                      ? skills.map((skill: any, index: number) => (
-                          <li
-                            key={index}
-                            className={clsx(
-                              "cursor-pointer rounded px-3 py-4 hover:bg-neutral/50 hover:text-neutral-content",
-                              index === 0 && "pt-0",
-                              index === skills.length - 1 && "pb-0",
-                            )}
-                            onClick={() => handleSelect(skill.id)}
-                          >
-                            <div>
-                              <span className="personal-info-value">
-                                {skill.name}
-                              </span>
-                              <div className="badge badge-primary mx-2">
-                                {skill.category.name}
-                              </div>
+              <Form>
+                <TextInput
+                  label="Add Skill"
+                  props={{
+                    name: "add skill",
+                    type: "search",
+                    autoComplete: undefined,
+                    placeholder: "Search for skills...",
+                  }}
+                  onChange={handleChange}
+                />
+                <ul className="max-h-56 space-y-2 overflow-y-scroll p-2 shadow-xl">
+                  {skills && skills.length > 0
+                    ? skills.map((skill: any, index: number) => (
+                        <li
+                          key={index}
+                          className={clsx(
+                            "cursor-pointer rounded px-3 py-4 hover:bg-neutral/50 hover:text-neutral-content",
+                            index === 0 && "pt-0",
+                            index === skills.length - 1 && "pb-0",
+                          )}
+                          onClick={() => handleSelect(skill.id)}
+                        >
+                          <div>
+                            <span className="personal-info-value">
+                              {skill.name}
+                            </span>
+                            <div className="badge badge-primary mx-2">
+                              {skill.category.name}
                             </div>
-                            <p className="line-clamp-2 font-light">
-                              {skill.description}
-                            </p>
-                          </li>
-                        ))
-                      : searchQuery && (
-                          <div className="p-2">No skills found</div>
-                        )}
-                  </ul>
-                </Form>
-              )}
+                          </div>
+                          <p className="line-clamp-2 font-light">
+                            {skill.description}
+                          </p>
+                        </li>
+                      ))
+                    : searchQuery && <div className="p-2">No skills found</div>}
+                </ul>
+              </Form>
             </Formik>
           </div>
         </div>

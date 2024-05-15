@@ -16,7 +16,7 @@ export default function EditAvatar() {
     try {
       const res = await axiosInstance.post(
         `${process.env.NEXT_PUBLIC_API_URL}/files/profilePic/update`,
-        { file: e.target.files[0], email: user?.email },
+        { file: e && e.target.files[0], email: user?.email },
         {
           headers: {
             "Content-Type": "multipart/form-data",

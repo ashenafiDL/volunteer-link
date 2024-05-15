@@ -23,7 +23,7 @@ export default function VerifyEmail({ email }: { email: string | null }) {
     index: number,
     e: ChangeEvent<HTMLInputElement>,
   ) => {
-    const input = e.target;
+    const input = e && e.target;
     const value = input.value;
 
     // If the input is filled and not the last one
@@ -33,7 +33,7 @@ export default function VerifyEmail({ email }: { email: string | null }) {
   };
 
   const handleBackspace = (index: number, e: KeyboardEvent) => {
-    const input = e.target as HTMLInputElement;
+    const input = e && (e.target as HTMLInputElement);
     const value = input.value;
 
     // If the input is empty and not the first one
