@@ -25,9 +25,6 @@ export default function Header() {
         >
           <ul className="flex w-full flex-col text-lg md:p-4 lg:flex-row lg:items-center lg:gap-8 lg:p-0 [&>li]:py-4">
             <li>
-              <Link href="/about-us">About Us</Link>
-            </li>
-            <li>
               <Link href="/contact-us">Contact Us</Link>
             </li>
             <li>
