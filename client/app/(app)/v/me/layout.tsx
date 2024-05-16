@@ -32,19 +32,21 @@ export default function SidebarLayout({
       {/* Sidebar */}
       <div className="layout-left-child">
         <div>
-          <UserProfile
-            firstName={user.firstName}
-            lastName={user.lastName}
-            username={user.username}
-            email={user.email}
-            createdAt={user.createdAt}
-            ownProfile={true}
-            badge={
-              user.badges &&
-              user.badges.length > 0 &&
-              user.badges[user.badges.length - 1]
-            }
-          />
+          {user && (
+            <UserProfile
+              firstName={user.firstName}
+              lastName={user.lastName}
+              username={user.username}
+              email={user.email}
+              createdAt={user.createdAt}
+              ownProfile={true}
+              badge={
+                user.badges &&
+                user.badges.length > 0 &&
+                user.badges[user.badges.length - 1]
+              }
+            />
+          )}
 
           {hasSocialLinks && <SocialLinks socialLinks={user.socialLinks} />}
         </div>

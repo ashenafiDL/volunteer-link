@@ -22,6 +22,7 @@ import { ProjectsService } from './projects.service';
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
+  @Roles(Role.Volunteer)
   @Post()
   create(@Body() createProjectDto: CreateProjectDto) {
     return this.projectsService.create(createProjectDto);
@@ -61,7 +62,7 @@ export class ProjectsController {
     return this.projectsService.findOneById(id);
   }
 
-  @Roles(Role.User)
+  @Roles(Role.Volunteer)
   @Post(':projectId/apply')
   apply(
     @Req() req,
@@ -84,6 +85,7 @@ export class ProjectsController {
     return this.projectsService.update(projectId, updateProjectDto);
   }
 
+  @Roles(Role.Volunteer)
   @Post(':projectId/skills')
   addSkills(
     @Param('projectId') projectId: string,
@@ -95,6 +97,7 @@ export class ProjectsController {
     );
   }
 
+  @Roles(Role.Volunteer)
   @Delete(':projectId/skills/:skillId')
   removeSkill(
     @Param('projectId') projectId: string,

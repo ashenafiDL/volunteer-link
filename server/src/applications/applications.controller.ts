@@ -7,14 +7,15 @@ import { ApplicationsService } from './applications.service';
 export class ApplicationsController {
   constructor(private readonly applicationsService: ApplicationsService) {}
 
+  @Roles(Role.Volunteer)
   @Get('check/:projectId')
   checkApplication(@Req() req, @Param('projectId') projectId: string) {
     const userId = req.user.sub;
     return this.applicationsService.checkApplication(userId, projectId);
   }
 
+  @Roles(Role.Volunteer)
   @Get('myApplications')
-  @Roles(Role.User)
   getMyApplications(@Req() req) {
     const userId = req.user.sub;
     return this.applicationsService.getMyApplications(userId);
@@ -25,14 +26,14 @@ export class ApplicationsController {
     return this.applicationsService.getApplicationsByProjectId(projectId);
   }
 
+  @Roles(Role.Volunteer)
   @Get('accept/:applicationId')
-  @Roles(Role.User)
   acceptApplication(@Param('applicationId') applicationId: string) {
     return this.applicationsService.acceptApplication(applicationId);
   }
 
+  @Roles(Role.Volunteer)
   @Get('reject/:applicationId')
-  @Roles(Role.User)
   rejectApplication(@Param('applicationId') applicationId: string) {
     return this.applicationsService.rejectApplication(applicationId);
   }

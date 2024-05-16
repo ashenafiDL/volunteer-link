@@ -82,19 +82,21 @@ export default function Header() {
         <div className="flex items-center gap-4">
           {/* User avatar */}
           <div className="relative">
-            <div
-              onClick={() => {
-                setDropdownHidden(!dropdownHidden);
-              }}
-              className="flex cursor-pointer flex-row items-center gap-4"
-            >
-              <p className="text-xl text-primary-content">{`Hi, ${user.firstName} ${user.lastName}`}</p>
-              <UserAvatar
-                email={user.email}
-                name={user.firstName}
-                size="base"
-              />
-            </div>
+            {user && (
+              <div
+                onClick={() => {
+                  setDropdownHidden(!dropdownHidden);
+                }}
+                className="flex cursor-pointer flex-row items-center gap-4"
+              >
+                <p className="text-xl text-primary-content">{`Hi, ${user.firstName} ${user.lastName}`}</p>
+                <UserAvatar
+                  email={user.email}
+                  name={user.firstName}
+                  size="base"
+                />
+              </div>
+            )}
 
             {/* Dropdown menu items */}
             <div
@@ -120,7 +122,7 @@ export default function Header() {
 
               <hr className="border-neutral-content" />
 
-              {org?.name ? (
+              {user && user.organizationId ? (
                 <Link
                   onClick={handleMenuItemClick}
                   className="flex items-center gap-4 px-4 py-2 text-lg transition-colors duration-300 hover:bg-base-200"

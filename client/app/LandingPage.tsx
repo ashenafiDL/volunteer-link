@@ -5,7 +5,6 @@ import LatestProjects from "@/components/landing-page/LatestProjects";
 import Mission from "@/components/landing-page/Mission";
 import Stats from "@/components/landing-page/Stats";
 import WhyVolunteer from "@/components/landing-page/WhyVolunteer";
-import Image from "next/image";
 import Link from "next/link";
 import { GiStumpRegrowth } from "react-icons/gi";
 import { LuBadgeCheck } from "react-icons/lu";
@@ -102,76 +101,6 @@ export default function LandingPage() {
                   We embrace new ideas and technologies to continuously improve
                   our platform and services.
                 </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="w-full">
-          <div className="container px-4 md:px-6">
-            <div className="space-y-4 text-center">
-              <div className="inline-block rounded-lg px-3 py-1 text-sm">
-                Our Team
-              </div>
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-                Meet the Professionals Behind the Platform
-              </h2>
-              <p className="mx-auto max-w-[700px] text-neutral md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Our team of dedicated professionals is committed to building a
-                thriving professional network and empowering our members to
-                achieve their career goals.
-              </p>
-            </div>
-            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-              <div className="flex flex-col items-center space-y-4">
-                <div className="avatar">
-                  <div className="w-20 rounded-full">
-                    <Image
-                      src="/img/team/ashenafi.jpg"
-                      width={40}
-                      height={40}
-                      alt="Ashenafi"
-                    />
-                  </div>
-                </div>
-                <div className="text-center">
-                  <h3 className="text-lg font-semibold">Ashenafi Debella</h3>
-                  <p className="text-neutral">Co-Founder & CEO</p>
-                </div>
-              </div>
-              <div className="flex flex-col items-center space-y-4">
-                <div className="avatar">
-                  <div className="w-20 rounded-full">
-                    <Image
-                      src="/img/team/ashenafi.jpg"
-                      width={40}
-                      height={40}
-                      alt="Ashenafi"
-                    />
-                  </div>
-                </div>
-                <div className="text-center">
-                  <h3 className="text-lg font-semibold">Biruk Yoseph</h3>
-                  <p className="text-gray-500 dark:text-gray-400">
-                    Co-Founder & CTO
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col items-center space-y-4">
-                <div className="avatar">
-                  <div className="w-20 rounded-full">
-                    <Image
-                      src="/img/team/ashenafi.jpg"
-                      width={40}
-                      height={40}
-                      alt="Ashenafi"
-                    />
-                  </div>
-                </div>
-                <div className="text-center">
-                  <h3 className="text-lg font-semibold">Dawit Gebeyehu</h3>
-                  <p className="text-neutral">Head of Community</p>
-                </div>
               </div>
             </div>
           </div>

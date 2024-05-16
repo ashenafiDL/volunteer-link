@@ -49,7 +49,7 @@ export default function EditSocialLinks() {
   };
 
   useEffect(() => {
-    if (Object.keys(user).length > 0) {
+    if (user && Object.keys(user).length > 0) {
       setIsUserLoaded(true);
 
       const reduced = user?.socialLinks?.reduce((acc: any, link: any) => {

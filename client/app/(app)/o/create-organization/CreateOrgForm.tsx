@@ -185,7 +185,11 @@ export default function CreateOrgForm({ locations }: { locations: any }) {
               </p>
             </div>
 
-            <button type="submit" className="btn btn-primary">
+            <button
+              disabled={isSubmitting}
+              type="submit"
+              className="btn btn-primary"
+            >
               Create
             </button>
           </Form>

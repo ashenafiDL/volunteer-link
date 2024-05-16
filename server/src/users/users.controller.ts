@@ -58,6 +58,7 @@ export class UserController {
     return this.userService.updateUser(id, updateUserDto);
   }
 
+  @Roles(Role.Volunteer)
   @Patch('me/education/update/:educationId')
   @ApiUpdateEducationEndpoint()
   updateEducation(
@@ -73,6 +74,7 @@ export class UserController {
     );
   }
 
+  @Roles(Role.Volunteer)
   @Delete('me/education/remove/:educationId')
   @ApiDeleteEducationEndpoint()
   removeEducation(@Req() req, @Param('educationId') educationId: string) {
@@ -93,6 +95,7 @@ export class UserController {
     return this.userService.deleteUser(id);
   }
 
+  @Roles(Role.Volunteer)
   @Patch('me/skills/remove/:skillId')
   @ApiRemoveSkillEndpoint()
   removeSkill(@Req() req, @Param('skillId') skillId: string) {

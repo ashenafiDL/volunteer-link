@@ -20,12 +20,15 @@ export default function Applications() {
           `${process.env.NEXT_PUBLIC_API_URL}/applications/myApplications`,
         );
 
+        console.log(res, "res.data");
         if (res.status === 200) {
           setPendingApplications(res.data.pending);
           setAcceptedApplications(res.data.accepted);
           setRejectedApplications(res.data.rejected);
         }
       } catch (error) {
+        console.log("applications", error);
+
         setPendingApplications(null);
         setAcceptedApplications(null);
         setRejectedApplications(null);

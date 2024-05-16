@@ -30,6 +30,7 @@ export default function PopularSkillsChart() {
 
       if (res.status === 200) {
         setData(res.data);
+        console.log(res.data, "res.data");
       }
     };
 
@@ -41,24 +42,30 @@ export default function PopularSkillsChart() {
       <div className="card-body">
         <div className="card-title">Top 10 Popular Skills</div>
 
-        <ResponsiveContainer width="100%" height={250}>
-          <BarChart layout="vertical" data={both}>
-            <Tooltip
-              cursor={{ fill: "#4E4E55" }}
-              contentStyle={{ backgroundColor: "#3b3c3f", borderRadius: 5 }}
-            />
-            <CartesianGrid strokeDasharray="3 3" stroke="#4E4E55" />
-            <XAxis type="number" hide />
-            <YAxis dataKey={"name"} type="category" />
-            <Tooltip />
-            <Legend />
-            <Bar
-              dataKey="usage"
-              fill="#8884d8"
-              label={{ fill: "white", content: () => "Usage" }}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+        {data && data[0]._count.project !== 0 && data[0]._count.users !== 0 ? (
+          <ResponsiveContainer width="100%" height={250}>
+            <BarChart layout="vertical" data={both}>
+              <Tooltip
+                cursor={{ fill: "#4E4E55" }}
+                contentStyle={{ backgroundColor: "#3b3c3f", borderRadius: 5 }}
+              />
+              <CartesianGrid strokeDasharray="3 3" stroke="#4E4E55" />
+              <XAxis type="number" hide />
+              <YAxis dataKey={"name"} type="category" />
+              <Tooltip />
+              <Legend />
+              <Bar
+                dataKey="usage"
+                fill="#8884d8"
+                label={{ fill: "white", content: () => "Usage" }}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <p className="italic">No data available</p>
+          </div>
+        )}
       </div>
     </div>
   );

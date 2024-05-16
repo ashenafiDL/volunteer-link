@@ -185,83 +185,90 @@ export default function Projects() {
               handleSubmit(values);
             }}
           >
-            <Form className="flex flex-col gap-4">
-              <TextInput
-                label="Project Title"
-                required
-                props={{
-                  name: "title",
-                  type: "text",
-                }}
-              />
-
-              <TextAreaInput
-                label="Description"
-                required
-                props={{
-                  name: "description",
-                  rows: 4,
-                }}
-              />
-
-              <SelectInput
-                label="Location"
-                props={{
-                  name: "locationId",
-                }}
-              >
-                <option>--Select your location--</option>
-                {locations &&
-                  locations.map((location: any) => {
-                    return (
-                      <option key={location.id} value={location.id}>
-                        {location.name}
-                      </option>
-                    );
-                  })}
-              </SelectInput>
-
-              <div className="flex flex-row gap-3">
+            {({ isSubmitting }) => (
+              <Form className="flex flex-col gap-4">
                 <TextInput
-                  label="Start Date"
+                  label="Project Title"
                   required
                   props={{
-                    name: "startDate",
-                    type: "date",
+                    name: "title",
+                    type: "text",
                   }}
                 />
 
-                <TextInput
-                  label="End Date"
+                <TextAreaInput
+                  label="Description"
                   required
                   props={{
-                    name: "endDate",
-                    type: "date",
+                    name: "description",
+                    rows: 4,
                   }}
                 />
-              </div>
 
-              <TextInput
-                label="Provide certificate to users at the end of the project"
-                props={{
-                  name: "provideCertificate",
-                  type: "checkbox",
-                }}
-              />
-
-              <div className="flex flex-row gap-2">
-                <button
-                  className="btn btn-outline flex-grow"
-                  type="reset"
-                  onClick={handleClose}
+                <SelectInput
+                  label="Location"
+                  props={{
+                    name: "locationId",
+                  }}
                 >
-                  Cancel
-                </button>
-                <button className="btn btn-primary flex-grow" type="submit">
-                  Add Project
-                </button>
-              </div>
-            </Form>
+                  <option>--Select your location--</option>
+                  {locations &&
+                    locations.map((location: any) => {
+                      return (
+                        <option key={location.id} value={location.id}>
+                          {location.name}
+                        </option>
+                      );
+                    })}
+                </SelectInput>
+
+                <div className="flex flex-row gap-3">
+                  <TextInput
+                    label="Start Date"
+                    required
+                    props={{
+                      name: "startDate",
+                      type: "date",
+                    }}
+                  />
+
+                  <TextInput
+                    label="End Date"
+                    required
+                    props={{
+                      name: "endDate",
+                      type: "date",
+                    }}
+                  />
+                </div>
+
+                <TextInput
+                  label="Provide certificate to users at the end of the project"
+                  props={{
+                    name: "provideCertificate",
+                    type: "checkbox",
+                  }}
+                />
+
+                <div className="flex flex-row gap-2">
+                  <button
+                    disabled={isSubmitting}
+                    className="btn btn-outline flex-grow"
+                    type="reset"
+                    onClick={handleClose}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    disabled={isSubmitting}
+                    className="btn btn-primary flex-grow"
+                    type="submit"
+                  >
+                    Add Project
+                  </button>
+                </div>
+              </Form>
+            )}
           </Formik>
         </div>
       </dialog>

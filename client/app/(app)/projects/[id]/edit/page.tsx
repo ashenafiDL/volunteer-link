@@ -212,85 +212,95 @@ export default function EditProjects() {
                   handleSubmit(values);
                 }}
               >
-                <Form className="flex flex-col gap-4">
-                  <TextInput
-                    label="Project title"
-                    props={{
-                      name: "title",
-                      type: "text",
-                    }}
-                  />
-
-                  <TextAreaInput
-                    label="Description"
-                    props={{
-                      name: "description",
-                      rows: 5,
-                      maxLength: 500,
-                    }}
-                  />
-
-                  <div className="flex flex-row gap-3">
+                {({ isSubmitting }) => (
+                  <Form className="flex flex-col gap-4">
                     <TextInput
-                      label="Start Date"
-                      required
+                      label="Project title"
                       props={{
-                        name: "startDate",
-                        type: "date",
+                        name: "title",
+                        type: "text",
                       }}
                     />
 
-                    <TextInput
-                      label="End Date"
-                      required
+                    <TextAreaInput
+                      label="Description"
                       props={{
-                        name: "endDate",
-                        type: "date",
+                        name: "description",
+                        rows: 5,
+                        maxLength: 500,
                       }}
                     />
 
-                    <div>
-                      <SelectInput
-                        label="Project status"
+                    <div className="flex flex-row gap-3">
+                      <TextInput
+                        label="Start Date"
+                        required
                         props={{
-                          name: "status",
+                          name: "startDate",
+                          type: "date",
+                        }}
+                      />
+
+                      <TextInput
+                        label="End Date"
+                        required
+                        props={{
+                          name: "endDate",
+                          type: "date",
+                        }}
+                      />
+
+                      <div>
+                        <SelectInput
+                          label="Project status"
+                          props={{
+                            name: "status",
+                          }}
+                        >
+                          <option>--Change status--</option>
+                          <option value="NOT_STARTED">Not Started</option>
+                          <option value="IN_PROGRESS">In Progress</option>
+                          <option value="DONE">Done</option>
+                        </SelectInput>
+                      </div>
+                    </div>
+
+                    <div className="w-1/2">
+                      <SelectInput
+                        label="Location"
+                        props={{
+                          name: "locationId",
                         }}
                       >
-                        <option>--Change status--</option>
-                        <option value="NOT_STARTED">Not Started</option>
-                        <option value="IN_PROGRESS">In Progress</option>
-                        <option value="DONE">Done</option>
+                        <option>--Select your location--</option>
+                        {locations.map((location: any) => {
+                          return (
+                            <option key={location.id} value={location.id}>
+                              {location.name}
+                            </option>
+                          );
+                        })}
                       </SelectInput>
                     </div>
-                  </div>
 
-                  <div className="w-1/2">
-                    <SelectInput
-                      label="Location"
-                      props={{
-                        name: "locationId",
-                      }}
-                    >
-                      <option>--Select your location--</option>
-                      {locations.map((location: any) => {
-                        return (
-                          <option key={location.id} value={location.id}>
-                            {location.name}
-                          </option>
-                        );
-                      })}
-                    </SelectInput>
-                  </div>
-
-                  <div className="space-x-2">
-                    <button type="submit" className="btn btn-primary">
-                      Save
-                    </button>
-                    <button type="reset" className="btn btn-outline">
-                      Cancel
-                    </button>
-                  </div>
-                </Form>
+                    <div className="space-x-2">
+                      <button
+                        disabled={isSubmitting}
+                        type="submit"
+                        className="btn btn-primary"
+                      >
+                        Save
+                      </button>
+                      <button
+                        disabled={isSubmitting}
+                        type="reset"
+                        className="btn btn-outline"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </Form>
+                )}
               </Formik>
             )}
           </div>
@@ -364,52 +374,59 @@ export default function EditProjects() {
               handleAdd(values);
             }}
           >
-            <Form className="flex flex-col gap-4">
-              <SelectInput
-                label="Skill"
-                props={{
-                  name: "skillId",
-                }}
-              >
-                <option>--Select skill--</option>
-                {skills &&
-                  skills.length > 0 &&
-                  skills.map((skill: any, index: number) => (
-                    <option key={index} value={skill.id}>
-                      {skill.name}
-                    </option>
-                  ))}
-              </SelectInput>
-
-              <div className="w-1/4">
-                <TextInput
-                  label="Vacancies"
+            {({ isSubmitting }) => (
+              <Form className="flex flex-col gap-4">
+                <SelectInput
+                  label="Skill"
                   props={{
-                    name: "vacancies",
-                    type: "number",
-                  }}
-                />
-              </div>
-
-              <div className="space-x-2">
-                <button type="submit" className="btn btn-primary">
-                  Save
-                </button>
-                <button
-                  type="reset"
-                  className="btn btn-outline"
-                  onClick={() => {
-                    (
-                      document.getElementById(
-                        "add_skill_dialog",
-                      ) as HTMLDialogElement
-                    ).close();
+                    name: "skillId",
                   }}
                 >
-                  Cancel
-                </button>
-              </div>
-            </Form>
+                  <option>--Select skill--</option>
+                  {skills &&
+                    skills.length > 0 &&
+                    skills.map((skill: any, index: number) => (
+                      <option key={index} value={skill.id}>
+                        {skill.name}
+                      </option>
+                    ))}
+                </SelectInput>
+
+                <div className="w-1/4">
+                  <TextInput
+                    label="Vacancies"
+                    props={{
+                      name: "vacancies",
+                      type: "number",
+                    }}
+                  />
+                </div>
+
+                <div className="space-x-2">
+                  <button
+                    disabled={isSubmitting}
+                    type="submit"
+                    className="btn btn-primary"
+                  >
+                    Save
+                  </button>
+                  <button
+                    disabled={isSubmitting}
+                    type="reset"
+                    className="btn btn-outline"
+                    onClick={() => {
+                      (
+                        document.getElementById(
+                          "add_skill_dialog",
+                        ) as HTMLDialogElement
+                      ).close();
+                    }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </Form>
+            )}
           </Formik>
         </div>
       </dialog>

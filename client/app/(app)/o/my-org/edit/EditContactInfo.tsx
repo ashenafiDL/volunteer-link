@@ -55,7 +55,7 @@ export default function EditContactInfo({ locations }: any) {
   };
 
   useEffect(() => {
-    if (Object.keys(org).length > 0) {
+    if (org && Object.keys(org).length > 0) {
       setIsOrgLoaded(true);
       setInitialValues({
         websiteUrl: org.websiteUrl,
@@ -83,63 +83,73 @@ export default function EditContactInfo({ locations }: any) {
               handleSubmit(values);
             }}
           >
-            <Form className="flex flex-col gap-2">
-              <div className="flex gap-4">
-                <TextInput
-                  label="Contact Phone"
-                  props={{
-                    name: "contactPhone",
-                    type: "text",
-                  }}
-                />
-
-                <TextInput
-                  label="Contact Email"
-                  props={{
-                    name: "contactEmail",
-                    type: "text",
-                  }}
-                />
-              </div>
-
-              <div className="flex gap-4">
-                <div className="flex-grow">
+            {({ isSubmitting }) => (
+              <Form className="flex flex-col gap-2">
+                <div className="flex gap-4">
                   <TextInput
-                    label="Website URL"
+                    label="Contact Phone"
                     props={{
-                      name: "websiteUrl",
+                      name: "contactPhone",
+                      type: "text",
+                    }}
+                  />
+
+                  <TextInput
+                    label="Contact Email"
+                    props={{
+                      name: "contactEmail",
                       type: "text",
                     }}
                   />
                 </div>
 
-                <div className="flex-grow">
-                  <SelectInput
-                    label="Location"
-                    props={{
-                      name: "locationId",
-                    }}
-                  >
-                    <option>--Select your location--</option>
-                    {locations.map((location: any) => {
-                      return (
-                        <option key={location.id} value={location.id}>
-                          {location.name}
-                        </option>
-                      );
-                    })}
-                  </SelectInput>
+                <div className="flex gap-4">
+                  <div className="flex-grow">
+                    <TextInput
+                      label="Website URL"
+                      props={{
+                        name: "websiteUrl",
+                        type: "text",
+                      }}
+                    />
+                  </div>
+
+                  <div className="flex-grow">
+                    <SelectInput
+                      label="Location"
+                      props={{
+                        name: "locationId",
+                      }}
+                    >
+                      <option>--Select your location--</option>
+                      {locations.map((location: any) => {
+                        return (
+                          <option key={location.id} value={location.id}>
+                            {location.name}
+                          </option>
+                        );
+                      })}
+                    </SelectInput>
+                  </div>
                 </div>
-              </div>
-              <div className="space-x-2">
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>
-                <button className="btn btn-outline btn-error" type="reset">
-                  Cancel
-                </button>
-              </div>
-            </Form>
+                <div className="space-x-2">
+                  <button
+                    disabled={isSubmitting}
+                    type="submit"
+                    className="btn btn-primary"
+                  >
+                    Submit
+                  </button>
+                  <button
+                    disabled={isSubmitting}
+                    className="btn btn-outline btn-error"
+                    type="reset"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </Form>
+            )}
           </Formik>
         )}
       </div>

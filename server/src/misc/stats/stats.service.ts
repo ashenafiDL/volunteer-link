@@ -96,6 +96,11 @@ export class StatsService {
           },
         },
       });
+      const ageNotSpecified = await this.prisma.users.count({
+        where: {
+          age: null,
+        },
+      });
 
       const gender = [];
       for (const item of genderCount) {
@@ -114,6 +119,7 @@ export class StatsService {
           { name: '35-54', value: _35to54 },
           { name: '55-74', value: _55to74 },
           { name: '75 And More', value: _75AndMore },
+          { name: 'Not Specified', value: ageNotSpecified },
         ],
       };
     } catch (error) {

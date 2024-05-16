@@ -63,45 +63,47 @@ export default function EditAvatar() {
   return (
     <div className="space-y-1">
       <p>Profile Picture</p>
-      <div className="card rounded-md">
-        <div className="card-body">
-          <div>
-            <UserAvatar
-              email={user && user.email}
-              name={user && user.firstName}
-              size="xl"
-            />
-          </div>
-
-          <div className="mt-4 flex gap-6">
-            <input
-              id="fileInput"
-              accept="image/*"
-              type="file"
-              hidden
-              onChange={handleChange}
-            ></input>
-            <button
-              className="btn btn-primary"
-              onClick={() =>
-                isClient && document.getElementById("fileInput")?.click()
-              }
-            >
-              Update profile picture
-            </button>
-
+      {user && (
+        <div className="card rounded-md">
+          <div className="card-body">
             <div>
+              <UserAvatar
+                email={user && user.email}
+                name={user && user.firstName}
+                size="xl"
+              />
+            </div>
+
+            <div className="mt-4 flex gap-6">
+              <input
+                id="fileInput"
+                accept="image/*"
+                type="file"
+                hidden
+                onChange={handleChange}
+              ></input>
               <button
-                className="btn btn-error"
-                disabled={user?.profilePictureId === null}
-                onClick={handleDelete}
+                className="btn btn-primary"
+                onClick={() =>
+                  isClient && document.getElementById("fileInput")?.click()
+                }
               >
-                Remove profile picture
+                Update profile picture
               </button>
+
+              <div>
+                <button
+                  className="btn btn-error"
+                  disabled={user?.profilePictureId === null}
+                  onClick={handleDelete}
+                >
+                  Remove profile picture
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

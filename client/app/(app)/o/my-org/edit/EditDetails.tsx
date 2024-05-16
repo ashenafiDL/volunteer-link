@@ -87,52 +87,62 @@ export default function EditDetails() {
               handleSubmit(values);
             }}
           >
-            <Form className="flex flex-col gap-2">
-              <TextInput
-                label="Name"
-                props={{
-                  name: "name",
-                  type: "text",
-                  autoComplete: "off",
-                }}
-              />
-
-              <TextAreaInput
-                label="Mission"
-                props={{
-                  name: "mission",
-                  rows: 3,
-                }}
-              />
-
-              <TextAreaInput
-                label="About Us"
-                props={{
-                  name: "aboutUs",
-                  rows: 3,
-                }}
-              />
-
-              <div className="w-1/3">
+            {({ isSubmitting }) => (
+              <Form className="flex flex-col gap-2">
                 <TextInput
-                  label="Founding Date"
+                  label="Name"
                   props={{
-                    name: "foundingDate",
-                    id: "foundingDate",
-                    type: "date",
+                    name: "name",
+                    type: "text",
+                    autoComplete: "off",
                   }}
                 />
-              </div>
 
-              <div className="space-x-2">
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>
-                <button className="btn btn-outline btn-error" type="reset">
-                  Cancel
-                </button>
-              </div>
-            </Form>
+                <TextAreaInput
+                  label="Mission"
+                  props={{
+                    name: "mission",
+                    rows: 3,
+                  }}
+                />
+
+                <TextAreaInput
+                  label="About Us"
+                  props={{
+                    name: "aboutUs",
+                    rows: 3,
+                  }}
+                />
+
+                <div className="w-1/3">
+                  <TextInput
+                    label="Founding Date"
+                    props={{
+                      name: "foundingDate",
+                      id: "foundingDate",
+                      type: "date",
+                    }}
+                  />
+                </div>
+
+                <div className="space-x-2">
+                  <button
+                    disabled={isSubmitting}
+                    type="submit"
+                    className="btn btn-primary"
+                  >
+                    Submit
+                  </button>
+                  <button
+                    disabled={isSubmitting}
+                    className="btn btn-outline btn-error"
+                    type="reset"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </Form>
+            )}
           </Formik>
         )}
       </div>

@@ -26,7 +26,7 @@ export default function EditCV() {
       );
 
       if (res.status === 201) {
-        await getUser();
+        getUser();
         const id = addAlert({
           severity: "success",
           message: "CV uploaded successfully",
@@ -67,7 +67,7 @@ export default function EditCV() {
       }
     }
 
-    if (user.id !== undefined) {
+    if (user && user.id !== undefined) {
       getCV();
     }
   }, [user]);
@@ -93,7 +93,7 @@ export default function EditCV() {
             >
               Upload CV
             </button>
-            {cv && user.cvId && (
+            {cv && user && user.cvId && (
               <Link className="btn" href={cv} target="_blank">
                 Show CV
               </Link>
