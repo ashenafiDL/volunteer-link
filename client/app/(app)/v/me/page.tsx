@@ -100,6 +100,8 @@ export default function Profile() {
       {certificates && certificates.length > 0 && (
         <div className="card rounded-md">
           <div className="card-body space-y-3">
+            <div className="card-title">Certificates</div>
+
             {certificates.map((certificate: any) => (
               <CertificateCard key={certificate.id} certificate={certificate} />
             ))}

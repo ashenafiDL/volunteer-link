@@ -19,11 +19,13 @@ export default function DashboardPage() {
           <VerifiedAndUnverified />
         </div>
 
-        <div className="col-span-3">
+        <div className="col-span-2">
           <ProjectBarChart />
         </div>
 
-        <PopularSkillsChart />
+        <div className="col-span-2">
+          <PopularSkillsChart />
+        </div>
       </div>
     </div>
   );
