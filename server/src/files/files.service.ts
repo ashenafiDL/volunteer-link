@@ -4,7 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import * as fs from 'fs-extra';
-import * as PDFDocument from 'pdfkit';
+//import * as PDFDocument from 'pdfkit';
+import PDFDocument from 'pdfkit';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
