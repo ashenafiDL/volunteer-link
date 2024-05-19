@@ -11,14 +11,195 @@ import {
   usernameValidation,
 } from "@/app/lib/forms/validationSchemas";
 import { TextInput } from "@/components/formElements";
+import UserAvatar from "@/components/global/UserAvatar";
+import { Table } from "antd";
 import { formatDate } from "date-fns";
 import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import * as Yup from "yup";
+import TableContainer from "../components/TableContainer";
 
 export default function UsersPage() {
   const [users, setUsers] = useState<Array<any>>();
   const { addAlert, dismissAlert } = useAlertsContext();
+
+  const columns = [
+    {
+      title: "No",
+      dataIndex: "index",
+      key: "index",
+      render: (_: any, record: any, index: number) => index + 1,
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (_: any, record: any) => (
+        <div className="flex items-center gap-2">
+          <UserAvatar
+            email={record.email}
+            name={`${record.firstName} ${record.lastName}`}
+            size="xs"
+          />
+          <span>{`${record.firstName} ${record.lastName}`}</span>
+        </div>
+      ),
+      sorter: (a: any, b: any) =>
+        a.firstName.localeCompare(b.firstName, { sensitivity: "accent" }),
+    },
+    {
+      title: "Username",
+      dataIndex: "username",
+      key: "username",
+      sorter: (a: any, b: any) =>
+        a.username.localeCompare(b.username, { sensitivity: "accent" }),
+    },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+      filters: [
+        { text: "Male", value: "MALE" },
+        { text: "Female", value: "FEMALE" },
+      ],
+      onFilter: (value: any, record: any) => record.gender === value,
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+      sorter: (a: any, b: any) => a.age - b.age,
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Bio",
+      dataIndex: "bio",
+      key: "bio",
+      render: (bio: string) => (
+        <>
+          {bio ? (
+            <div className="text-left">
+              {bio.slice(0, 10)}
+              {bio.length > 10 && (
+                <span className="tooltip text-left" data-tip={bio}>
+                  ...
+                </span>
+              )}
+            </div>
+          ) : (
+            "-"
+          )}
+        </>
+      ),
+    },
+    {
+      title: "Organization",
+      dataIndex: "organization",
+      key: "organization",
+      render: (_: any, record: any) => (
+        <>
+          {record.organizationId ? (
+            <span className="text-left">{record.organization.name}</span>
+          ) : (
+            "-"
+          )}
+        </>
+      ),
+    },
+    {
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
+      render: (_: any, record: any) => (
+        <>
+          {record.locationId ? (
+            <span className="text-left">{record.location.name}</span>
+          ) : (
+            "-"
+          )}
+        </>
+      ),
+    },
+    {
+      title: "Last logged in",
+      dataIndex: "lastLoggedInAt",
+      key: "lastLoggedInAt",
+      render: (lastLoggedInAt: any) => (
+        <>
+          {lastLoggedInAt && formatDate(lastLoggedInAt, "MMM dd, yyyy hh:mm a")}
+        </>
+      ),
+      sorter: (a: any, b: any) =>
+        a.lastLoggedInAt.localeCompare(b.lastLoggedInAt),
+    },
+    {
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
+      render: (_: any, record: any) => (
+        <span className="text-left">{record.role.name}</span>
+      ),
+      filters: [
+        {
+          text: "Admin",
+          value: "Admin",
+        },
+        {
+          text: "Volunteer",
+          value: "Volunteer",
+        },
+      ],
+      onFilter: (value: any, record: any) => record.role.name === value,
+    },
+    {
+      title: "Created At",
+      dataIndex: "createdAt",
+      key: "createAt",
+      render: (createdAt: any) => (
+        <span>{formatDate(createdAt, "MMM dd, yyyy")}</span>
+      ),
+      sorter: (a: any, b: any) => a.createdAt.localeCompare(b.createdAt),
+    },
+    {
+      title: "Is Active?",
+      dataIndex: "isActive",
+      key: "isActive",
+      render: (isActive: any, record: any) => (
+        <>
+          {isActive ? (
+            <button
+              className="btn btn-error btn-xs"
+              onClick={() => handleUpdate(record.id, { isActive: false })}
+            >
+              Deactivate
+            </button>
+          ) : (
+            <button
+              className="btn btn-success btn-xs"
+              onClick={() => handleUpdate(record.id, { isActive: true })}
+            >
+              Activate
+            </button>
+          )}
+        </>
+      ),
+      filters: [
+        {
+          text: "Active",
+          value: true,
+        },
+        {
+          text: "Deactivated",
+          value: false,
+        },
+      ],
+      onFilter: (value: any, record: any) => record.isActive === value,
+    },
+  ];
 
   const handleUpdate = async (id: string, values: any) => {
     try {
@@ -113,23 +294,13 @@ export default function UsersPage() {
           </button>
         </div>
 
-        <table className="table table-zebra">
-          {/* head */}
-          <thead>
-            <tr>
-              <th></th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Username</th>
-              <th>Gender</th>
-              <th>Age</th>
-              <th>Email</th>
-              <th>Bio</th>
-              <th>Organization</th>
-              <th>Location</th>
+        <TableContainer>
+          <Table columns={columns} dataSource={users} />
+        </TableContainer>
+
+        {/* <table className="table table-zebra">
+s
               <th>Social Links</th>
-              <th>Last Logged in</th>
-              <th>Role</th>
               <th>Created at</th>
               <th>Is Active?</th>
             </tr>
@@ -140,16 +311,7 @@ export default function UsersPage() {
                 {users.map((user, index) => {
                   return (
                     <tr key={index}>
-                      <th>{index + 1}</th>
-                      <td>{user.firstName}</td>
-                      <td>{user.lastName}</td>
-                      <td>{user.username}</td>
-                      <td>{user?.gender || "-"}</td>
-                      <td>{user?.age || "-"}</td>
-                      <td>{user.email}</td>
-                      <td>{user?.bio || "-"}</td>
-                      <td>{user?.organization?.name || "-"}</td>
-                      <td>{user?.location?.name}</td>
+
                       <td>
                         {user?.socialLinks?.map((link: any, index: number) => {
                           return (
@@ -159,15 +321,8 @@ export default function UsersPage() {
                           );
                         })}
                       </td>
-                      <td>
-                        {user.lastLoggedInAt &&
-                          formatDate(
-                            user.lastLoggedInAt,
-                            "MMM dd, yyyy hh:mm a",
-                          )}
-                      </td>
-                      <td>{user.role.name}</td>
-                      <td>{formatDate(user.createdAt, "MMM dd, yyyy")}</td>
+
+                      <td></td>
                       <td>
                         {user.isActive ? (
                           <button
@@ -199,7 +354,7 @@ export default function UsersPage() {
               </tr>
             )}
           </tbody>
-        </table>
+        </table> */}
       </div>
 
       <dialog id="add_admin_modal" className="modal">

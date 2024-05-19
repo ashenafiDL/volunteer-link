@@ -4,16 +4,95 @@ import axiosInstance from "@/app/axiosInstance";
 import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useIsClient } from "@/app/lib/contexts/useIsClient";
 import { TextInput } from "@/components/formElements";
+import { Table } from "antd";
 import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import * as Yup from "yup";
+import TableContainer from "../components/TableContainer";
 
 export default function LocationsPage() {
   const [locations, setLocations] = useState<Array<any>>();
   const [currentLocation, setCurrentLocation] = useState<any>(null);
   const isClient = useIsClient();
   const { addAlert, dismissAlert } = useAlertsContext();
+
+  const columns = [
+    {
+      title: "No",
+      dataIndex: "index",
+      key: "index",
+      render: (_: any, record: any, index: number) => index + 1,
+    },
+    {
+      title: "Short Code",
+      dataIndex: "code",
+      key: "code",
+      width: "10%",
+      render: (code: any) => (
+        <div className="badge badge-primary rounded-md">{code}</div>
+      ),
+      sorter: (a: any, b: any) => a.code.localeCompare(b.code),
+    },
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      width: "50%",
+      sorter: (a: any, b: any) => a.name.localeCompare(b.name),
+    },
+    {
+      title: "Users Count",
+      dataIndex: "users",
+      key: "users",
+      render: (_: any, record: any) => <span>{record._count.users}</span>,
+      sorter: (a: any, b: any) => a._count.users - b._count.users,
+    },
+    {
+      title: "Organizations Count",
+      dataIndex: "organizations",
+      key: "organizations",
+      render: (_: any, record: any) => (
+        <span>{record._count.organizations}</span>
+      ),
+      sorter: (a: any, b: any) =>
+        a._count.organizations - b._count.organizations,
+    },
+    {
+      title: "Projects Count",
+      dataIndex: "projects",
+      key: "projects",
+      render: (_: any, record: any) => <span>{record._count.projects}</span>,
+      sorter: (a: any, b: any) => a._count.projects - b._count.projects,
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      render: (_: any, record: any) => (
+        <div className="flex flex-row gap-2">
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              setCurrentLocation(record);
+              showModal("add_location_modal");
+            }}
+          >
+            <MdEdit size={16} />
+          </div>
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              setCurrentLocation(record);
+              handleDelete(record.id);
+            }}
+          >
+            <MdDelete size={16} />
+          </div>
+        </div>
+      ),
+    },
+  ];
 
   const showModal = (id: string) => {
     isClient && (document.getElementById(id) as HTMLDialogElement).showModal();
@@ -151,66 +230,9 @@ export default function LocationsPage() {
           </button>
         </div>
 
-        <table className="table table-zebra">
-          {/* head */}
-          <thead>
-            <tr>
-              <th></th>
-              <th>Short Code</th>
-              <th>Name</th>
-              <th>Users</th>
-              <th>Projects</th>
-              <th>Organizations</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {locations && locations.length > 0 ? (
-              <>
-                {locations.map((location, index) => {
-                  return (
-                    <tr key={index}>
-                      <th>{index + 1}</th>
-                      <td>
-                        <div className="badge rounded-md">{location.code}</div>
-                      </td>
-                      <td>{location.name}</td>
-                      <td>{location._count.users}</td>
-                      <td>{location._count.projects}</td>
-                      <td>{location._count.organizations}</td>
-                      <td>
-                        <div className="flex flex-row gap-2">
-                          <div
-                            className="cursor-pointer"
-                            onClick={() => {
-                              setCurrentLocation(location);
-                              showModal("add_location_modal");
-                            }}
-                          >
-                            <MdEdit size={16} />
-                          </div>
-                          <div
-                            className="cursor-pointer"
-                            onClick={() => {
-                              setCurrentLocation(location);
-                              handleDelete(location.id);
-                            }}
-                          >
-                            <MdDelete size={16} />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </>
-            ) : (
-              <tr className="text-center italic">
-                <td colSpan={6}>There are no location data</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+        <TableContainer>
+          <Table columns={columns} dataSource={locations} />
+        </TableContainer>
       </div>
 
       {/* Add location dialog */}

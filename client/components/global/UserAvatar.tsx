@@ -66,7 +66,7 @@ export default function UserAvatar({
           size === "xl" && "w-32",
         )}
       >
-        <span className={clsx("text-xl", size === "xxs" && "text-xs")}>
+        <span className={clsx("text-sm", size === "xxs" && "text-xs")}>
           {name && name.charAt(0).toUpperCase()}
         </span>
       </div>
@@ -74,7 +74,7 @@ export default function UserAvatar({
   );
 
   return (
-    <>
+    <div className="tooltip flex" data-tip={name}>
       {avatar ? (
         <div className={clsx("avatar", classes)}>
           <div
@@ -100,6 +100,6 @@ export default function UserAvatar({
       ) : (
         renderFallback()
       )}
-    </>
+    </div>
   );
 }

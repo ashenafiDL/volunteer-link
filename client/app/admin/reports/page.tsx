@@ -2,13 +2,158 @@
 
 import axiosInstance from "@/app/axiosInstance";
 import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
+import UserAvatar from "@/components/global/UserAvatar";
+import { Table } from "antd";
 import { formatDate } from "date-fns";
 import { useEffect, useState } from "react";
+import TableContainer from "../components/TableContainer";
 
 export default function ReportsPage() {
   const [reports, setReports] = useState<Array<any>>();
   const [stats, setStats] = useState<any>();
   const { addAlert, dismissAlert } = useAlertsContext();
+
+  const columns = [
+    {
+      title: "No",
+      dataIndex: "index",
+      key: "index",
+      render: (_: any, record: any, index: number) => index + 1,
+    },
+    {
+      title: "Reporter",
+      dataIndex: "reporter",
+      key: "reporter",
+      render: (reporter: any) => (
+        <UserAvatar
+          email={reporter.email}
+          name={`${reporter.firstName} ${reporter.lastName}`}
+          size="xs"
+        />
+      ),
+      width: "5%",
+    },
+    {
+      title: "Content Type",
+      dataIndex: "contentType",
+      key: "contentType",
+      width: "5%",
+      filters: [
+        {
+          text: "User",
+          value: "USER",
+        },
+        {
+          text: "Organization",
+          value: "ORGANIZATION",
+        },
+        {
+          text: "Projects",
+          value: "PROJECT",
+        },
+      ],
+      onFilter: (value: any, record: any) => record.contentType === value,
+    },
+    {
+      title: "Content Id",
+      dataIndex: "contentId",
+      key: "contentId",
+      width: "20%",
+    },
+    {
+      title: "Reason",
+      dataIndex: "reason",
+      key: "reason",
+      width: "10%",
+      filters: [
+        {
+          text: "Fake",
+          value: "FAKE",
+        },
+        {
+          text: "Scam",
+          value: "SCAM",
+        },
+        {
+          text: "Inappropriate Content",
+          value: "INAPPROPRIATE_CONTENT",
+        },
+        {
+          text: "Spam",
+          value: "SPAM",
+        },
+        {
+          text: "Impersonation",
+          value: "IMPERSONATION",
+        },
+        {
+          text: "Privacy Violation",
+          value: "PRIVACY_VIOLATION",
+        },
+        {
+          text: "Other",
+          value: "OTHER",
+        },
+      ],
+      onFilter: (value: any, record: any) => record.reason === value,
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      render: (description: string) => (
+        <div className="text-left">
+          {description.slice(0, 50)}
+          {description.length > 50 && (
+            <span className="tooltip text-left" data-tip={description}>
+              ...
+            </span>
+          )}
+        </div>
+      ),
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status: string, record: any) => (
+        <>
+          {status === "RESOLVED" ? (
+            <div className="badge badge-success">Resolved</div>
+          ) : (
+            <button
+              className="btn btn-sm"
+              onClick={() => {
+                resolveReport(record.id);
+              }}
+            >
+              Resolve
+            </button>
+          )}
+        </>
+      ),
+      filters: [
+        {
+          text: "Resolved",
+          value: "RESOLVED",
+        },
+        {
+          text: "Active",
+          value: "ACTIVE",
+        },
+      ],
+      onFilter: (value: any, record: any) => record.status === value,
+    },
+    {
+      title: "Created At",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (createdAt: string) => (
+        <div>{formatDate(createdAt, "MMM dd, yyyy")}</div>
+      ),
+      sorter: (a: any, b: any) => a.createdAt.localeCompare(b.createdAt),
+    },
+  ];
 
   const resolveReport = async (id: string) => {
     try {
@@ -113,58 +258,9 @@ export default function ReportsPage() {
         </div>
       </div>
 
-      <table className="table">
-        {/* head */}
-        <thead>
-          <tr>
-            <th></th>
-            <th>Reporter</th>
-            <th>Content Type</th>
-            <th>Content Id</th>
-            <th>Reason</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {reports && reports.length > 0 ? (
-            <>
-              {reports.map((report, index) => {
-                return (
-                  <tr key={index}>
-                    <th>{index + 1}</th>
-                    <td>{`${report.reporter.firstName} ${report.reporter.lastName}`}</td>
-                    <td>{report.contentType}</td>
-                    <td>{report.contentId}</td>
-                    <td>{report.reason}</td>
-                    <td>{report.description}</td>
-                    <td>
-                      {report.status === "RESOLVED" ? (
-                        <div className="badge badge-success">Resolved</div>
-                      ) : (
-                        <button
-                          className="btn btn-sm"
-                          onClick={() => {
-                            resolveReport(report.id);
-                          }}
-                        >
-                          Resolve
-                        </button>
-                      )}
-                    </td>
-                    <td>{formatDate(report.createdAt, "MMM dd, yyyy")}</td>
-                  </tr>
-                );
-              })}
-            </>
-          ) : (
-            <tr className="text-center italic">
-              <td colSpan={7}>There are no reports data</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <TableContainer>
+        <Table columns={columns} dataSource={reports} />
+      </TableContainer>
     </div>
   );
 }

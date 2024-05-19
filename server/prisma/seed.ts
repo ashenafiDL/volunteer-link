@@ -56,6 +56,7 @@ async function main() {
       locationId: debreBerhan.id,
       age: faker.number.int({ min: 18, max: 100 }),
       gender: faker.helpers.arrayElement(['MALE', 'FEMALE']),
+      bio: faker.lorem.sentences(),
     },
   });
   const admin = await prisma.users.create({
@@ -69,6 +70,7 @@ async function main() {
       locationId: addisAbaba.id,
       age: faker.number.int({ min: 18, max: 100 }),
       gender: faker.helpers.arrayElement(['MALE', 'FEMALE']),
+      bio: faker.lorem.sentences(),
     },
   });
   logger.log(`Seeded 2 users.`);
@@ -197,6 +199,7 @@ async function main() {
           roleId: volunteerRole.id,
           age: faker.number.int({ min: 18, max: 100 }),
           gender: faker.helpers.arrayElement(['MALE', 'FEMALE']),
+          bio: faker.lorem.sentences(),
           skills: {
             connect: [
               {
@@ -229,6 +232,7 @@ async function main() {
           roleId: volunteerRole.id,
           age: faker.number.int({ min: 18, max: 100 }),
           gender: faker.helpers.arrayElement(['MALE', 'FEMALE']),
+          bio: faker.lorem.sentences(),
           skills: {
             connect: [
               {
@@ -659,6 +663,7 @@ async function main() {
         ]),
         reporterId: volunteer.id,
         status: faker.helpers.arrayElement(['ACTIVE', 'RESOLVED']),
+        description: faker.lorem.sentences(),
       },
       {
         contentId: admin.id,
@@ -674,6 +679,7 @@ async function main() {
         ]),
         reporterId: volunteer.id,
         status: faker.helpers.arrayElement(['ACTIVE', 'RESOLVED']),
+        description: faker.lorem.sentences(),
       },
       {
         contentId: organization2.id,
@@ -689,6 +695,7 @@ async function main() {
         ]),
         reporterId: volunteer.id,
         status: faker.helpers.arrayElement(['ACTIVE', 'RESOLVED']),
+        description: faker.lorem.sentences(),
       },
       {
         contentId: organization1.id,
@@ -704,6 +711,7 @@ async function main() {
         ]),
         reporterId: volunteer.id,
         status: faker.helpers.arrayElement(['ACTIVE', 'RESOLVED']),
+        description: faker.lorem.sentences(),
       },
     ],
   });

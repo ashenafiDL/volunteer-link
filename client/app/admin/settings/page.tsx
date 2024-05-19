@@ -8,7 +8,7 @@ import { fetchLocations } from "@/app/lib/locations";
 export default async function SettingsPage() {
   const locations = await fetchLocations();
   return (
-    <div className="mx-auto w-1/2 space-y-3">
+    <div className="mx-auto w-full space-y-3 md:w-3/4 xl:w-1/2">
       <EditAvatar />
 
       <EditPersonalInfo locations={locations} />
