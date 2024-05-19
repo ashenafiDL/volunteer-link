@@ -57,6 +57,14 @@ async function main() {
       age: faker.number.int({ min: 18, max: 100 }),
       gender: faker.helpers.arrayElement(['MALE', 'FEMALE']),
       bio: faker.lorem.sentences(),
+      notificationPreference: [
+        { option: 'task_assigned', value: true },
+        { option: 'new_project_recommendation', value: true },
+        { option: 'project_status_update', value: true },
+        { option: 'deadlines', value: true },
+        { option: 'application_status_update', value: true },
+        { option: 'badge_and_certificate', value: true },
+      ],
     },
   });
   const admin = await prisma.users.create({

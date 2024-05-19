@@ -11,10 +11,6 @@ type Texts = {
   [key: string]: { title: string; subtitle: string };
 };
 
-type Options = {
-  [key: string]: any;
-};
-
 export default function NotificationSetting() {
   const { user } = useAuthContext();
   const { addAlert, dismissAlert } = useAlertsContext();
@@ -25,17 +21,17 @@ export default function NotificationSetting() {
       subtitle: "Get notified when a new task is assigned to you",
     },
     new_project_recommendation: {
-      title: "Projects",
+      title: "New Projects",
       subtitle:
         "Get notified when there is a new project recommendation for you",
     },
     project_status_update: {
-      title: "Projects",
+      title: "Project Status",
       subtitle: "Get notified when a project status is updated",
     },
     deadlines: {
-      title: "Projects",
-      subtitle: "Get notified when a project deadline is approaching",
+      title: "Deadlines",
+      subtitle: "Get notified when a task deadline is approaching",
     },
     application_status_update: {
       title: "Applications",
@@ -87,30 +83,34 @@ export default function NotificationSetting() {
   };
 
   return (
-    <div className="space-y-1">
-      <p>Notification</p>
-      <div className="card rounded-md">
-        <div className="card-body space-y-3">
-          {user?.notificationPreference?.map(
-            (item: { option: string; value: boolean }, index: number) => (
-              <div key={index} className="setting-item">
-                <SettingItemText
-                  title={texts[item.option].title}
-                  subtitle={texts[item.option].subtitle}
-                />
+    <>
+      {user && user.notificationPreference && (
+        <div className="space-y-1">
+          <p>Notification</p>
+          <div className="card rounded-md">
+            <div className="card-body space-y-3">
+              {user?.notificationPreference?.map(
+                (item: { option: string; value: boolean }, index: number) => (
+                  <div key={index} className="setting-item">
+                    <SettingItemText
+                      title={texts[item.option].title}
+                      subtitle={texts[item.option].subtitle}
+                    />
 
-                <Toggle
-                  options={["OFF", "ON"]}
-                  selected={item.value ? 1 : 0}
-                  onChange={(newValue: string) =>
-                    handleNotificationChange(item.option, newValue === "ON")
-                  }
-                />
-              </div>
-            ),
-          )}
+                    <Toggle
+                      options={["OFF", "ON"]}
+                      selected={item.value ? 1 : 0}
+                      onChange={(newValue: string) =>
+                        handleNotificationChange(item.option, newValue === "ON")
+                      }
+                    />
+                  </div>
+                ),
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
