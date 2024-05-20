@@ -4,16 +4,16 @@ import axiosInstance from "@/app/axiosInstance";
 import { useAlertsContext } from "@/app/lib/contexts/AlertContext";
 import { useIsClient } from "@/app/lib/contexts/useIsClient";
 import { TextInput } from "@/components/formElements";
+import TextAreaInput from "@/components/formElements/TextAreaInput";
 import { Table } from "antd";
 import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
-import { MdDelete, MdEdit } from "react-icons/md";
 import * as Yup from "yup";
 import TableContainer from "../components/TableContainer";
 
-export default function LocationsPage() {
-  const [locations, setLocations] = useState<Array<any>>();
-  const [currentLocation, setCurrentLocation] = useState<any>(null);
+export default function SkillCategoriesPage() {
+  const [categories, setCategories] = useState<Array<any>>();
+  const [currentCategory, setCurrentCategory] = useState<any>(null);
   const isClient = useIsClient();
   const { addAlert, dismissAlert } = useAlertsContext();
 
@@ -25,70 +25,56 @@ export default function LocationsPage() {
       render: (_: any, record: any, index: number) => index + 1,
     },
     {
-      title: "Short Code",
-      dataIndex: "code",
-      key: "code",
-      width: "10%",
-      render: (code: any) => (
-        <div className="badge badge-primary rounded-md">{code}</div>
-      ),
-      sorter: (a: any, b: any) => a.code.localeCompare(b.code),
-    },
-    {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "50%",
       sorter: (a: any, b: any) => a.name.localeCompare(b.name),
     },
     {
-      title: "Users Count",
-      dataIndex: "users",
-      key: "users",
-      render: (_: any, record: any) => <span>{record._count.users}</span>,
-      sorter: (a: any, b: any) => a._count.users - b._count.users,
-    },
-    {
-      title: "Organizations Count",
-      dataIndex: "organizations",
-      key: "organizations",
-      render: (_: any, record: any) => (
-        <span>{record._count.organizations}</span>
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+      render: (description: string) => (
+        <div className="text-left">
+          {description.slice(0, 100)}
+          {description.length > 100 && (
+            <span className="tooltip text-left" data-tip={description}>
+              ...
+            </span>
+          )}
+        </div>
       ),
-      sorter: (a: any, b: any) =>
-        a._count.organizations - b._count.organizations,
     },
     {
-      title: "Projects Count",
-      dataIndex: "projects",
-      key: "projects",
-      render: (_: any, record: any) => <span>{record._count.projects}</span>,
-      sorter: (a: any, b: any) => a._count.projects - b._count.projects,
+      title: "Skills count",
+      dataIndex: "skills",
+      key: "skills",
+      render: (_: any, record: any) => record._count.skills,
+      sorter: (a: any, b: any) => a._count.skills - b._count.skills,
     },
     {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
+      title: "Actions",
+      dataIndex: "actions",
+      key: "actions",
       render: (_: any, record: any) => (
-        <div className="flex flex-row gap-2">
-          <div
-            className="cursor-pointer"
+        <div className="flex gap-2">
+          <button
             onClick={() => {
-              setCurrentLocation(record);
-              showModal("add_location_modal");
+              setCurrentCategory(record);
+              showModal("add_category_modal");
             }}
+            className="btn btn-primary btn-sm"
           >
-            <MdEdit size={16} />
-          </div>
-          <div
-            className="cursor-pointer"
+            Edit
+          </button>
+          <button
             onClick={() => {
-              setCurrentLocation(record);
               handleDelete(record.id);
             }}
+            className="btn btn-error btn-sm"
           >
-            <MdDelete size={16} />
-          </div>
+            Delete
+          </button>
         </div>
       ),
     },
@@ -102,169 +88,155 @@ export default function LocationsPage() {
     isClient && (document.getElementById(id) as HTMLDialogElement).close();
   };
 
-  const handleAdd = async (values: { name: string; code: string }) => {
+  const handleAdd = async (values: { name: string; description: string }) => {
     try {
       const res = await axiosInstance.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/locations`,
-        {
-          name: values.name,
-          code: values.code.toUpperCase(),
-        },
+        `${process.env.NEXT_PUBLIC_API_URL}/skill-categories`,
+        values,
       );
 
       if (res.status === 201) {
         const id = addAlert({
-          message: "Location added successfully",
+          message: "Category added successfully",
           severity: "success",
         });
         setTimeout(() => {
           dismissAlert(id);
         }, 3000);
-        fetchLocations();
+        fetchCategories();
       }
     } catch (error: any) {
       const id = addAlert({
-        message: error?.response?.data?.message || "Failed to add location",
+        message: error?.response?.data?.message || "Failed to add category",
         severity: "error",
       });
       setTimeout(() => {
         dismissAlert(id);
       }, 3000);
     } finally {
-      closeModal("add_location_modal");
+      closeModal("add_category_modal");
     }
   };
 
   const handleUpdate = async (
-    values: { name: string; code: string },
+    values: { name: string; description: string },
     id: string,
   ) => {
     try {
       const res = await axiosInstance.patch(
-        `${process.env.NEXT_PUBLIC_API_URL}/locations/${id}`,
-        {
-          name: values.name,
-          code: values.code.toUpperCase(),
-        },
+        `${process.env.NEXT_PUBLIC_API_URL}/skill-categories/${id}`,
+        values,
       );
 
       if (res.status === 200) {
         const id = addAlert({
-          message: "Location updated successfully",
+          message: "Category updated successfully",
           severity: "success",
         });
         setTimeout(() => {
           dismissAlert(id);
         }, 3000);
-        fetchLocations();
+        fetchCategories();
       }
     } catch (error: any) {
       const id = addAlert({
-        message: error?.response?.data?.message || "Failed to update location",
+        message: error?.response?.data?.message || "Failed to update category",
         severity: "error",
       });
       setTimeout(() => {
         dismissAlert(id);
       }, 3000);
     } finally {
-      closeModal("add_location_modal");
-      setCurrentLocation(null);
+      closeModal("add_category_modal");
+      setCurrentCategory(null);
     }
   };
 
   const handleDelete = async (id: string) => {
     try {
       const res = await axiosInstance.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/locations/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/skill-categories/${id}`,
       );
 
       if (res.status === 200) {
         const id = addAlert({
-          message: "Location deleted successfully",
+          message: "Category deleted successfully",
           severity: "success",
         });
         setTimeout(() => {
           dismissAlert(id);
         }, 3000);
-        fetchLocations();
+        fetchCategories();
       }
     } catch (error: any) {
       const id = addAlert({
-        message: error?.response?.data?.message || "Failed to delete location",
+        message: error?.response?.data?.message || "Failed to delete category",
         severity: "error",
       });
       setTimeout(() => {
         dismissAlert(id);
       }, 3000);
     } finally {
-      closeModal("add_location_modal");
-      setCurrentLocation(null);
+      closeModal("add_category_modal");
+      setCurrentCategory(null);
     }
   };
 
-  const fetchLocations = async () => {
+  const fetchCategories = async () => {
     const res = await axiosInstance.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/locations`,
+      `${process.env.NEXT_PUBLIC_API_URL}/skill-categories`,
     );
 
     if (res.status === 200) {
-      setLocations(res.data);
+      setCategories(res.data);
     }
   };
 
   useEffect(() => {
-    fetchLocations();
+    fetchCategories();
   }, []);
 
   return (
     <>
       <div className="space-y-3 overflow-x-auto">
         <div className="flex flex-row items-center justify-between">
-          <div className="card-title">Locations</div>
+          <div className="card-title">Categories</div>
 
           <button
             className="btn btn-primary"
-            onClick={() => showModal("add_location_modal")}
+            onClick={() => showModal("add_category_modal")}
           >
-            Add location
+            Add category
           </button>
         </div>
 
         <TableContainer>
-          <Table columns={columns} dataSource={locations} />
+          <Table columns={columns} dataSource={categories} />
         </TableContainer>
       </div>
 
-      {/* Add location dialog */}
-      <dialog id="add_location_modal" className="modal">
+      {/* Add category dialog */}
+      <dialog id="add_category_modal" className="modal">
         <div className="modal-box">
-          <div className="card-title">Add location</div>
+          <div className="card-title">Add category</div>
           <Formik
             initialValues={{
-              name: currentLocation ? currentLocation.name : "",
-              code: currentLocation ? currentLocation.code : "",
+              name: currentCategory ? currentCategory.name : "",
+              description: currentCategory ? currentCategory.description : "",
             }}
             validationSchema={Yup.object({
               name: Yup.string(),
-              code: Yup.string(),
+              description: Yup.string(),
             })}
             onSubmit={async (values, { resetForm }) => {
-              currentLocation
-                ? handleUpdate(values, currentLocation.id)
+              currentCategory
+                ? handleUpdate(values, currentCategory.id)
                 : handleAdd(values);
 
               resetForm();
             }}
           >
             <Form className="flex flex-col gap-4">
-              <TextInput
-                label="Short Code"
-                props={{
-                  name: "code",
-                  type: "text",
-                }}
-              />
-
               <TextInput
                 label="Name"
                 props={{
@@ -273,16 +245,24 @@ export default function LocationsPage() {
                 }}
               />
 
+              <TextAreaInput
+                label="Description"
+                props={{
+                  name: "description",
+                  rows: 5,
+                }}
+              />
+
               <div className="space-x-2">
                 <button
                   type="reset"
                   className="btn btn-outline"
-                  onClick={() => closeModal("add_location_modal")}
+                  onClick={() => closeModal("add_category_modal")}
                 >
                   Cancel
                 </button>
                 <button type="submit" className="btn btn-primary">
-                  {currentLocation ? "Update" : "Add"}
+                  {currentCategory ? "Update" : "Add"}
                 </button>
               </div>
             </Form>

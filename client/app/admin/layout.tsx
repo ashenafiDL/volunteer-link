@@ -11,6 +11,7 @@ import {
   BiSolidDashboard,
 } from "react-icons/bi";
 import { FaProjectDiagram } from "react-icons/fa";
+import { GiSkills } from "react-icons/gi";
 import { HiMiniBuildingOffice } from "react-icons/hi2";
 import { IoMdSettings } from "react-icons/io";
 import { IoLocationSharp } from "react-icons/io5";
@@ -37,11 +38,6 @@ export default function AdminPagesLayout({
       href: "/admin/dashboard",
     },
     {
-      label: "Reports",
-      icon: <MdReport size={24} />,
-      href: "/admin/reports",
-    },
-    {
       label: "Users",
       icon: <LuUsers size={24} />,
       href: "/admin/users",
@@ -51,20 +47,30 @@ export default function AdminPagesLayout({
       icon: <HiMiniBuildingOffice size={24} />,
       href: "/admin/organizations",
     },
-    // {
-    //   label: "Skills & Categories",
-    //   icon: <GiSkills size={24} />,
-    //   href: "/admin/skills",
-    // },
+    {
+      label: "Projects",
+      icon: <FaProjectDiagram size={24} />,
+      href: "/admin/projects",
+    },
+    {
+      label: "Skills",
+      icon: <GiSkills size={24} />,
+      href: "/admin/skills",
+    },
+    {
+      label: "Categories",
+      icon: <GiSkills size={24} />,
+      href: "/admin/categories",
+    },
     {
       label: "Locations",
       icon: <IoLocationSharp size={24} />,
       href: "/admin/locations",
     },
     {
-      label: "Projects",
-      icon: <FaProjectDiagram size={24} />,
-      href: "/admin/projects",
+      label: "Reports",
+      icon: <MdReport size={24} />,
+      href: "/admin/reports",
     },
   ];
 
