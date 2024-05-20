@@ -7,6 +7,7 @@ export default function SelectInput({
   props,
   children,
   classes,
+  handleChange,
 }: {
   label: string;
   required?: boolean;
@@ -18,6 +19,7 @@ export default function SelectInput({
   };
   children: React.ReactNode;
   classes?: string;
+  handleChange?: (e: any) => void;
 }) {
   const [field, meta] = useField(props);
 
@@ -38,6 +40,10 @@ export default function SelectInput({
         )}
         {...field}
         {...props}
+        onChange={(e) => {
+          field.onChange(e);
+          handleChange?.(e);
+        }}
       >
         {children}
       </select>

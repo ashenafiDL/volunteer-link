@@ -1,5 +1,6 @@
 import formatDuration from "@/app/lib/formatDuration";
 import LogoAvatar from "@/components/global/LogoAvatar";
+import { formatDate } from "date-fns";
 import Link from "next/link";
 
 export default function ProjectList({ projects }: { projects: any[] }) {
@@ -59,6 +60,20 @@ export default function ProjectList({ projects }: { projects: any[] }) {
                     </div>
                     <div className="py-2">
                       {formatDuration(project.startDate, project.endDate)}
+                    </div>
+                  </div>
+
+                  <div className="badge badge-primary flex flex-row gap-2 py-2 pl-0">
+                    <div className="badge badge-accent">Start Date</div>
+                    <div className="py-2">
+                      {formatDate(project.startDate, "MMM dd, yyyy")}
+                    </div>
+                  </div>
+
+                  <div className="badge badge-primary flex flex-row gap-2 py-2 pl-0">
+                    <div className="badge badge-accent">End Date</div>
+                    <div className="py-2">
+                      {formatDate(project.endDate, "MMM dd, yyyy")}
                     </div>
                   </div>
 

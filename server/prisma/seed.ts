@@ -283,7 +283,7 @@ async function main() {
     'Develop a new mobile app',
     organization1.id,
     addisAbaba.id,
-    faker.date.recent(),
+    faker.date.past(),
     faker.date.future(),
     'LONG_TERM',
     'IN_PROGRESS',
@@ -294,7 +294,7 @@ async function main() {
     'Redesign the user interface',
     organization2.id,
     debreBerhan.id,
-    faker.date.recent(),
+    faker.date.past(),
     faker.date.future(),
     'SHORT_TERM',
     'NOT_STARTED',
@@ -305,7 +305,7 @@ async function main() {
     'Optimize database performance',
     organization1.id,
     debreBerhan.id,
-    faker.date.recent(),
+    faker.date.past(),
     faker.date.future(),
     'LONG_TERM',
     'NOT_STARTED',
@@ -316,7 +316,7 @@ async function main() {
     'Launch a new marketing campaign',
     organization2.id,
     debreBerhan.id,
-    faker.date.recent(),
+    faker.date.past(),
     faker.date.future(),
     'SHORT_TERM',
     'NOT_STARTED',
@@ -327,7 +327,7 @@ async function main() {
     'Conduct a cybersecurity audit',
     organization1.id,
     debreBerhan.id,
-    faker.date.recent(),
+    faker.date.past(),
     faker.date.future(),
     'LONG_TERM',
     'IN_PROGRESS',
@@ -338,7 +338,7 @@ async function main() {
     'Build a website for the company',
     organization1.id,
     addisAbaba.id,
-    faker.date.recent(),
+    faker.date.past(),
     faker.date.future(),
     'LONG_TERM',
     'IN_PROGRESS',
@@ -349,7 +349,7 @@ async function main() {
     'Create engaging content for marketing purposes',
     organization1.id,
     addisAbaba.id,
-    faker.date.recent(),
+    faker.date.past(),
     faker.date.future(),
     'SHORT_TERM',
     'NOT_STARTED',
@@ -360,7 +360,7 @@ async function main() {
     'Analyze company data to provide insights',
     organization2.id,
     addisAbaba.id,
-    faker.date.recent(),
+    faker.date.past(),
     faker.date.future(),
     'LONG_TERM',
     'NOT_STARTED',
@@ -371,13 +371,132 @@ async function main() {
     'Develop a new mobile game',
     organization1.id,
     addisAbaba.id,
-    faker.date.recent(),
+    faker.date.past(),
     faker.date.future(),
     'SHORT_TERM',
     'DONE',
     true,
   );
   logger.log(`Seeded 9 projects.`);
+
+  // Seed project skills
+  await prisma.skillsToProjects.create({
+    data: {
+      project: {
+        connect: { id: project1.id },
+      },
+      skill: {
+        connect: {
+          name: faker.helpers.arrayElement(SKILLS).name,
+        },
+      },
+      vacancies: faker.number.int({ min: 1, max: 100 }),
+    },
+  });
+  await prisma.skillsToProjects.create({
+    data: {
+      project: {
+        connect: { id: project1.id },
+      },
+      skill: {
+        connect: {
+          name: faker.helpers.arrayElement(SKILLS).name,
+        },
+      },
+      vacancies: faker.number.int({ min: 1, max: 100 }),
+    },
+  });
+  await prisma.skillsToProjects.create({
+    data: {
+      project: {
+        connect: { id: project1.id },
+      },
+      skill: {
+        connect: {
+          name: faker.helpers.arrayElement(SKILLS).name,
+        },
+      },
+      vacancies: faker.number.int({ min: 1, max: 100 }),
+    },
+  });
+  await prisma.skillsToProjects.create({
+    data: {
+      project: {
+        connect: { id: project2.id },
+      },
+      skill: {
+        connect: {
+          name: faker.helpers.arrayElement(SKILLS).name,
+        },
+      },
+      vacancies: faker.number.int({ min: 1, max: 100 }),
+    },
+  });
+  await prisma.skillsToProjects.create({
+    data: {
+      project: {
+        connect: { id: project2.id },
+      },
+      skill: {
+        connect: {
+          name: faker.helpers.arrayElement(SKILLS).name,
+        },
+      },
+      vacancies: faker.number.int({ min: 1, max: 100 }),
+    },
+  });
+  await prisma.skillsToProjects.create({
+    data: {
+      project: {
+        connect: { id: project2.id },
+      },
+      skill: {
+        connect: {
+          name: faker.helpers.arrayElement(SKILLS).name,
+        },
+      },
+      vacancies: faker.number.int({ min: 1, max: 100 }),
+    },
+  });
+  await prisma.skillsToProjects.create({
+    data: {
+      project: {
+        connect: { id: project3.id },
+      },
+      skill: {
+        connect: {
+          name: faker.helpers.arrayElement(SKILLS).name,
+        },
+      },
+      vacancies: faker.number.int({ min: 1, max: 100 }),
+    },
+  });
+  await prisma.skillsToProjects.create({
+    data: {
+      project: {
+        connect: { id: project2.id },
+      },
+      skill: {
+        connect: {
+          name: faker.helpers.arrayElement(SKILLS).name,
+        },
+      },
+      vacancies: faker.number.int({ min: 1, max: 100 }),
+    },
+  });
+  await prisma.skillsToProjects.create({
+    data: {
+      project: {
+        connect: { id: project4.id },
+      },
+      skill: {
+        connect: {
+          name: faker.helpers.arrayElement(SKILLS).name,
+        },
+      },
+      vacancies: faker.number.int({ min: 1, max: 100 }),
+    },
+  });
 
   // Seed reviews
   await prisma.reviews.create({
