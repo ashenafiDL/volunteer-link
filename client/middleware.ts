@@ -25,12 +25,22 @@ export default async function middleware(req: NextRequest) {
       return NextResponse.next();
     } else {
       // Unauthorized user, redirect to home
-      return NextResponse.redirect(new URL("/home", req.nextUrl.origin));
+      return NextResponse.redirect(
+        new URL(
+          "/home?status=NOT_STARTED&time=BOTH&location=ALL",
+          req.nextUrl.origin,
+        ),
+      );
     }
   } else if (isAuthRoute) {
     if (verifiedToken) {
       // Authenticated user trying to access auth pages, redirect to home
-      return NextResponse.redirect(new URL("/home", req.nextUrl.origin));
+      return NextResponse.redirect(
+        new URL(
+          "/home?status=NOT_STARTED&time=BOTH&location=ALL",
+          req.nextUrl.origin,
+        ),
+      );
     } else {
       return NextResponse.next();
     }

@@ -32,9 +32,14 @@ export default function ProjectList({ projects }: { projects: any[] }) {
                     size="base"
                   />
                   <div className="flex-grow space-y-2">
-                    <span className="line-clamp-1 text-2xl font-bold">
-                      {project.title}
-                    </span>
+                    <div className="flex flex-row items-center gap-2">
+                      <span className="line-clamp-1 text-2xl font-bold">
+                        {project.title}
+                      </span>
+                      {project.recommended && (
+                        <span className="badge badge-success">Recommended</span>
+                      )}
+                    </div>
                     <span>{project?.organization?.name}</span>
                   </div>
                 </div>

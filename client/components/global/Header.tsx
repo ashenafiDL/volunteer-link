@@ -71,7 +71,7 @@ export default function Header() {
       <div className="container flex w-full items-center justify-between bg-primary">
         {/* Logo section of the header */}
         <Link
-          href="/home"
+          href="/home?status=NOT_STARTED&time=BOTH&location=ALL"
           className="flex items-center gap-2 text-primary-content"
         >
           <BiDonateHeart size={28} />

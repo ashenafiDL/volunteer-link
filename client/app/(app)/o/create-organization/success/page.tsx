@@ -34,7 +34,7 @@ export default function SuccessfullyCreated() {
             </button>
           </Link>
         )}
-        <Link href="/home">
+        <Link href="/home?status=NOT_STARTED&time=BOTH&location=ALL">
           <button className="btn">Stay on Personal Profile</button>
         </Link>
       </div>

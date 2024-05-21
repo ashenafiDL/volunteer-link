@@ -18,7 +18,7 @@ export default function Hero() {
           </p>
 
           <div className="flex flex-row gap-6">
-            <Link href="/home">
+            <Link href="/home?status=NOT_STARTED&time=BOTH&location=ALL">
               <button className="btn">Browse Projects</button>
             </Link>
             <Link href="/sign-up">

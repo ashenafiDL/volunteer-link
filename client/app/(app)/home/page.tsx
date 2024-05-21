@@ -1,5 +1,6 @@
 "use client";
 
+import axiosInstance from "@/app/axiosInstance";
 import { useAuthContext } from "@/app/lib/contexts/AppContext";
 import "@/app/styles.css";
 import { SelectInput } from "@/components/formElements";
@@ -13,7 +14,9 @@ import ProjectList from "./components/ProjectList";
 function Home() {
   const { user } = useAuthContext();
   const [projects, setProjects] = useState<any>();
+  const [recommendedProjects, setRecommendedProjects] = useState<any>();
   const [sortedProjects, setSortedProjects] = useState<any>();
+  const [updatedProjects, setUpdatedProjects] = useState<any>();
   const [range, setRange] = useState([0, 10]);
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -169,7 +172,20 @@ function Home() {
       } catch (error) {}
     };
 
+    const fetchRecommendedProjects = async () => {
+      try {
+        const res = await axiosInstance.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/recommendations`,
+        );
+
+        if (res.status === 200) {
+          setRecommendedProjects(res.data);
+        }
+      } catch (error) {}
+    };
+
     fetchFilteredProjects();
+    fetchRecommendedProjects();
   }, [searchParams, user]);
 
   useEffect(() => {
@@ -261,8 +277,25 @@ function Home() {
         default:
           setSortedProjects(projects);
       }
+
+      if (recommendedProjects) {
+        // Create a set of recommended project IDs for quick lookup
+        const recommendedProjectIds = recommendedProjects.map(
+          (project: any) => project.project.id,
+        );
+
+        console.log(recommendedProjectIds, "recommendedProjectIds");
+
+        // Iterate through all projects and mark them as recommended if they are in the recommended list
+        const withRecommendedFlag = sortedProjects.map((project: any) => ({
+          ...project,
+          recommended: recommendedProjectIds.includes(project.id),
+        }));
+        setUpdatedProjects(withRecommendedFlag);
+        console.log(withRecommendedFlag, "withRecommendedFlag");
+      }
     }
-  }, [projects, sortBy, sortOrder]);
+  }, [projects, recommendedProjects, sortBy, sortOrder, sortedProjects]);
 
   return (
     <div className="layout-container">
@@ -431,11 +464,11 @@ function Home() {
         <div className="divider"></div>
 
         <>
-          {sortedProjects && sortedProjects.length > 0 ? (
+          {updatedProjects && updatedProjects.length > 0 ? (
             <>
               <div className="text-left">
                 <ProjectList
-                  projects={sortedProjects.slice(range[0], range[1])}
+                  projects={updatedProjects.slice(range[0], range[1])}
                 />
               </div>
 

@@ -46,7 +46,7 @@ export default function SignInForm() {
           if (res.data.role.name === "Admin") {
             router.replace("/admin/dashboard");
           } else {
-            router.replace("/home");
+            router.replace("/home?status=NOT_STARTED&time=BOTH&location=ALL");
           }
         } catch (error: any) {
           console.log("signin", error);

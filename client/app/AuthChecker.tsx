@@ -10,5 +10,11 @@ export default function AuthChecker({
 }) {
   const { isLoggedIn } = useAuthContext();
 
-  return <>{isLoggedIn ? redirect("/home") : children}</>;
+  return (
+    <>
+      {isLoggedIn
+        ? redirect("/home?status=NOT_STARTED&time=BOTH&location=ALL")
+        : children}
+    </>
+  );
 }

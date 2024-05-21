@@ -260,26 +260,24 @@ async function main() {
   // Seed projects
   const createProject = async (
     title: string,
-    description: string,
     orgId: string,
     locationId: string,
-    startDate: Date,
-    endDate: Date,
-    timeCommitment: 'SHORT_TERM' | 'LONG_TERM',
-    status: 'IN_PROGRESS' | 'NOT_STARTED' | 'DONE',
-    provideCertificate: boolean,
   ) => {
     const project = await prisma.projects.create({
       data: {
         title,
-        description,
+        description: faker.lorem.sentences({ min: 5, max: 10 }),
         organization: { connect: { id: orgId } },
         location: { connect: { id: locationId } },
-        startDate,
-        endDate,
-        timeCommitment,
-        status,
-        provideCertificate,
+        startDate: faker.date.past(),
+        endDate: faker.date.future(),
+        timeCommitment: faker.helpers.arrayElement(['SHORT_TERM', 'LONG_TERM']),
+        status: faker.helpers.arrayElement([
+          'IN_PROGRESS',
+          'NOT_STARTED',
+          'DONE',
+        ]),
+        provideCertificate: faker.helpers.arrayElement([true, false]),
       },
     });
 
@@ -288,102 +286,32 @@ async function main() {
 
   const project1 = await createProject(
     'Mobile App Development',
-    'Develop a new mobile app',
     organization1.id,
     addisAbaba.id,
-    faker.date.past(),
-    faker.date.future(),
-    'LONG_TERM',
-    'IN_PROGRESS',
-    true,
   );
   const project2 = await createProject(
     'UI/UX Redesign',
-    'Redesign the user interface',
     organization2.id,
     debreBerhan.id,
-    faker.date.past(),
-    faker.date.future(),
-    'SHORT_TERM',
-    'NOT_STARTED',
-    false,
   );
   const project3 = await createProject(
     'Database Optimization',
-    'Optimize database performance',
     organization1.id,
     debreBerhan.id,
-    faker.date.past(),
-    faker.date.future(),
-    'LONG_TERM',
-    'NOT_STARTED',
-    true,
   );
   const project4 = await createProject(
     'Marketing Campaign',
-    'Launch a new marketing campaign',
     organization2.id,
     debreBerhan.id,
-    faker.date.past(),
-    faker.date.future(),
-    'SHORT_TERM',
-    'NOT_STARTED',
-    false,
   );
-  await createProject(
-    'Cybersecurity Audit',
-    'Conduct a cybersecurity audit',
-    organization1.id,
-    debreBerhan.id,
-    faker.date.past(),
-    faker.date.future(),
-    'LONG_TERM',
-    'IN_PROGRESS',
-    true,
-  );
-  await createProject(
-    'Website Development',
-    'Build a website for the company',
-    organization1.id,
-    addisAbaba.id,
-    faker.date.past(),
-    faker.date.future(),
-    'LONG_TERM',
-    'IN_PROGRESS',
-    true,
-  );
-  await createProject(
-    'Content Creation',
-    'Create engaging content for marketing purposes',
-    organization1.id,
-    addisAbaba.id,
-    faker.date.past(),
-    faker.date.future(),
-    'SHORT_TERM',
-    'NOT_STARTED',
-    false,
-  );
-  await createProject(
-    'Data Analysis',
-    'Analyze company data to provide insights',
-    organization2.id,
-    addisAbaba.id,
-    faker.date.past(),
-    faker.date.future(),
-    'LONG_TERM',
-    'NOT_STARTED',
-    true,
-  );
+  await createProject('Cybersecurity Audit', organization1.id, debreBerhan.id);
+  await createProject('Website Development', organization1.id, addisAbaba.id);
+  await createProject('Content Creation', organization1.id, addisAbaba.id);
+  await createProject('Data Analysis', organization2.id, addisAbaba.id);
   const project5 = await createProject(
     'Mobile Game Development',
-    'Develop a new mobile game',
     organization1.id,
     addisAbaba.id,
-    faker.date.past(),
-    faker.date.future(),
-    'SHORT_TERM',
-    'DONE',
-    true,
   );
   logger.log(`Seeded 9 projects.`);
 
@@ -505,6 +433,7 @@ async function main() {
       vacancies: faker.number.int({ min: 1, max: 100 }),
     },
   });
+  logger.log(`Seeded 9 project skills.`);
 
   // Seed reviews
   await prisma.reviews.create({

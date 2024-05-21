@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Req } from '@nestjs/common';
 import { RecommendationsService } from './recommendations.service';
 
 @Controller('recommendations')
@@ -7,8 +7,9 @@ export class RecommendationsController {
     private readonly recommendationsService: RecommendationsService,
   ) {}
 
-  @Get(':userId')
-  async getRecommendations(@Param('userId') userId: string) {
+  @Get()
+  async getRecommendations(@Req() req) {
+    const userId = req.user.sub;
     return this.recommendationsService.recommendProject(userId);
   }
 }
