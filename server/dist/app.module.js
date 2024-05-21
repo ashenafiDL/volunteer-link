@@ -24,6 +24,7 @@ const organizations_module_1 = require("./organizations/organizations.module");
 const prisma_module_1 = require("./prisma/prisma.module");
 const prisma_service_1 = require("./prisma/prisma.service");
 const projects_module_1 = require("./projects/projects.module");
+const recommendations_module_1 = require("./recommendations/recommendations.module");
 const reports_module_1 = require("./reports/reports.module");
 const reviews_module_1 = require("./reviews/reviews.module");
 const skill_categories_module_1 = require("./skillsAndCategories/skill-categories/skill-categories.module");
@@ -54,6 +55,7 @@ exports.AppModule = AppModule = __decorate([
             reviews_module_1.ReviewsModule,
             reports_module_1.ReportsModule,
             certificates_module_1.CertificatesModule,
+            recommendations_module_1.RecommendationsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [
