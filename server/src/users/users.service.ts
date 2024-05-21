@@ -91,19 +91,6 @@ export class UsersService {
         },
       });
 
-      // Wait 15 minutes (900,000ms == 15m) and
-      // if the email is not verified delete the temporary user account
-      setTimeout(async () => {
-        const user = await this.prisma.users.findUnique({
-          where: { id: createdUser.id },
-        });
-        if (user.emailVerified === false) {
-          await this.prisma.users.delete({
-            where: { id: user.id },
-          });
-        }
-      }, 900000);
-
       return createdUser;
     } catch (error) {
       if (
