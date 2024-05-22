@@ -258,17 +258,22 @@ async function main() {
   logger.log(`Seeded 2 organizations.`);
 
   // Seed projects
-  const createProject = async (
-    title: string,
-    orgId: string,
-    locationId: string,
-  ) => {
+  const createProject = async () => {
     const project = await prisma.projects.create({
       data: {
-        title,
+        title: faker.lorem.words({ min: 3, max: 8 }),
         description: faker.lorem.sentences({ min: 5, max: 10 }),
-        organization: { connect: { id: orgId } },
-        location: { connect: { id: locationId } },
+        organization: {
+          connect: {
+            id: faker.helpers.arrayElement([
+              organization1.id,
+              organization2.id,
+            ]),
+          },
+        },
+        location: {
+          connect: { code: faker.helpers.arrayElement(LOCATIONS)['code'] },
+        },
         startDate: faker.date.past(),
         endDate: faker.date.future(),
         timeCommitment: faker.helpers.arrayElement(['SHORT_TERM', 'LONG_TERM']),
@@ -283,155 +288,28 @@ async function main() {
 
     return project;
   };
-
-  const project1 = await createProject(
-    'Mobile App Development',
-    organization1.id,
-    addisAbaba.id,
-  );
-  const project2 = await createProject(
-    'UI/UX Redesign',
-    organization2.id,
-    debreBerhan.id,
-  );
-  const project3 = await createProject(
-    'Database Optimization',
-    organization1.id,
-    debreBerhan.id,
-  );
-  const project4 = await createProject(
-    'Marketing Campaign',
-    organization2.id,
-    debreBerhan.id,
-  );
-  await createProject('Cybersecurity Audit', organization1.id, debreBerhan.id);
-  await createProject('Website Development', organization1.id, addisAbaba.id);
-  await createProject('Content Creation', organization1.id, addisAbaba.id);
-  await createProject('Data Analysis', organization2.id, addisAbaba.id);
-  const project5 = await createProject(
-    'Mobile Game Development',
-    organization1.id,
-    addisAbaba.id,
-  );
-  logger.log(`Seeded 9 projects.`);
+  const project5 = await createProject();
+  for (let i = 0; i < 24; i++) {
+    await createProject();
+  }
+  logger.log(`Seeded 25 projects.`);
 
   // Seed project skills
-  await prisma.skillsToProjects.create({
-    data: {
-      project: {
-        connect: { id: project1.id },
-      },
-      skill: {
-        connect: {
-          name: faker.helpers.arrayElement(SKILLS).name,
+  const projects = await prisma.projects.findMany();
+  projects.map(async (project) => {
+    await prisma.skillsToProjects.create({
+      data: {
+        project: {
+          connect: { id: project.id },
         },
-      },
-      vacancies: faker.number.int({ min: 1, max: 100 }),
-    },
-  });
-  await prisma.skillsToProjects.create({
-    data: {
-      project: {
-        connect: { id: project1.id },
-      },
-      skill: {
-        connect: {
-          name: faker.helpers.arrayElement(SKILLS).name,
+        skill: {
+          connect: {
+            name: faker.helpers.arrayElement(SKILLS).name,
+          },
         },
+        vacancies: faker.number.int({ min: 1, max: 100 }),
       },
-      vacancies: faker.number.int({ min: 1, max: 100 }),
-    },
-  });
-  await prisma.skillsToProjects.create({
-    data: {
-      project: {
-        connect: { id: project1.id },
-      },
-      skill: {
-        connect: {
-          name: faker.helpers.arrayElement(SKILLS).name,
-        },
-      },
-      vacancies: faker.number.int({ min: 1, max: 100 }),
-    },
-  });
-  await prisma.skillsToProjects.create({
-    data: {
-      project: {
-        connect: { id: project2.id },
-      },
-      skill: {
-        connect: {
-          name: faker.helpers.arrayElement(SKILLS).name,
-        },
-      },
-      vacancies: faker.number.int({ min: 1, max: 100 }),
-    },
-  });
-  await prisma.skillsToProjects.create({
-    data: {
-      project: {
-        connect: { id: project2.id },
-      },
-      skill: {
-        connect: {
-          name: faker.helpers.arrayElement(SKILLS).name,
-        },
-      },
-      vacancies: faker.number.int({ min: 1, max: 100 }),
-    },
-  });
-  await prisma.skillsToProjects.create({
-    data: {
-      project: {
-        connect: { id: project2.id },
-      },
-      skill: {
-        connect: {
-          name: faker.helpers.arrayElement(SKILLS).name,
-        },
-      },
-      vacancies: faker.number.int({ min: 1, max: 100 }),
-    },
-  });
-  await prisma.skillsToProjects.create({
-    data: {
-      project: {
-        connect: { id: project3.id },
-      },
-      skill: {
-        connect: {
-          name: faker.helpers.arrayElement(SKILLS).name,
-        },
-      },
-      vacancies: faker.number.int({ min: 1, max: 100 }),
-    },
-  });
-  await prisma.skillsToProjects.create({
-    data: {
-      project: {
-        connect: { id: project2.id },
-      },
-      skill: {
-        connect: {
-          name: faker.helpers.arrayElement(SKILLS).name,
-        },
-      },
-      vacancies: faker.number.int({ min: 1, max: 100 }),
-    },
-  });
-  await prisma.skillsToProjects.create({
-    data: {
-      project: {
-        connect: { id: project4.id },
-      },
-      skill: {
-        connect: {
-          name: faker.helpers.arrayElement(SKILLS).name,
-        },
-      },
-      vacancies: faker.number.int({ min: 1, max: 100 }),
-    },
+    });
   });
   logger.log(`Seeded 9 project skills.`);
 
@@ -670,31 +548,31 @@ async function main() {
     data: [
       {
         message: faker.lorem.sentences(),
-        projectId: project5.id,
+        projectId: faker.helpers.arrayElement(projects)['id'],
         userId: volunteer.id,
         status: 'ACCEPTED',
       },
       {
         message: faker.lorem.sentences(),
-        projectId: project4.id,
+        projectId: faker.helpers.arrayElement(projects)['id'],
         userId: volunteer.id,
         status: faker.helpers.arrayElement(['PENDING', 'ACCEPTED', 'REJECTED']),
       },
       {
         message: faker.lorem.sentences(),
-        projectId: project3.id,
+        projectId: faker.helpers.arrayElement(projects)['id'],
         userId: volunteer.id,
         status: faker.helpers.arrayElement(['PENDING', 'ACCEPTED', 'REJECTED']),
       },
       {
         message: faker.lorem.sentences(),
-        projectId: project2.id,
+        projectId: faker.helpers.arrayElement(projects)['id'],
         userId: volunteer.id,
         status: faker.helpers.arrayElement(['PENDING', 'ACCEPTED', 'REJECTED']),
       },
       {
         message: faker.lorem.sentences(),
-        projectId: project1.id,
+        projectId: faker.helpers.arrayElement(projects)['id'],
         userId: volunteer.id,
         status: faker.helpers.arrayElement(['PENDING', 'ACCEPTED', 'REJECTED']),
       },

@@ -22,6 +22,7 @@ import { SkillCategoriesModule } from './skillsAndCategories/skill-categories/sk
 import { SkillsModule } from './skillsAndCategories/skills/skills.module';
 import { UsersModule } from './users/users.module';
 import { UsersService } from './users/users.service';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { UsersService } from './users/users.service';
     ReportsModule,
     CertificatesModule,
     RecommendationsModule,
+    TasksModule,
   ],
   controllers: [AppController],
   providers: [

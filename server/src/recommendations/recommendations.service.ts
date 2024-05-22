@@ -6,9 +6,13 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 
 // Weights for recommendation score
-const SKILLS_WEIGHT = 20;
-const LOCATION_WEIGHT = 10;
-const TIME_WEIGHT = 10;
+const SKILLS_WEIGHT = 30;
+const LOCATION_WEIGHT = 15;
+const TIME_WEIGHT = 15;
+const RECENT_PROJECT_THRESHOLD = 10; // in days
+const RECENT_PROJECT_WEIGHT = 10;
+const VERIFIED_WEIGHT = 20;
+const MAX_RECOMMENDATION_COUNT = 10;
 
 @Injectable()
 export class RecommendationsService {
@@ -29,6 +33,9 @@ export class RecommendationsService {
 
       // Fetch projects
       const projects = await this.prisma.projects.findMany({
+        where: {
+          AND: [{ isActive: true }, { status: { not: 'DONE' } }],
+        },
         include: {
           skillsRequired: {
             include: {
@@ -36,6 +43,7 @@ export class RecommendationsService {
             },
           },
           location: true,
+          organization: true,
         },
       });
 
@@ -52,24 +60,45 @@ export class RecommendationsService {
           projectSkills.includes(skill),
         );
         score += matchingSkills.length * SKILLS_WEIGHT;
+        console.log('skills', score);
 
         // Location Preference
         if (
-          user.locationPreference === 'BOTH' ||
-          (user.locationPreference === 'IN_PERSON' &&
-            project.locationId === user.locationId) ||
+          (user.locationPreference === 'IN_PERSON' && project.locationId) ||
           (user.locationPreference === 'REMOTE' && !project.locationId)
         ) {
           score += LOCATION_WEIGHT;
         }
+        console.log('location', score);
 
         // Time Preference
-        if (
-          user.timePreference === 'BOTH' ||
-          user.timePreference === project.timeCommitment
-        ) {
+        if (user.timePreference === project.timeCommitment) {
           score += TIME_WEIGHT;
         }
+        console.log('time', score);
+
+        // Recent Project
+        // Check if project is recently created
+        const recentlyCreatedProject =
+          project.createdAt >
+          new Date(Date.now() - RECENT_PROJECT_THRESHOLD * 24 * 60 * 60 * 1000);
+        // Check if the project starts soon
+        const projectStartsSoon =
+          project.startDate >
+          new Date(Date.now() + RECENT_PROJECT_THRESHOLD * 24 * 60 * 60 * 1000);
+        if (recentlyCreatedProject || projectStartsSoon) {
+          score += RECENT_PROJECT_WEIGHT;
+        }
+        console.log('recent', score);
+
+        // Is the organization that created the project verified
+        if (project.organization.verified) {
+          score += VERIFIED_WEIGHT;
+        }
+        console.log('verified', score);
+
+        console.log('final', score);
+        console.log('=============');
 
         return { project, score };
       });
@@ -79,7 +108,7 @@ export class RecommendationsService {
       );
       filteredRecommendations.sort((a, b) => b.score - a.score);
 
-      return filteredRecommendations;
+      return filteredRecommendations.slice(0, MAX_RECOMMENDATION_COUNT);
     } catch (error) {
       if (error instanceof NotFoundException) {
         return error;
