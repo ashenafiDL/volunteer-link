@@ -22,5 +22,5 @@ export function deleteCookie(name: string) {
 
 export function setCookie(name: string, value: string) {
   const expiresIn = new Date(Date.now() + 48 * 60 * 60 * 1000); // Expires in 2 day
-  document.cookie = `${name}=${value}; expires=${expiresIn.toUTCString()}; Secure; path=/`;
+  document.cookie = `${name}=${value}; expires=${expiresIn.toUTCString()}; SameSite=None; Secure; path=/`;
 }

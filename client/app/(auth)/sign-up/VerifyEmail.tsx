@@ -63,7 +63,7 @@ export default function VerifyEmail({ email }: { email: string | null }) {
         // Set the token inside the cookie
         const expiresIn = new Date(Date.now() + 48 * 60 * 60 * 1000); // Expires in 2 day
         if (isClient) {
-          document.cookie = `token=${res.data.token}; expires=${expiresIn.toUTCString()}; Secure; path=/`;
+          document.cookie = `token=${res.data.token}; expires=${expiresIn.toUTCString()}; SameSite=None; Secure; path=/`;
         }
         // Set user and token
         setToken(res.data.token);
